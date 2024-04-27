@@ -1,0 +1,3 @@
+[submodule "root/dependencies/euphrates"]
+	path = root/dependencies/euphrates
+	url = git://vau.place/euphrates.git
