@@ -1,6 +1,7 @@
 
 (define-library
   (miyka miyka)
+  (export main)
   (import
     (only (euphrates define-cli)
           define-cli:show-help
@@ -9,10 +10,23 @@
     (only (euphrates with-ignore-errors)
           with-ignore-errors!))
   (import
-    (only (scheme base) / begin cond define newline))
+    (only (euphrates with-user-errors)
+          with-user-errors))
+  (import (only (miyka CLI-create) CLI:create))
+  (import (only (miyka get-root) get-root/default))
+  (import (only (miyka root-p) root/p))
+  (import
+    (only (scheme base)
+          /
+          begin
+          cond
+          define
+          list
+          newline
+          parameterize
+          quote))
   (import (only (scheme write) display))
   (cond-expand
     (guile (import (only (guile) include-from-path))
-           (begin
-             (include-from-path "miyka/miyka.scm")))
+           (begin (include-from-path "miyka/miyka.scm")))
     (else (include "miyka.scm"))))
