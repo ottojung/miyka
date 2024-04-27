@@ -10,12 +10,11 @@
           define-property
           define-provider))
   (import
-    (only (miyka check-repo-name) check-repo-name))
-  (import
     (only (miyka get-repositories-directory)
           get-repositories-directory))
   (import
-    (only (scheme base) begin define lambda let))
+    (only (miyka repository-name) repository:name))
+  (import (only (scheme base) begin define lambda))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

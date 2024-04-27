@@ -2,6 +2,20 @@
 (define-library
   (miyka do-docker-build)
   (export do-docker-build)
+  (import
+    (only (euphrates make-directories)
+          make-directories))
+  (import
+    (only (euphrates run-syncproc) run-syncproc))
+  (import
+    (only (miyka repository-build-context-dir)
+          repository:build-context-dir))
+  (import
+    (only (miyka repository-container-tag)
+          repository:container-tag))
+  (import
+    (only (miyka repository-dockerfile)
+          repository:dockerfile))
   (import (only (scheme base) begin define values))
   (cond-expand
     (guile (import (only (guile) include-from-path))

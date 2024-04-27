@@ -5,10 +5,8 @@
 
 (define-provider p
   :targets (repository:path)
-  :sources ()
+  :sources (repository:name)
   (lambda (this)
-    (check-repo-name this)
-    (let ()
-      (define repos-dir (get-repositories-directory))
-      (define path (append-posix-path repos-dir this))
-      path)))
+    (define repos-dir (get-repositories-directory))
+    (define path (append-posix-path repos-dir (repository:name this)))
+    path))

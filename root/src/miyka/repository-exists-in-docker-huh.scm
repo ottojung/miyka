@@ -1,18 +1,18 @@
 ;;;; Copyright (C) 2024  Otto Jung
 ;;;; This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details. You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-(define (CLI:create repository)
+(define-property repository:exists-in-docker?)
 
-  (when (repository:exists-on-disk? repository)
-    (raisu/user 'repo-already-exists
-                (stringf "Repository named ~s already exists on disk." repository)))
+(define-provider p
+  :targets (repository:exists-in-docker?)
+  :sources (repository:container-tag)
+  (lambda (this)
+    (define tag (repository:container-tag this))
 
-  (when (repository:exists-in-docker? repository)
-    (raisu/user 'repo-already-exists
-                (stringf "Repository named ~s already exists in docker." repository)))
+    (call-with-output-file
+        "/dev/null"
+      (lambda (port)
+        (parameterize ((current-output-port port)
+                       (current-error-port port))
 
-  (make-directories (repository:path repository))
-  (create-docker-file repository)
-  (do-docker-build repository)
-
-  (values))
+          (= 0 (run-syncproc "docker" "image" "inspect" tag)))))))
