@@ -1,15 +1,15 @@
 #! /bin/sh
 
 set -e
+set -x
 
 GUILE="guile --r7rs -L src/ -L tests/ -s"
 MIYKA=dist/miyka
-
-TESTNAME="$(basename "$0")"
-export MIYKA_ROOT=dist/testroot/"$TESTNAME"
 
 t_miyka() {
     $MIYKA "$@"
 }
 
-set -x
+TESTNAME="$(basename "$0")"
+export MIYKA_ROOT=dist/testroot/"$TESTNAME"
+rm -rvf "$MIYKA_ROOT" 1>&2

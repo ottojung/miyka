@@ -7,5 +7,4 @@
      (define root (get-root))
      (define repositories-name "repositories")
      (define result (append-posix-path root repositories-name))
-     (make-directories result)
      result)))

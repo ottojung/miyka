@@ -5,9 +5,6 @@
   (import
     (only (euphrates append-posix-path)
           append-posix-path))
-  (import
-    (only (euphrates make-directories)
-          make-directories))
   (import (only (euphrates memconst) memconst))
   (import (only (miyka get-root) get-root))
   (import (only (scheme base) begin define let))

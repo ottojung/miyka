@@ -21,12 +21,6 @@
              (if (absolute-posix-path? root0) root0
                  (append-posix-path (get-current-directory) root0))))
 
-      (when root
-        (unless root-made?
-          (set! root-made? #t)
-          (unless (file-or-directory-exists? root)
-            (make-directories root))))
-
       root)))
 
 (define (get-root)

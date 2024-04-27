@@ -9,14 +9,8 @@
     (only (euphrates append-posix-path)
           append-posix-path))
   (import
-    (only (euphrates file-or-directory-exists-q)
-          file-or-directory-exists?))
-  (import
     (only (euphrates get-current-directory)
           get-current-directory))
-  (import
-    (only (euphrates make-directories)
-          make-directories))
   (import (only (euphrates memconst) memconst))
   (import (only (euphrates raisu) raisu))
   (import (only (euphrates stringf) stringf))
@@ -34,10 +28,7 @@
           lambda
           let
           or
-          quote
-          set!
-          unless
-          when))
+          quote))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin (include-from-path "miyka/get-root.scm")))

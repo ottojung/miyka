@@ -18,8 +18,9 @@
      (cond
 
       (--help
-       (with-ignore-errors!
-        (define-cli:show-help)))
+       (parameterize ((global-debug-mode-filter (const #f)))
+         (with-ignore-errors!
+          (define-cli:show-help))))
 
       (--version
        (display "0.0.1")
@@ -36,4 +37,7 @@
         'repo-already-exists
         'empty-repo-name
         )
- (main))
+
+ (with-properties
+  :for-everything
+  (main)))
