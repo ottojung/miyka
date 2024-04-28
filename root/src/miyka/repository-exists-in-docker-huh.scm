@@ -5,14 +5,6 @@
 
 (define-provider p
   :targets (repository:exists-in-docker?)
-  :sources (repository:image:tag)
+  :sources (repository:image)
   (lambda (this)
-    (define tag (repository:image:tag this))
-
-    (call-with-output-file
-        "/dev/null"
-      (lambda (port)
-        (parameterize ((current-output-port port)
-                       (current-error-port port))
-
-          (= 0 (run-syncproc "docker" "image" "inspect" tag)))))))
+    (image:exists? (repository:image this))))

@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka repository-image-tag)
-  (export repository:image:tag)
+  (miyka repository-image)
+  (export repository:image)
   (import
     (only (euphrates properties)
           define-property
@@ -13,6 +13,5 @@
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
-             (include-from-path
-               "miyka/repository-image-tag.scm")))
-    (else (include "repository-image-tag.scm"))))
+             (include-from-path "miyka/repository-image.scm")))
+    (else (include "repository-image.scm"))))

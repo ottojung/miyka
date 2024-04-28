@@ -7,6 +7,7 @@
           make-directories))
   (import
     (only (euphrates run-syncproc) run-syncproc))
+  (import (only (miyka image-tag) image:tag))
   (import
     (only (miyka repository-build-context-dir)
           repository:build-context-dir))
@@ -14,8 +15,7 @@
     (only (miyka repository-dockerfile)
           repository:dockerfile))
   (import
-    (only (miyka repository-image-tag)
-          repository:image:tag))
+    (only (miyka repository-image) repository:image))
   (import (only (scheme base) begin define values))
   (cond-expand
     (guile (import (only (guile) include-from-path))
