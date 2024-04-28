@@ -11,11 +11,11 @@
     (only (miyka repository-build-context-dir)
           repository:build-context-dir))
   (import
-    (only (miyka repository-container-tag)
-          repository:container-tag))
-  (import
     (only (miyka repository-dockerfile)
           repository:dockerfile))
+  (import
+    (only (miyka repository-image-tag)
+          repository:image:tag))
   (import (only (scheme base) begin define values))
   (cond-expand
     (guile (import (only (guile) include-from-path))

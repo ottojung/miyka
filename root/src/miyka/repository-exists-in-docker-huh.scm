@@ -5,9 +5,9 @@
 
 (define-provider p
   :targets (repository:exists-in-docker?)
-  :sources (repository:container-tag)
+  :sources (repository:image:tag)
   (lambda (this)
-    (define tag (repository:container-tag this))
+    (define tag (repository:image:tag this))
 
     (call-with-output-file
         "/dev/null"

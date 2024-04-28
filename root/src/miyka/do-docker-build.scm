@@ -4,12 +4,12 @@
 (define (do-docker-build repository)
   (define dockerfile (repository:dockerfile repository))
   (define build-context-dir (repository:build-context-dir repository))
-  (define container-tag (repository:container-tag repository))
+  (define image:tag (repository:image:tag repository))
 
   (make-directories build-context-dir)
   (run-syncproc "docker" "build"
                 "--file" dockerfile
-                "--tag" container-tag
+                "--tag" image:tag
                 build-context-dir)
 
   (values))

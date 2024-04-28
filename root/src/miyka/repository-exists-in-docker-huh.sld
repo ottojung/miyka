@@ -9,8 +9,8 @@
   (import
     (only (euphrates run-syncproc) run-syncproc))
   (import
-    (only (miyka repository-container-tag)
-          repository:container-tag))
+    (only (miyka repository-image-tag)
+          repository:image:tag))
   (import
     (only (scheme base)
           =
