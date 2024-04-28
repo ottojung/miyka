@@ -5,6 +5,7 @@
   (import
     (only (euphrates make-directories)
           make-directories))
+  (import (only (euphrates raisu-fmt) raisu-fmt))
   (import
     (only (euphrates run-syncproc) run-syncproc))
   (import (only (miyka image-tag) image:tag))
@@ -16,7 +17,14 @@
           repository:dockerfile))
   (import
     (only (miyka repository-image) repository:image))
-  (import (only (scheme base) begin define values))
+  (import
+    (only (scheme base)
+          =
+          begin
+          define
+          quote
+          unless
+          values))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

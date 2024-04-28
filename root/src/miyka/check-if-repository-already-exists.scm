@@ -4,11 +4,11 @@
 (define (check-if-repository-already-exists repository)
 
   (when (repository:exists-on-disk? repository)
-    (raisu/user 'repo-already-exists
-                (stringf "Repository named ~s already exists on disk." repository)))
+    (raisu-fmt 'repo-already-exists
+               "Repository named ~s already exists on disk." repository))
 
   (when (repository:exists-in-docker? repository)
-    (raisu/user 'repo-already-exists
-                (stringf "Repository named ~s already exists in docker." repository)))
+    (raisu-fmt 'repo-already-exists
+               "Repository named ~s already exists in docker." repository))
 
   (values))

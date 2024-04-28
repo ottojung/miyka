@@ -7,10 +7,17 @@
   (define image (repository:image repository))
   (define tag (image:tag image))
 
-  (make-directories build-context-dir)
-  (run-syncproc "docker" "build"
-                "--file" dockerfile
-                "--tag" tag
-                build-context-dir)
+  (define _1
+    (make-directories build-context-dir))
+
+  (define result
+    (run-syncproc "docker" "build"
+                  "--file" dockerfile
+                  "--tag" tag
+                  build-context-dir))
+
+  (unless (= 0 result)
+    (raisu-fmt 'docker-build-failed
+               "Docker build failed for repository ~s." repository))
 
   (values))

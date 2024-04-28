@@ -2,8 +2,7 @@
 (define-library
   (miyka check-if-repository-already-exists)
   (export check-if-repository-already-exists)
-  (import (only (euphrates stringf) stringf))
-  (import (only (miyka raisu-user) raisu/user))
+  (import (only (euphrates raisu-fmt) raisu-fmt))
   (import
     (only (miyka repository-exists-in-docker-huh)
           repository:exists-in-docker?))

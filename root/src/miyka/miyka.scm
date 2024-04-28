@@ -36,6 +36,7 @@
         'unknown-root
         'repo-already-exists
         'empty-repo-name
+        'docker-build-failed
         )
 
  (with-properties
