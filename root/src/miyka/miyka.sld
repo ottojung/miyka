@@ -2,14 +2,10 @@
 (define-library
   (miyka miyka)
   (export main)
-  (import (only (euphrates const) const))
   (import
     (only (euphrates define-cli)
           define-cli:show-help
           with-cli))
-  (import
-    (only (euphrates global-debug-mode-filter)
-          global-debug-mode-filter))
   (import
     (only (euphrates properties) with-properties))
   (import
@@ -19,6 +15,7 @@
     (only (euphrates with-user-errors)
           with-user-errors))
   (import (only (miyka CLI-create) CLI:create))
+  (import (only (miyka CLI-edit) CLI:edit))
   (import (only (miyka get-root) get-root/default))
   (import (only (miyka root-p) root/p))
   (import

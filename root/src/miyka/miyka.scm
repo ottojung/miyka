@@ -8,6 +8,7 @@
     /      --help
     /      --version
     COMMAND : create <name>
+    /         edit <name>
     OPT : --root <root>
     )
 
@@ -18,9 +19,8 @@
      (cond
 
       (--help
-       (parameterize ((global-debug-mode-filter (const #f)))
-         (with-ignore-errors!
-          (define-cli:show-help))))
+       (with-ignore-errors!
+        (define-cli:show-help)))
 
       (--version
        (display "0.0.1")
@@ -28,6 +28,9 @@
 
       (create
        (CLI:create <name>))
+
+      (edit
+       (CLI:edit <name>))
 
       ))))
 
@@ -37,6 +40,9 @@
         'repo-already-exists
         'empty-repo-name
         'docker-build-failed
+        'repository-does-not-exist
+        'editor-not-defined
+        'editor-failed
         )
 
  (with-properties

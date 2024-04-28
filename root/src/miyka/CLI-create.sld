@@ -9,12 +9,11 @@
     (only (miyka check-if-repository-already-exists)
           check-if-repository-already-exists))
   (import
-    (only (miyka create-docker-file)
-          create-docker-file))
-  (import
-    (only (miyka do-docker-build) do-docker-build))
+    (only (miyka repository-configuration)
+          repository:configuration))
   (import
     (only (miyka repository-path) repository:path))
+  (import (only (miyka touch-file) touch-file))
   (import (only (scheme base) begin define values))
   (cond-expand
     (guile (import (only (guile) include-from-path))
