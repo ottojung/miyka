@@ -29,6 +29,7 @@ dist/miyka: $(SUBMODULES) src/*/*.scm
 	chmod +x "$@"
 
 $(BINARY_PATH): dist/miyka $(PREFIX_BIN)
+	xhost "+local:docker" # allow docker to do GUI stuff.
 	mkdir -p "$(INSTALL_ROOT)"
 	chown "$(USER):" "$(INSTALL_ROOT)" || true
 	mkdir -p "$(CODE_INSTALL_ROOT)"
