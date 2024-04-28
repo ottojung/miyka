@@ -1,0 +1,27 @@
+
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "master", "development" ]
+  pull_request:
+    branches: [ "master", "development" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-22.04]
+        scheme: [guile-3.0]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y ${{ matrix.scheme }} git
+    - name: Run build
+      run: cd root && make build
+    - name: Run test
+      run: cd root && CI=1 make test
