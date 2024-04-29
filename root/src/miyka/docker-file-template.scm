@@ -7,7 +7,7 @@ FROM debian
 
 RUN apt-get update
 
-
+CMD bash --login
 
 "
   )

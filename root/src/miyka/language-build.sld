@@ -10,14 +10,11 @@
   (import
     (only (miyka do-docker-build) do-docker-build))
   (import
+    (only (miyka dockerfile-image) dockerfile:image))
+  (import
     (only (miyka dockerfile-repository)
           dockerfile:repository))
-  (import
-    (only (scheme base)
-          begin
-          define
-          quasiquote
-          unquote))
+  (import (only (scheme base) begin define let))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

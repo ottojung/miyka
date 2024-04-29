@@ -12,10 +12,11 @@
     (make-directories build-context-dir))
 
   (define result
-    (run-syncproc "docker" "build"
-                  "--file" path
-                  "--tag" tag
-                  build-context-dir))
+    (system*/exit-code
+     "docker" "build"
+     "--file" path
+     "--tag" tag
+     build-context-dir))
 
   (unless (= 0 result)
     (raisu-fmt 'docker-build-failed

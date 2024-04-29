@@ -8,9 +8,8 @@
      '(only (scheme write) display)
      '(only (scheme base) begin define newline)
      '(rename (miyka language-build) (language:build build))
+     '(rename (miyka language-run) (language:run run))
      ))
 
   (parameterize ((current-repository/p repository))
-    (load path env))
-
-  (values))
+    (load path env)))

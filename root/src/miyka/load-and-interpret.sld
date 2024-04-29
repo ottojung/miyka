@@ -7,14 +7,14 @@
           current-repository/p))
   (import
     (only (miyka language-build) language:build))
+  (import (only (miyka language-run) language:run))
   (import
     (only (scheme base)
           begin
           define
           newline
           parameterize
-          quote
-          values))
+          quote))
   (import (only (scheme eval) environment))
   (import (only (scheme load) load))
   (import (only (scheme write) display write))
