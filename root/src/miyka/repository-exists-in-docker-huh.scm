@@ -5,6 +5,6 @@
 
 (define-provider p
   :targets (repository:exists-in-docker?)
-  :sources (repository:image)
+  :sources (dockerfile:image)
   (lambda (this)
-    (image:exists? (repository:image this))))
+    (image:exists? (dockerfile:image this))))

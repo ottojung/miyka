@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka repository-image)
-  (export repository:image)
+  (miyka dockerfile-image)
+  (export dockerfile:image)
   (import
     (only (euphrates properties)
           define-property
@@ -13,5 +13,5 @@
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
-             (include-from-path "miyka/repository-image.scm")))
-    (else (include "repository-image.scm"))))
+             (include-from-path "miyka/dockerfile-image.scm")))
+    (else (include "dockerfile-image.scm"))))

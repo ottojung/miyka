@@ -9,7 +9,7 @@
   (import
     (only (miyka image-exists-huh) image:exists?))
   (import
-    (only (miyka repository-image) repository:image))
+    (only (miyka dockerfile-image) dockerfile:image))
   (import (only (scheme base) begin lambda))
   (cond-expand
     (guile (import (only (guile) include-from-path))
