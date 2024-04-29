@@ -1,16 +1,14 @@
 
 (define-library
-  (miyka CLI-edit)
-  (export CLI:edit)
+  (miyka CLI-run)
+  (export CLI:run)
   (import (only (euphrates raisu-fmt) raisu-fmt))
-  (import
-    (only (euphrates run-syncproc) run-syncproc))
   (import
     (only (miyka configuration-path)
           configuration:path))
   (import
-    (only (miyka get-current-editor)
-          get-current-editor))
+    (only (miyka load-and-interpret)
+          load-and-interpret))
   (import
     (only (miyka repository-configuration)
           repository:configuration))
@@ -22,7 +20,6 @@
   (import (only (miyka touch-file) touch-file))
   (import
     (only (scheme base)
-          =
           begin
           define
           let
@@ -30,5 +27,5 @@
           unless))
   (cond-expand
     (guile (import (only (guile) include-from-path))
-           (begin (include-from-path "miyka/CLI-edit.scm")))
-    (else (include "CLI-edit.scm"))))
+           (begin (include-from-path "miyka/CLI-run.scm")))
+    (else (include "CLI-run.scm"))))

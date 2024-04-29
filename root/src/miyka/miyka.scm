@@ -9,6 +9,7 @@
     /      --version
     COMMAND : create <name>
     /         edit <name>
+    /         run <name>
     OPT : --root <root>
     )
 
@@ -32,18 +33,21 @@
       (edit
        (CLI:edit <name>))
 
+      (run
+       (CLI:run <name>))
+
       ))))
 
 (with-user-errors
  :types (list
-        'unknown-root
-        'repo-already-exists
-        'empty-repo-name
-        'docker-build-failed
-        'repository-does-not-exist
-        'editor-not-defined
-        'editor-failed
-        )
+         'unknown-root
+         'repo-already-exists
+         'empty-repo-name
+         'docker-build-failed
+         'repository-does-not-exist
+         'editor-not-defined
+         'editor-failed
+         )
 
  (with-properties
   :for-everything
