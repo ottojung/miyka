@@ -8,7 +8,8 @@ steps:
       - make build
       - CI=1 make test
     when:
-      branch: [master, development]
+      - event: push
+        branch: [master, development]
 
 matrix:
   SCHEME:
