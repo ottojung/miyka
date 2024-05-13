@@ -43,7 +43,6 @@
          'unknown-root
          'repo-already-exists
          'empty-repo-name
-         'docker-build-failed
          'repository-does-not-exist
          'editor-not-defined
          'editor-failed

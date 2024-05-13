@@ -5,10 +5,6 @@
 
   (when (repository:exists-on-disk? repository)
     (raisu-fmt 'repo-already-exists
-               "Repository named ~s already exists on disk." repository))
-
-  (when (repository:exists-in-docker? repository)
-    (raisu-fmt 'repo-already-exists
-               "Repository named ~s already exists in docker." repository))
+               "Repository named ~s already exists." repository))
 
   (values))

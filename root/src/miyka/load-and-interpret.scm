@@ -7,7 +7,6 @@
     (environment
      '(only (scheme write) display)
      '(only (scheme base) begin define newline)
-     '(rename (miyka language-build) (language:build build))
      '(rename (miyka language-start) (language:start start))
      '(rename (miyka language-install) (language:install install))
      ))

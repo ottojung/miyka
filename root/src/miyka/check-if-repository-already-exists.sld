@@ -4,9 +4,6 @@
   (export check-if-repository-already-exists)
   (import (only (euphrates raisu-fmt) raisu-fmt))
   (import
-    (only (miyka repository-exists-in-docker-huh)
-          repository:exists-in-docker?))
-  (import
     (only (miyka repository-exists-on-disk-huh)
           repository:exists-on-disk?))
   (import

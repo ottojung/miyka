@@ -9,8 +9,6 @@
   (import
     (only (miyka install-list-p) install-list/p))
   (import
-    (only (miyka language-build) language:build))
-  (import
     (only (miyka language-install) language:install))
   (import
     (only (miyka language-start) language:start))
