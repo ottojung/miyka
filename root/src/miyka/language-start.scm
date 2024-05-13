@@ -23,8 +23,6 @@
          (quote ,packages))
        port)))
 
-  (save-repository-context repository)
-
   (let ()
 
     (define result

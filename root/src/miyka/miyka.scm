@@ -46,6 +46,7 @@
          'repository-does-not-exist
          'editor-not-defined
          'editor-failed
+         'guix-describe-failed
          )
 
  (with-properties

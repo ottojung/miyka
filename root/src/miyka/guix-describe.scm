@@ -6,4 +6,7 @@
       output-file
     (lambda (port)
       (parameterize ((current-output-port port))
-        (run-syncproc "guix" "describe" "--format=channels")))))
+        (unless (= 0 (run-syncproc "guix" "describe" "--format=channels"))
+          (raisu-fmt
+           'guix-describe-failed
+           "Command guix describe failed. Cannot create a log because of this."))))))

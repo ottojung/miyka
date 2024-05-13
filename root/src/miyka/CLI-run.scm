@@ -14,4 +14,6 @@
     (define path
       (configuration:path config))
 
+    (save-repository-context repository)
+
     (load-and-interpret repository path)))
