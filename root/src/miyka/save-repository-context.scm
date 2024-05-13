@@ -12,21 +12,21 @@
     (date-get-current-string "~Y-~m-~dT~H-~M-~S-~N-~Z"))
   (define current-directory-path
     (append-posix-path log-directory-path date))
-  (define manifest
-    (repository:manifest repository))
-  (define manifest-path
-    (manifest:path manifest))
+  (define configuration
+    (repository:configuration repository))
+  (define configuration-path
+    (configuration:path configuration))
 
-  (define target-manifest-path
+  (define target-configuration-path
     (append-posix-path
      current-directory-path
-     (path-get-basename manifest)))
+     (path-get-basename configuration)))
 
   (define channels-path
     (append-posix-path current-directory-path "channels.scm"))
 
   (make-directories current-directory-path)
-  (file-copy manifest-path target-manifest-path)
+  (file-copy configuration-path target-configuration-path)
   (guix-describe channels-path)
 
   (values))

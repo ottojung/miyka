@@ -16,18 +16,19 @@
     (only (euphrates path-get-basename)
           path-get-basename))
   (import
+    (only (miyka configuration-path)
+          configuration:path))
+  (import
     (only (miyka guix-describe) guix-describe))
   (import
     (only (miyka log-directory-path)
           log-directory:path))
   (import
-    (only (miyka manifest-path) manifest:path))
+    (only (miyka repository-configuration)
+          repository:configuration))
   (import
     (only (miyka repository-log-directory)
           repository:log-directory))
-  (import
-    (only (miyka repository-manifest)
-          repository:manifest))
   (import
     (only (miyka repository-path) repository:path))
   (import (only (scheme base) begin define values))
