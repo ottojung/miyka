@@ -17,7 +17,6 @@
           repository:exists-on-disk?))
   (import
     (only (miyka repository-name) repository:name))
-  (import (only (miyka touch-file) touch-file))
   (import
     (only (scheme base)
           begin

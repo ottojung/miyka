@@ -11,11 +11,11 @@
     (define editor
       (get-current-editor))
 
-    (define config
+    (define configuration
       (repository:configuration repository))
 
     (define path
-      (configuration:path config))
+      (configuration:path configuration))
 
     (touch-file path)
 

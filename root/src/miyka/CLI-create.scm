@@ -5,6 +5,27 @@
 
   (check-if-repository-already-exists repository)
   (make-directories (repository:path repository))
-  (touch-file (repository:configuration repository))
+
+  (let ()
+    (define script
+      (repository:start-script repository))
+    (define path
+      (start-script:path script))
+
+    (call-with-output-file
+        path
+      (lambda (port)
+        (display start-script:template port))))
+
+  (let ()
+    (define configuration
+      (repository:configuration repository))
+    (define path
+      (configuration:path configuration))
+
+    (call-with-output-file
+        path
+      (lambda (port)
+        (display configuration:template port))))
 
   (values))

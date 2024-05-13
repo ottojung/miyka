@@ -3,9 +3,25 @@
 
 (define docker-file-template
   "
-FROM debian
+FROM debian:12
 
 RUN apt-get update
+
+RUN apt-get install -y guix
+
+RUN useradd --create-home miykauser
+
+USER miykauser
+
+WORKDIR /home/miykauser
+
+COPY channels.scm .local/share/miyka/channels.scm
+COPY manifest.scm .local/share/miyka/manifest.scm
+
+RUN guix time-machine \
+         --channels='.local/share/miyka/channels.scm' \
+         -- \
+         package --manifest='.local/share/miyka/manifest.scm'
 
 CMD bash --login
 
