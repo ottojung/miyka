@@ -22,6 +22,9 @@
   (import
     (only (miyka repository-path) repository:path))
   (import
+    (only (miyka save-repository-context)
+          save-repository-context))
+  (import
     (only (scheme base)
           begin
           define
