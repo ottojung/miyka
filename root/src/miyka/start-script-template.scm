@@ -10,5 +10,5 @@ export MIYKA_REPO_PATH=\"$2\"
 export HOME=\"$MIYKA_REPO_PATH/home\"
 mkdir -p -- \"$HOME\"
 cd -- \"$HOME\"
-test -f .config/miyka/init.sh && sh .config/miyka/init.sh
+sh .config/miyka/init.sh
 ")
