@@ -6,6 +6,8 @@ on:
     branches: [ "master", "development" ]
   pull_request:
     branches: [ "master", "development" ]
+  schedule:
+    - cron: '0 12 * * *'
 
 jobs:
   build:
@@ -21,10 +23,18 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y ${{ matrix.scheme }} git guix
+      run: sudo apt-get update && sudo apt-get install -y ${{ matrix.scheme }} git
+    - name: Conditional Guix installation
+      if: github.event_name == 'schedule'
+      run: sudo apt-get install -y guix
     - name: Run build
       run: cd root && make build
-    - name: Initialize guix
+    - name: Conditional Guix initialization
+      if: github.event_name == 'schedule'
       run: guix pull --verbosity=0
     - name: Run test
+      if: github.event_name != 'schedule'
+      run: cd root && CI=1 make test
+    - name: Conditional run test
+      if: github.event_name == 'schedule'
       run: cd root && export GUIX_PROFILE="$HOME/.config/guix/current" && . "$GUIX_PROFILE/etc/profile" && CI=1 make test
