@@ -7,10 +7,14 @@
     (environment
      '(only (scheme write) display)
      '(only (scheme base) begin define newline)
-     '(rename (miyka language-start) (language:start start))
      '(rename (miyka language-install) (language:install install))
      ))
 
+  (define result
+    (make-interpretation))
+
   (parameterize ((current-repository/p repository)
-                 (install-list/p (stack-make)))
-    (load path env)))
+                 (interpretation/p result))
+    (load path env))
+
+  result)

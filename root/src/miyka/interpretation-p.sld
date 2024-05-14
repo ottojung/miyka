@@ -1,11 +1,11 @@
 
 (define-library
-  (miyka install-list-p)
-  (export install-list/p)
+  (miyka interpretation-p)
+  (export interpretation/p)
   (import
     (only (scheme base) begin define make-parameter))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
-             (include-from-path "miyka/install-list-p.scm")))
-    (else (include "install-list-p.scm"))))
+             (include-from-path "miyka/interpretation-p.scm")))
+    (else (include "interpretation-p.scm"))))

@@ -16,4 +16,7 @@
 
     (save-repository-context repository)
 
-    (load-and-interpret repository path)))
+    (interpretation:run!
+     repository
+     (load-and-interpret
+      repository path))))

@@ -4,7 +4,10 @@
   (export language:install)
   (import (only (euphrates stack) stack-push!))
   (import
-    (only (miyka install-list-p) install-list/p))
+    (only (miyka interpretation-p) interpretation/p))
+  (import
+    (only (miyka interpretation)
+          interpretation:installstack))
   (import (only (scheme base) begin define))
   (cond-expand
     (guile (import (only (guile) include-from-path))

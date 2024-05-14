@@ -1,16 +1,13 @@
 
 (define-library
-  (miyka language-start)
-  (export language:start)
-  (import (only (euphrates stack) stack->list))
+  (miyka interpretation-run-bang)
+  (export interpretation:run!)
   (import
     (only (euphrates system-star-exit-code)
           system*/exit-code))
   (import
-    (only (miyka current-repository-p)
-          current-repository/p))
-  (import
-    (only (miyka install-list-p) install-list/p))
+    (only (miyka interpretation-installist)
+          interpretation:installist))
   (import
     (only (miyka manifest-path) manifest:path))
   (import
@@ -32,7 +29,6 @@
           let
           quasiquote
           quote
-          reverse
           string-append
           unquote
           values))
@@ -42,5 +38,6 @@
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
-             (include-from-path "miyka/language-start.scm")))
-    (else (include "language-start.scm"))))
+             (include-from-path
+               "miyka/interpretation-run-bang.scm")))
+    (else (include "interpretation-run-bang.scm"))))

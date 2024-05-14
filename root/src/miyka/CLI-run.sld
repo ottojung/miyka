@@ -7,6 +7,9 @@
     (only (miyka configuration-path)
           configuration:path))
   (import
+    (only (miyka interpretation-run-bang)
+          interpretation:run!))
+  (import
     (only (miyka load-and-interpret)
           load-and-interpret))
   (import

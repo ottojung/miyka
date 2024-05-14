@@ -2,16 +2,15 @@
 (define-library
   (miyka load-and-interpret)
   (export load-and-interpret)
-  (import (only (euphrates stack) stack-make))
   (import
     (only (miyka current-repository-p)
           current-repository/p))
   (import
-    (only (miyka install-list-p) install-list/p))
+    (only (miyka interpretation-p) interpretation/p))
+  (import
+    (only (miyka interpretation) make-interpretation))
   (import
     (only (miyka language-install) language:install))
-  (import
-    (only (miyka language-start) language:start))
   (import
     (only (scheme base)
           begin
