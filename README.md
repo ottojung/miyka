@@ -1,7 +1,7 @@
 
 Miyka is a manager for your workspaces.
 
-It packages them as standalone docker images that are easy to move around.
+It packages them as standalone packages that are easy to reproduce and to move around.
 
 # License
 
