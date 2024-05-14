@@ -23,14 +23,9 @@
          (quote ,packages))
        port)))
 
-  (let ()
-
-    (define result
-      (system*/exit-code
-       "guix" "shell"
-       "--pure"
-       (string-append "--manifest=" manifest-path)
-       "--" "/bin/sh" "-i" "--" script-path repository repo-path
-       ))
-
-    (values)))
+  (system*/exit-code
+   "guix" "shell"
+   "--pure"
+   (string-append "--manifest=" manifest-path)
+   "--" "/bin/sh" "-i" "--" script-path repository repo-path
+   ))

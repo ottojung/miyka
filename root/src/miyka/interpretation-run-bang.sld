@@ -26,12 +26,10 @@
           begin
           define
           lambda
-          let
           quasiquote
           quote
           string-append
-          unquote
-          values))
+          unquote))
   (import
     (only (scheme file) call-with-output-file))
   (import (only (scheme write) write))
