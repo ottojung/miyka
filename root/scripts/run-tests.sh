@@ -2,30 +2,7 @@
 
 set -e
 
-ALLFILES=$(ls tests/* || true)
-
-for FILE in $ALLFILES
-do
-	case "$FILE" in
-		*.sld) ;;
-		*.sh) ;;
-		*) continue ;;
-	esac
-
-	case "$FILE" in
-		tests/test-*) ;;
-		tests/citest-*)
-			case "$CI" in
-				1) ;;
-				*) continue ;;
-			esac
-			;;
-		*) continue ;;
-	esac
-
-	FILES="$FILES $FILE"
-done
-
+FILES=$(sh scripts/get-tests-list.sh)
 TESTCOUNT=$(echo "$FILES" | wc -w)
 INDEX=0
 FAILED=0
