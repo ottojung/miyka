@@ -6,6 +6,9 @@
     (only (euphrates make-directories)
           make-directories))
   (import
+    (only (euphrates path-get-dirname)
+          path-get-dirname))
+  (import
     (only (miyka check-if-repository-already-exists)
           check-if-repository-already-exists))
   (import
@@ -15,8 +18,16 @@
     (only (miyka configuration-template)
           configuration:template))
   (import
+    (only (miyka init-script-path) init-script:path))
+  (import
+    (only (miyka init-script-template)
+          init-script:template))
+  (import
     (only (miyka repository-configuration)
           repository:configuration))
+  (import
+    (only (miyka repository-init-script)
+          repository:init-script))
   (import
     (only (miyka repository-path) repository:path))
   (import

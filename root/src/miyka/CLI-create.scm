@@ -18,6 +18,20 @@
         (display start-script:template port))))
 
   (let ()
+    (define script
+      (repository:init-script repository))
+    (define path
+      (init-script:path script))
+    (define dirpath
+      (path-get-dirname path))
+
+    (make-directories dirpath)
+    (call-with-output-file
+        path
+      (lambda (port)
+        (display init-script:template port))))
+
+  (let ()
     (define configuration
       (repository:configuration repository))
     (define path
