@@ -3,7 +3,7 @@ steps:
   build:
     image: alpine
     commands:
-      - apk add --no-cache $SCHEME make git guix
+      - apk add --no-cache $SCHEME make git
       - cd root
       - make build
       - CI=1 make test
