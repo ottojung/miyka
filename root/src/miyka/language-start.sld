@@ -2,9 +2,6 @@
 (define-library
   (miyka language-start)
   (export language:start)
-  (import
-    (only (euphrates append-posix-path)
-          append-posix-path))
   (import (only (euphrates stack) stack->list))
   (import
     (only (euphrates system-star-exit-code)
@@ -21,6 +18,12 @@
           repository:manifest))
   (import
     (only (miyka repository-path) repository:path))
+  (import
+    (only (miyka repository-start-script)
+          repository:start-script))
+  (import
+    (only (miyka start-script-path)
+          start-script:path))
   (import
     (only (scheme base)
           begin

@@ -11,7 +11,9 @@
   (define manifest-path
     (manifest:path manifest))
   (define script
-    (append-posix-path repo-path "start.sh"))
+    (repository:start-script repository))
+  (define script-path
+    (start-script:path script))
   (define packages
     (reverse (stack->list (install-list/p))))
 
@@ -30,7 +32,7 @@
        "guix" "shell"
        "--pure"
        (string-append "--manifest=" manifest-path)
-       "--" "/bin/sh" "-i" "--" script repository repo-path
+       "--" "/bin/sh" "-i" "--" script-path repository repo-path
        ))
 
     (values)))
