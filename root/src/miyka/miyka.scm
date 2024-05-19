@@ -47,6 +47,8 @@
          'editor-not-defined
          'editor-failed
          'guix-describe-failed
+         'snapshot-command-failed
+         'snapshot-init-command-failed
          )
 
  (with-properties

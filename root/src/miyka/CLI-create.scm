@@ -7,6 +7,22 @@
   (make-directories (repository:path repository))
 
   (let ()
+    (define log-directory
+      (repository:log-directory repository))
+    (define log-directory-path
+      (log-directory:path log-directory))
+
+    (unless (= 0 (system*/exit-code
+                  "restic"
+                  "init"
+                  "--quiet"
+                  "--repo" log-directory-path
+                  "--password-command" "echo 1234"))
+      (raisu-fmt
+       'snapshot-init-command-failed
+       "Command restic init failed. Cannot create a log because of this.")))
+
+  (let ()
     (define wd (repository:work-directory repository))
     (define wd-path (work-directory:path wd))
     (make-directories wd-path))
