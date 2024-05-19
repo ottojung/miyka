@@ -10,6 +10,7 @@
     COMMAND : create <name>
     /         edit <name>
     /         run <name>
+    /         list
     OPT : --root <root>
     )
 
@@ -35,6 +36,9 @@
 
       (run
        (CLI:run <name>))
+
+      (list
+       (CLI:list))
 
       ))))
 

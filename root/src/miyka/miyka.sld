@@ -16,6 +16,7 @@
           with-user-errors))
   (import (only (miyka CLI-create) CLI:create))
   (import (only (miyka CLI-edit) CLI:edit))
+  (import (only (miyka CLI-list) CLI:list))
   (import (only (miyka CLI-run) CLI:run))
   (import (only (miyka get-root) get-root/default))
   (import (only (miyka root-p) root/p))
