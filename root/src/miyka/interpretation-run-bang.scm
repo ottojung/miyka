@@ -27,5 +27,5 @@
    "guix" "shell"
    "--pure"
    (string-append "--manifest=" manifest-path)
-   "--" "/bin/sh" "-l" "-i" "--" script-path repository repo-path
+   "--" "sh" "-l" "-i" "--" script-path repository repo-path
    ))
