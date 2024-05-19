@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka repository-start-script)
-  (export repository:start-script)
+  (miyka repository-home)
+  (export repository:home)
   (import
     (only (euphrates append-posix-path)
           append-posix-path))
@@ -9,8 +9,6 @@
     (only (euphrates properties)
           define-property
           define-provider))
-  (import
-    (only (miyka repository-path) repository:path))
   (import
     (only (miyka repository-work-directory)
           repository:work-directory))
@@ -21,6 +19,5 @@
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
-             (include-from-path
-               "miyka/repository-start-script.scm")))
-    (else (include "repository-start-script.scm"))))
+             (include-from-path "miyka/repository-home.scm")))
+    (else (include "repository-home.scm"))))

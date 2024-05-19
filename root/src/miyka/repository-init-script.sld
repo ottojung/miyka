@@ -9,6 +9,9 @@
     (only (euphrates properties)
           define-property
           define-provider))
+  (import (only (miyka home-path) home:path))
+  (import
+    (only (miyka repository-home) repository:home))
   (import
     (only (miyka repository-path) repository:path))
   (import (only (scheme base) begin define lambda))

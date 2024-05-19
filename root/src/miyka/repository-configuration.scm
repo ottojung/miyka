@@ -7,5 +7,6 @@
   :targets (repository:configuration)
   :sources (repository:path)
   (lambda (this)
-    (define repo-path (repository:path this))
-    (append-posix-path repo-path "configuration.lisp")))
+    (define wd (repository:work-directory this))
+    (define wd-path (work-directory:path wd))
+    (append-posix-path wd-path "configuration.lisp")))

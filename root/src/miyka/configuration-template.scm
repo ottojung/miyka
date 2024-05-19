@@ -3,6 +3,6 @@
 
 (define configuration:template
   "
-(install \"dash\")
 (install \"coreutils\")
+(install \"dash\")
 ")

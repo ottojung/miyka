@@ -7,6 +7,11 @@
   (make-directories (repository:path repository))
 
   (let ()
+    (define wd (repository:work-directory repository))
+    (define wd-path (work-directory:path wd))
+    (make-directories wd-path))
+
+  (let ()
     (define script
       (repository:start-script repository))
     (define path

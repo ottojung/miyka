@@ -7,10 +7,10 @@
   :targets (repository:init-script)
   :sources (repository:path)
   (lambda (this)
-    (define repo-path (repository:path this))
+    (define home (repository:home this))
+    (define home-path (home:path home))
     (append-posix-path
-     repo-path
-     "home"
+     home
      ".config"
      "miyka"
      "init.sh"
