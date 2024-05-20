@@ -3,6 +3,7 @@
 
 (define configuration:template
   "
+(snapshot)
 (install \"coreutils\")
 (install \"dash\")
 ")

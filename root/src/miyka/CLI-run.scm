@@ -14,8 +14,6 @@
     (define path
       (configuration:path config))
 
-    (save-repository-context repository)
-
     (exit
      (interpretation:run!
       repository

@@ -12,6 +12,9 @@
   (import
     (only (miyka language-install) language:install))
   (import
+    (only (miyka language-snapshot)
+          language:snapshot))
+  (import
     (only (scheme base)
           begin
           define
