@@ -10,6 +10,7 @@ export PATH
 export SHELL=dash
 export HOME=\"$MIYKA_REPO_PATH/wd/home\"
 cd -- \"$HOME\"
+set +e
 test -f \"$HOME/.profile\" && . \"$HOME/.profile\"
 ~a
 ")

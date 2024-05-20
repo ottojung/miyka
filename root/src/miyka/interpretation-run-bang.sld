@@ -6,11 +6,21 @@
   (import
     (only (euphrates lines-to-string) lines->string))
   (import (only (euphrates raisu-star) raisu*))
-  (import (only (euphrates stack) stack->list))
+  (import
+    (only (euphrates stack)
+          stack->list
+          stack-empty?
+          stack-make
+          stack-push!))
   (import (only (euphrates stringf) stringf))
   (import
     (only (euphrates system-star-exit-code)
           system*/exit-code))
+  (import
+    (only (miyka async-script-path)
+          async-script:path))
+  (import
+    (only (miyka command-detach) command:detach?))
   (import
     (only (miyka command-shell)
           command:shell:path
@@ -23,6 +33,9 @@
           interpretation:commands))
   (import
     (only (miyka manifest-path) manifest:path))
+  (import
+    (only (miyka repository-async-script)
+          repository:async-script))
   (import
     (only (miyka repository-manifest)
           repository:manifest))
@@ -43,12 +56,16 @@
           cond
           define
           else
+          for-each
           lambda
+          let
           list
-          map
           quasiquote
           quote
+          reverse
+          set!
           string-append
+          unless
           unquote))
   (import
     (only (scheme file) call-with-output-file))

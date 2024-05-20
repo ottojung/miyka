@@ -16,27 +16,64 @@
     (interpretation:installist interpretation))
 
   (define commands
-    (stack->list
-     (interpretation:commands interpretation)))
+    (reverse
+     (stack->list
+      (interpretation:commands interpretation))))
 
-  (define footer
-    (lines->string
-     (map
-      (lambda (command)
-        (cond
-         ((command:shell? command)
-          (stringf "dash -i ~s" (command:shell:path command)))
+  (define sync-footer
+    (stack-make))
 
-         (else
-          (raisu* :from "interpretation:run!"
-                  :type 'unknown-command
-                  :message (stringf "Uknown command ~s." command)
-                  :args (list command)))))
-      commands)))
+  (define async-footer
+    (stack-make))
+
+  (define current-footer
+    sync-footer)
+
+  (for-each
+   (lambda (command)
+     (cond
+      ((command:detach? command)
+       (set! current-footer async-footer))
+
+      ((command:shell? command)
+       (stack-push!
+        current-footer
+        (stringf "dash -i -- ~s" (command:shell:path command))))
+
+      (else
+       (raisu* :from "interpretation:run!"
+               :type 'unknown-command
+               :message (stringf "Uknown command ~s." command)
+               :args (list command)))))
+   commands)
+
+  (unless (stack-empty? async-footer)
+    (let ()
+      (define async-script
+        (repository:async-script repository))
+      (define path
+        (async-script:path async-script))
+
+      (stack-push!
+       sync-footer
+       (stringf "{ dash -- ~s & } &" path))
+
+      (call-with-output-file
+          path
+        (lambda (port)
+          (define footer
+            (lines->string
+             (reverse
+              (stack->list async-footer))))
+          (fprintf port footer)))))
 
   (call-with-output-file
       script-path
     (lambda (port)
+      (define footer
+        (lines->string
+         (reverse
+          (stack->list sync-footer))))
       (fprintf port start-script:template footer)))
 
   (call-with-output-file
