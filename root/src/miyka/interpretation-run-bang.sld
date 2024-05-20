@@ -2,6 +2,7 @@
 (define-library
   (miyka interpretation-run-bang)
   (export interpretation:run!)
+  (import (only (euphrates box) box-ref))
   (import (only (euphrates fprintf) fprintf))
   (import
     (only (euphrates lines-to-string) lines->string))
@@ -30,7 +31,8 @@
           interpretation:installist))
   (import
     (only (miyka interpretation)
-          interpretation:commands))
+          interpretation:commands
+          interpretation:home-moved?))
   (import
     (only (miyka manifest-path) manifest:path))
   (import
@@ -57,6 +59,7 @@
           define
           else
           for-each
+          if
           lambda
           let
           list

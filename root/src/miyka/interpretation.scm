@@ -5,18 +5,22 @@
   (interpretation-constructor
    installstack
    commands   ;; sequential intstructions run after install step.
+   home-moved?
    )
   interpretation?
 
   (installstack interpretation:installstack)
   (commands interpretation:commands)
+  (home-moved? interpretation:home-moved?)
   )
 
 
 (define (make-interpretation)
   (define installist (stack-make))
   (define commands (stack-make))
+  (define home-moved? (make-box #f))
   (interpretation-constructor
    installist
    commands
+   home-moved?
    ))

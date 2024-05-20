@@ -20,6 +20,10 @@
      (stack->list
       (interpretation:commands interpretation))))
 
+  (define home-moved?
+    (box-ref
+     (interpretation:home-moved? interpretation)))
+
   (define sync-footer
     (stack-make))
 
@@ -74,7 +78,15 @@
         (lines->string
          (reverse
           (stack->list sync-footer))))
-      (fprintf port start-script:template footer)))
+      (define home-line
+        (if home-moved?
+            "export HOME=\"$MIYKA_REPO_PATH/wd/home\""
+            ""))
+      (fprintf
+       port
+       start-script:template
+       home-line
+       footer)))
 
   (call-with-output-file
       manifest-path

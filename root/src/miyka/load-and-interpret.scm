@@ -11,6 +11,7 @@
      '(rename (miyka language-snapshot) (language:snapshot snapshot))
      '(rename (miyka language-shell) (language:shell shell))
      '(rename (miyka language-detach) (language:detach detach))
+     '(rename (miyka language-move-home) (language:move-home move-home))
      ))
 
   (define result

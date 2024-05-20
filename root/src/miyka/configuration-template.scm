@@ -6,6 +6,7 @@
 (snapshot)
 (install \"coreutils\")
 (install \"dash\")
+(move-home)
 ;; (detach)
 (shell \".config/miyka/init.sh\")
 ")

@@ -5,7 +5,9 @@
     make-interpretation
     interpretation?
     interpretation:installstack
-    interpretation:commands)
+    interpretation:commands
+    interpretation:home-moved?)
+  (import (only (euphrates box) make-box))
   (import
     (only (euphrates define-type9) define-type9))
   (import (only (euphrates stack) stack-make))
