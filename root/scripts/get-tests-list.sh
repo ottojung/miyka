@@ -5,6 +5,7 @@ CI_TESTS="
 
 GUIX_TESTS="
 tests/test-simple-run.sh
+tests/test-run-reads-profile.sh
 "
 
 if command -v guix 1>/dev/null 2>/dev/null
