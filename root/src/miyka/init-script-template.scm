@@ -4,5 +4,5 @@
 (define init-script:template "#! /bin/sh
 MIYKA_REPO_NAME=\"$1\"
 MIYKA_REPO_PATH=\"$2\"
-sh -i
+$SHELL -i
 ")

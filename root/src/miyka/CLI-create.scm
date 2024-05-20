@@ -28,6 +28,11 @@
     (make-directories wd-path))
 
   (let ()
+    (define home (repository:home repository))
+    (define home-path (home:path home))
+    (make-directories home-path))
+
+  (let ()
     (define script
       (repository:start-script repository))
     (define path

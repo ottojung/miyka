@@ -8,7 +8,6 @@ MIYKA_REPO_NAME=\"$1\"
 MIYKA_REPO_PATH=\"$2\"
 export PATH
 export HOME=\"$MIYKA_REPO_PATH/wd/home\"
-mkdir -p -- \"$HOME\"
 cd -- \"$HOME\"
-sh .config/miyka/init.sh \"$@\"
+/bin/sh -i .config/miyka/init.sh \"$@\"
 ")

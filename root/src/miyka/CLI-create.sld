@@ -21,6 +21,7 @@
   (import
     (only (miyka configuration-template)
           configuration:template))
+  (import (only (miyka home-path) home:path))
   (import
     (only (miyka init-script-path) init-script:path))
   (import
@@ -32,6 +33,8 @@
   (import
     (only (miyka repository-configuration)
           repository:configuration))
+  (import
+    (only (miyka repository-home) repository:home))
   (import
     (only (miyka repository-init-script)
           repository:init-script))
