@@ -4,8 +4,6 @@
 
 t_miyka create test-project
 
-mkdir -p "$MIYKA_ROOT/repositories/test-project/wd/home/.config/miyka"
-
 echo "echo hello from miyka project" \
      > "$MIYKA_ROOT/repositories/test-project/wd/home/.config/miyka/init.sh"
 
