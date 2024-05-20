@@ -2,7 +2,7 @@
 (define-library
   (miyka check-repo-name)
   (export check-repo-name)
-  (import (only (euphrates raisu) raisu))
+  (import (only (euphrates raisu-fmt) raisu-fmt))
   (import
     (only (scheme base)
           =

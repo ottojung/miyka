@@ -15,6 +15,30 @@
   (define packages
     (interpretation:installist interpretation))
 
+  (define commands
+    (stack->list
+     (interpretation:commands interpretation)))
+
+  (define footer
+    (lines->string
+     (map
+      (lambda (command)
+        (cond
+         ((command:shell? command)
+          (stringf "dash -i ~s" (command:shell:path command)))
+
+         (else
+          (raisu* :from "interpretation:run!"
+                  :type 'unknown-command
+                  :message (stringf "Uknown command ~s." command)
+                  :args (list command)))))
+      commands)))
+
+  (call-with-output-file
+      script-path
+    (lambda (port)
+      (fprintf port start-script:template footer)))
+
   (call-with-output-file
       manifest-path
     (lambda (port)
@@ -27,5 +51,5 @@
    "guix" "shell"
    "--pure"
    (string-append "--manifest=" manifest-path)
-   "--" "dash" "-i" "--" script-path repository repo-path
+   "--" "dash" "--" script-path repository repo-path
    ))

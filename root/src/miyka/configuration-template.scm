@@ -6,4 +6,5 @@
 (snapshot)
 (install \"coreutils\")
 (install \"dash\")
+(shell \".config/miyka/init.sh\")
 ")

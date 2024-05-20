@@ -10,5 +10,6 @@ export PATH
 export SHELL=dash
 export HOME=\"$MIYKA_REPO_PATH/wd/home\"
 cd -- \"$HOME\"
-$SHELL -i .config/miyka/init.sh \"$@\"
+test -f \"$HOME/.profile\" && . \"$HOME/.profile\"
+~a
 ")

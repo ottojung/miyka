@@ -34,17 +34,6 @@
 
   (let ()
     (define script
-      (repository:start-script repository))
-    (define path
-      (start-script:path script))
-
-    (call-with-output-file
-        path
-      (lambda (port)
-        (display start-script:template port))))
-
-  (let ()
-    (define script
       (repository:init-script repository))
     (define path
       (init-script:path script))

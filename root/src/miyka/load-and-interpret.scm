@@ -9,6 +9,7 @@
      '(only (scheme base) begin define newline)
      '(rename (miyka language-install) (language:install install))
      '(rename (miyka language-snapshot) (language:snapshot snapshot))
+     '(rename (miyka language-shell) (language:shell shell))
      ))
 
   (define result

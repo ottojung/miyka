@@ -12,6 +12,8 @@
   (import
     (only (miyka language-install) language:install))
   (import
+    (only (miyka language-shell) language:shell))
+  (import
     (only (miyka language-snapshot)
           language:snapshot))
   (import

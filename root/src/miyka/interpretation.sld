@@ -4,7 +4,8 @@
   (export
     make-interpretation
     interpretation?
-    interpretation:installstack)
+    interpretation:installstack
+    interpretation:commands)
   (import
     (only (euphrates define-type9) define-type9))
   (import (only (euphrates stack) stack-make))

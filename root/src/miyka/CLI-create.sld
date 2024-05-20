@@ -44,17 +44,8 @@
   (import
     (only (miyka repository-path) repository:path))
   (import
-    (only (miyka repository-start-script)
-          repository:start-script))
-  (import
     (only (miyka repository-work-directory)
           repository:work-directory))
-  (import
-    (only (miyka start-script-path)
-          start-script:path))
-  (import
-    (only (miyka start-script-template)
-          start-script:template))
   (import
     (only (miyka work-directory-path)
           work-directory:path))

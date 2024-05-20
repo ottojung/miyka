@@ -4,8 +4,8 @@
 (define (check-repo-name name)
 
   (when (= 0 (string-length name))
-    (raisu 'empty-repo-name
-           "Repository name must not be empty."))
+    (raisu-fmt 'empty-repo-name
+               "Repository name must not be empty."))
 
   'TODO:more-checks
 
