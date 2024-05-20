@@ -3,6 +3,7 @@
 
 (define configuration:template
   "
+(cleanup \".config/miyka/cleanup.sh\")
 (snapshot)
 (install \"coreutils\")
 (install \"dash\")

@@ -31,6 +31,7 @@
           interpretation:installist))
   (import
     (only (miyka interpretation)
+          interpretation:cleanup
           interpretation:commands
           interpretation:home-moved?))
   (import
@@ -63,16 +64,18 @@
           lambda
           let
           list
+          not
           quasiquote
           quote
           reverse
           set!
           string-append
           unless
-          unquote))
+          unquote
+          when))
   (import
     (only (scheme file) call-with-output-file))
-  (import (only (scheme write) write))
+  (import (only (scheme write) display write))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

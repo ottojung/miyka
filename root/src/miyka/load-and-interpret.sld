@@ -10,6 +10,8 @@
   (import
     (only (miyka interpretation) make-interpretation))
   (import
+    (only (miyka language-cleanup) language:cleanup))
+  (import
     (only (miyka language-detach) language:detach))
   (import
     (only (miyka language-install) language:install))

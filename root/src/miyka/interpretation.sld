@@ -6,7 +6,8 @@
     interpretation?
     interpretation:installstack
     interpretation:commands
-    interpretation:home-moved?)
+    interpretation:home-moved?
+    interpretation:cleanup)
   (import (only (euphrates box) make-box))
   (import
     (only (euphrates define-type9) define-type9))

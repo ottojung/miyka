@@ -20,6 +20,9 @@
      (stack->list
       (interpretation:commands interpretation))))
 
+  (define cleanup
+    (box-ref (interpretation:cleanup interpretation)))
+
   (define home-moved?
     (box-ref
      (interpretation:home-moved? interpretation)))
@@ -51,6 +54,23 @@
                :args (list command)))))
    commands)
 
+  (when cleanup
+    (let ()
+      (define cleanup-footer
+        (cond
+         ((not (stack-empty? current-footer))
+          current-footer)
+         ((not (stack-empty? sync-footer))
+          sync-footer)
+         (else
+          current-footer)))
+
+      (stack-push!
+       cleanup-footer
+       (stringf "RETURN_CODE=$?
+test -f ~s && dash -- ~s
+exit $RETURN_CODE" cleanup cleanup))))
+
   (unless (stack-empty? async-footer)
     (let ()
       (define async-script
@@ -69,7 +89,7 @@
             (lines->string
              (reverse
               (stack->list async-footer))))
-          (fprintf port footer)))))
+          (display footer port)))))
 
   (call-with-output-file
       script-path
