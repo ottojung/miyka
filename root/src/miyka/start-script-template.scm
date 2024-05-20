@@ -7,7 +7,8 @@ set -e
 MIYKA_REPO_NAME=\"$1\"
 MIYKA_REPO_PATH=\"$2\"
 export PATH
+export SHELL=dash
 export HOME=\"$MIYKA_REPO_PATH/wd/home\"
 cd -- \"$HOME\"
-/bin/sh -i .config/miyka/init.sh \"$@\"
+$SHELL -i .config/miyka/init.sh \"$@\"
 ")
