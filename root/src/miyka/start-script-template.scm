@@ -9,8 +9,8 @@ export MIYKA_REPO_PATH=\"$2\"
 export MIYKA_ORIG_HOME=\"$HOME\"
 export SHELL=dash
 ~a
-export PATH=\"$HOME/.local/bin:$PATH\"
-cd -- \"$HOME\"
+export PATH=\"$MIYKA_REPO_PATH/wd/home/.local/bin:$PATH\"
+cd -- \"$MIYKA_REPO_PATH/wd/home\"
 set +e
 test -f \"$HOME/.profile\" && . \"$HOME/.profile\"
 ~a
