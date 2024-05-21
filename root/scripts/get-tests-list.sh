@@ -8,6 +8,7 @@ tests/test-simple-run.sh
 tests/test-run-reads-profile.sh
 tests/test-copy-then-run.sh
 tests/test-remove.sh
+tests/test-cleanup.sh
 "
 
 if command -v guix 1>/dev/null 2>/dev/null

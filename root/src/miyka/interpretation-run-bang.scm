@@ -131,11 +131,11 @@ exit $RETURN_CODE" cleanup cleanup))))
        port)))
 
   (when cleanup
-    (when (file-or-directory-exists? cleanup)
-      (make-start-script
-       wrapper-path
-       (stringf "/bin/sh -- ~s" cleanup))
-      (system*/exit-code "/bin/sh" "--" wrapper-path)))
+    (make-start-script
+     wrapper-path
+     (stringf "test -f ~s && /bin/sh -- ~s"
+              cleanup cleanup))
+    (system*/exit-code "/bin/sh" "--" wrapper-path repository repo-path))
 
   (when snapshot?
     (save-repository-context repository))

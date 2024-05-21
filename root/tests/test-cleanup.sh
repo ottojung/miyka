@@ -5,7 +5,7 @@
 t_miyka create test-project
 
 echo "echo hello from miyka project" \
-     > "$MIYKA_ROOT/repositories/test-project/wd/home/.profile"
+     > "$MIYKA_ROOT/repositories/test-project/wd/home/.config/miyka/cleanup.sh"
 
 RESULT=$(echo | t_miyka run test-project)
 
