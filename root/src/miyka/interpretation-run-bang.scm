@@ -120,6 +120,10 @@ exit $RETURN_CODE" cleanup cleanup))))
          (quote ,packages))
        port)))
 
+  (when cleanup
+    (when (file-or-directory-exists? cleanup)
+      (system*/exit-code "/bin/sh" "--" cleanup)))
+
   (when snapshot?
     (save-repository-context repository))
 

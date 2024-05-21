@@ -3,6 +3,9 @@
   (miyka interpretation-run-bang)
   (export interpretation:run!)
   (import (only (euphrates box) box-ref))
+  (import
+    (only (euphrates file-or-directory-exists-q)
+          file-or-directory-exists?))
   (import (only (euphrates fprintf) fprintf))
   (import
     (only (euphrates lines-to-string) lines->string))
