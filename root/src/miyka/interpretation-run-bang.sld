@@ -24,6 +24,9 @@
     (only (miyka async-script-path)
           async-script:path))
   (import
+    (only (miyka cleanup-wrapper-path)
+          cleanup-wrapper:path))
+  (import
     (only (miyka command-detach) command:detach?))
   (import
     (only (miyka command-shell)
@@ -43,6 +46,9 @@
   (import
     (only (miyka repository-async-script)
           repository:async-script))
+  (import
+    (only (miyka repository-cleanup-wrapper)
+          repository:cleanup-wrapper))
   (import
     (only (miyka repository-manifest)
           repository:manifest))

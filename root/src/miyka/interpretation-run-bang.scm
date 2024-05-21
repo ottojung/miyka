@@ -12,6 +12,10 @@
     (repository:start-script repository))
   (define script-path
     (start-script:path script))
+  (define wrapper
+    (repository:cleanup-wrapper repository))
+  (define wrapper-path
+    (cleanup-wrapper:path wrapper))
   (define packages
     (interpretation:installist interpretation))
 
@@ -19,6 +23,20 @@
     (reverse
      (stack->list
       (interpretation:commands interpretation))))
+
+  (define (make-start-script script-path footer)
+    (call-with-output-file
+        script-path
+      (lambda (port)
+        (define home-line
+          (if home-moved?
+              "export HOME=\"$MIYKA_REPO_PATH/wd/home\""
+              ""))
+        (fprintf
+         port
+         start-script:template
+         home-line
+         footer))))
 
   (define cleanup
     (box-ref (interpretation:cleanup interpretation)))
@@ -95,22 +113,14 @@ exit $RETURN_CODE" cleanup cleanup))))
               (stack->list async-footer))))
           (display footer port)))))
 
-  (call-with-output-file
-      script-path
-    (lambda (port)
-      (define footer
-        (lines->string
-         (reverse
-          (stack->list sync-footer))))
-      (define home-line
-        (if home-moved?
-            "export HOME=\"$MIYKA_REPO_PATH/wd/home\""
-            ""))
-      (fprintf
-       port
-       start-script:template
-       home-line
-       footer)))
+  (let ()
+    (define footer
+      (lines->string
+       (reverse
+        (stack->list sync-footer))))
+
+    (make-start-script
+     script-path footer))
 
   (call-with-output-file
       manifest-path
@@ -122,7 +132,10 @@ exit $RETURN_CODE" cleanup cleanup))))
 
   (when cleanup
     (when (file-or-directory-exists? cleanup)
-      (system*/exit-code "/bin/sh" "--" cleanup)))
+      (make-start-script
+       wrapper-path
+       (stringf "/bin/sh -- ~s" cleanup))
+      (system*/exit-code "/bin/sh" "--" wrapper-path)))
 
   (when snapshot?
     (save-repository-context repository))
