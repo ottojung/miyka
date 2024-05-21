@@ -5,7 +5,7 @@
 
 (define-provider p
   :targets (repository:home)
-  :sources (repository:state-directory)
+  :sources (repository:work-directory)
   (lambda (this)
     (define wd (repository:work-directory this))
     (define wd-path (work-directory:path wd))

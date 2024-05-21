@@ -9,14 +9,11 @@
     (only (euphrates properties)
           define-property
           define-provider))
+  (import (only (miyka home-path) home:path))
+  (import
+    (only (miyka repository-home) repository:home))
   (import
     (only (miyka repository-path) repository:path))
-  (import
-    (only (miyka repository-work-directory)
-          repository:work-directory))
-  (import
-    (only (miyka work-directory-path)
-          work-directory:path))
   (import (only (scheme base) begin define lambda))
   (cond-expand
     (guile (import (only (guile) include-from-path))

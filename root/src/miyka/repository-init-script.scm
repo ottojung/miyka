@@ -7,11 +7,6 @@
   :targets (repository:init-script)
   :sources (repository:path)
   (lambda (this)
-    (define home (repository:home this))
-    (define home-path (home:path home))
-    (append-posix-path
-     home
-     ".config"
-     "miyka"
-     "init.sh"
-     )))
+    (define state (repository:state-directory this))
+    (define state-path (state-directory:path state))
+    (append-posix-path state-path "init.sh")))
