@@ -10,6 +10,8 @@ export MIYKA_ORIG_HOME=\"$HOME\"
 export SHELL=dash
 ~a
 export PATH=\"$MIYKA_REPO_PATH/wd/home/.local/bin:$PATH\"
+mkdir -p \"$MIYKA_REPO_PATH/wd/home/.local/bin\"
+ln -sf /bin/sh \"$MIYKA_REPO_PATH/wd/home/.local/bin/sh\"
 cd -- \"$MIYKA_REPO_PATH/wd/home\"
 set +e
 test -f \"$HOME/.profile\" && . \"$HOME/.profile\"
