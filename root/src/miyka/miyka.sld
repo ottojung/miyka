@@ -17,6 +17,7 @@
   (import (only (miyka CLI-copy) CLI:copy))
   (import (only (miyka CLI-create) CLI:create))
   (import (only (miyka CLI-edit) CLI:edit))
+  (import (only (miyka CLI-import) CLI:import))
   (import (only (miyka CLI-list) CLI:list))
   (import (only (miyka CLI-remove) CLI:remove))
   (import (only (miyka CLI-run) CLI:run))

@@ -13,6 +13,9 @@
     /         list
     /         copy <existing-name> <new-name>
     /         remove <name>
+    /         import IMPORT_OPTS
+    IMPORT_OPTS : --name <optional-name> <path>
+    /         <path>
     OPT : --root <root>
     )
 
@@ -48,6 +51,9 @@
       (remove
        (CLI:remove <name>))
 
+      (import
+       (CLI:import <path> <optional-name>))
+
       ))))
 
 (with-user-errors
@@ -61,6 +67,7 @@
          'guix-describe-failed
          'snapshot-command-failed
          'snapshot-init-command-failed
+         'import-command-failed
          )
 
  (with-properties
