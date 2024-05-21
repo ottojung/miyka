@@ -4,8 +4,9 @@
 (define start-script:template
   "#! /bin/sh
 set -e
-MIYKA_REPO_NAME=\"$1\"
-MIYKA_REPO_PATH=\"$2\"
+export MIYKA_REPO_NAME=\"$1\"
+export MIYKA_REPO_PATH=\"$2\"
+export MIYKA_ORIG_HOME=\"$HOME\"
 export SHELL=dash
 ~a
 export PATH=\"$HOME/.local/bin:$PATH\"
