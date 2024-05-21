@@ -49,6 +49,27 @@
     (box-ref
      (interpretation:snapshot? interpretation)))
 
+  (define pure?
+    (box-ref
+     (interpretation:pure? interpretation)))
+
+  (define shell-args
+    (list "dash" "--" script-path repository repo-path))
+
+  (define default-guix-args
+    (list "guix" "shell" (string-append "--manifest=" manifest-path)))
+
+  (define run-args
+    (cond
+     ((and (not pure?) (null? packages))
+      shell-args)
+
+     ((and (not pure?) (pair? packages))
+      (append default-guix-args (list "--") shell-args))
+
+     (else
+      (append default-guix-args (list "--pure") (list "--") shell-args))))
+
   (define sync-footer
     (stack-make))
 
@@ -140,9 +161,4 @@ exit $RETURN_CODE" cleanup cleanup))))
   (when snapshot?
     (save-repository-context repository))
 
-  (system*/exit-code
-   "guix" "shell"
-   "--pure"
-   (string-append "--manifest=" manifest-path)
-   "--" "dash" "--" script-path repository repo-path
-   ))
+  (apply system*/exit-code run-args))

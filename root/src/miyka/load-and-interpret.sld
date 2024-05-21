@@ -14,6 +14,8 @@
   (import
     (only (miyka language-detach) language:detach))
   (import
+    (only (miyka language-impure) language:impure))
+  (import
     (only (miyka language-install) language:install))
   (import
     (only (miyka language-move-home)

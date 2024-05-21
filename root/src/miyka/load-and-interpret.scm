@@ -13,6 +13,7 @@
      '(rename (miyka language-detach) (language:detach detach))
      '(rename (miyka language-move-home) (language:move-home move-home))
      '(rename (miyka language-cleanup) (language:cleanup cleanup))
+     '(rename (miyka language-impure) (language:impure impure))
      ))
 
   (define result

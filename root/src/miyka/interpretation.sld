@@ -8,7 +8,8 @@
     interpretation:commands
     interpretation:home-moved?
     interpretation:cleanup
-    interpretation:snapshot?)
+    interpretation:snapshot?
+    interpretation:pure?)
   (import (only (euphrates box) make-box))
   (import
     (only (euphrates define-type9) define-type9))

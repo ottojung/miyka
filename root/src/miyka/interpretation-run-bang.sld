@@ -37,6 +37,7 @@
           interpretation:cleanup
           interpretation:commands
           interpretation:home-moved?
+          interpretation:pure?
           interpretation:snapshot?))
   (import
     (only (miyka manifest-path) manifest:path))
@@ -65,6 +66,9 @@
           start-script:template))
   (import
     (only (scheme base)
+          and
+          append
+          apply
           begin
           cond
           define
@@ -75,6 +79,8 @@
           let
           list
           not
+          null?
+          pair?
           quasiquote
           quote
           reverse

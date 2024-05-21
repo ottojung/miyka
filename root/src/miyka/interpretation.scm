@@ -8,7 +8,9 @@
    home-moved?
    cleanup    ;; path to the cleanup script.
    snapshot?  ;; whether to snapshot before open or not.
+   pure?      ;; whether to use --pure with guix.
    )
+
   interpretation?
 
   (installstack interpretation:installstack)
@@ -16,6 +18,7 @@
   (home-moved? interpretation:home-moved?)
   (cleanup interpretation:cleanup)
   (snapshot? interpretation:snapshot?)
+  (pure? interpretation:pure?)
   )
 
 
@@ -25,10 +28,12 @@
   (define home-moved? (make-box #f))
   (define cleanup (make-box #f))
   (define snapshot? (make-box #f))
+  (define pure? (make-box #t))
   (interpretation-constructor
    installist
    commands
    home-moved?
    cleanup
    snapshot?
+   pure?
    ))
