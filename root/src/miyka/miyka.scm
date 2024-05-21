@@ -11,6 +11,7 @@
     /         edit <name>
     /         run <name>
     /         list
+    /         copy <existing-name> <new-name>
     OPT : --root <root>
     )
 
@@ -39,6 +40,9 @@
 
       (list
        (CLI:list))
+
+      (copy
+       (CLI:copy <existing-name> <new-name>))
 
       ))))
 
