@@ -21,7 +21,7 @@
 
     (let ()
       (define result
-        (run-syncproc editor path))
+        (system*/exit-code editor path))
 
       (unless (= 0 result)
         (raisu-fmt

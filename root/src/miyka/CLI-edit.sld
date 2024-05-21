@@ -4,7 +4,8 @@
   (export CLI:edit)
   (import (only (euphrates raisu-fmt) raisu-fmt))
   (import
-    (only (euphrates run-syncproc) run-syncproc))
+    (only (euphrates system-star-exit-code)
+          system*/exit-code))
   (import
     (only (miyka configuration-path)
           configuration:path))
