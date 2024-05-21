@@ -7,6 +7,7 @@
    commands   ;; sequential intstructions run after install step.
    home-moved?
    cleanup    ;; path to the cleanup script.
+   snapshot?  ;; whether to snapshot before open or not.
    )
   interpretation?
 
@@ -14,6 +15,7 @@
   (commands interpretation:commands)
   (home-moved? interpretation:home-moved?)
   (cleanup interpretation:cleanup)
+  (snapshot? interpretation:snapshot?)
   )
 
 
@@ -22,9 +24,11 @@
   (define commands (stack-make))
   (define home-moved? (make-box #f))
   (define cleanup (make-box #f))
+  (define snapshot? (make-box #f))
   (interpretation-constructor
    installist
    commands
    home-moved?
    cleanup
+   snapshot?
    ))

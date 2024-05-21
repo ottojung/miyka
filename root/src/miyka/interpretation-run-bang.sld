@@ -33,7 +33,8 @@
     (only (miyka interpretation)
           interpretation:cleanup
           interpretation:commands
-          interpretation:home-moved?))
+          interpretation:home-moved?
+          interpretation:snapshot?))
   (import
     (only (miyka manifest-path) manifest:path))
   (import
@@ -47,6 +48,9 @@
   (import
     (only (miyka repository-start-script)
           repository:start-script))
+  (import
+    (only (miyka save-repository-context)
+          save-repository-context))
   (import
     (only (miyka start-script-path)
           start-script:path))

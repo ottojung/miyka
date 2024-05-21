@@ -2,12 +2,12 @@
 (define-library
   (miyka language-snapshot)
   (export language:snapshot)
+  (import (only (euphrates box) box-set!))
   (import
-    (only (miyka current-repository-p)
-          current-repository/p))
+    (only (miyka interpretation-p) interpretation/p))
   (import
-    (only (miyka save-repository-context)
-          save-repository-context))
+    (only (miyka interpretation)
+          interpretation:snapshot?))
   (import (only (scheme base) begin define))
   (cond-expand
     (guile (import (only (guile) include-from-path))

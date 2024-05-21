@@ -27,6 +27,10 @@
     (box-ref
      (interpretation:home-moved? interpretation)))
 
+  (define snapshot?
+    (box-ref
+     (interpretation:snapshot? interpretation)))
+
   (define sync-footer
     (stack-make))
 
@@ -115,6 +119,9 @@ exit $RETURN_CODE" cleanup cleanup))))
        `(specifications->manifest
          (quote ,packages))
        port)))
+
+  (when snapshot?
+    (save-repository-context repository))
 
   (system*/exit-code
    "guix" "shell"
