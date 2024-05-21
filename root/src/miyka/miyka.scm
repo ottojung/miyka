@@ -12,6 +12,7 @@
     /         run <name>
     /         list
     /         copy <existing-name> <new-name>
+    /         remove <name>
     OPT : --root <root>
     )
 
@@ -43,6 +44,9 @@
 
       (copy
        (CLI:copy <existing-name> <new-name>))
+
+      (remove
+       (CLI:remove <name>))
 
       ))))
 

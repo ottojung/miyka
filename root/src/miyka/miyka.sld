@@ -18,6 +18,7 @@
   (import (only (miyka CLI-create) CLI:create))
   (import (only (miyka CLI-edit) CLI:edit))
   (import (only (miyka CLI-list) CLI:list))
+  (import (only (miyka CLI-remove) CLI:remove))
   (import (only (miyka CLI-run) CLI:run))
   (import (only (miyka get-root) get-root/default))
   (import (only (miyka root-p) root/p))
@@ -32,6 +33,9 @@
           parameterize
           quote))
   (import (only (scheme write) display))
+  (cond-expand
+    (guile (import (only (srfi srfi-1) remove)))
+    (else (import (only (srfi 1) remove))))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin (include-from-path "miyka/miyka.scm")))
