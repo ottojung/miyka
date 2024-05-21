@@ -6,9 +6,9 @@
 set -e
 MIYKA_REPO_NAME=\"$1\"
 MIYKA_REPO_PATH=\"$2\"
-export PATH
 export SHELL=dash
 ~a
+export PATH=\"$HOME/.local/bin:$PATH\"
 cd -- \"$HOME\"
 set +e
 test -f \"$HOME/.profile\" && . \"$HOME/.profile\"
