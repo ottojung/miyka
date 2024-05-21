@@ -6,13 +6,14 @@
 set -e
 export MIYKA_REPO_NAME=\"$1\"
 export MIYKA_REPO_PATH=\"$2\"
+export MIYKA_REPO_HOME=\"$MIYKA_REPO_PATH/wd/home\"
 export MIYKA_ORIG_HOME=\"$HOME\"
 export SHELL=dash
 ~a
-export PATH=\"$MIYKA_REPO_PATH/wd/home/.local/bin:$PATH\"
-mkdir -p \"$MIYKA_REPO_PATH/wd/home/.local/bin\"
-ln -sf /bin/sh \"$MIYKA_REPO_PATH/wd/home/.local/bin/sh\"
-cd -- \"$MIYKA_REPO_PATH/wd/home\"
+export PATH=\"$MIYKA_REPO_HOME/.local/bin:$PATH\"
+mkdir -p \"$MIYKA_REPO_HOME/.local/bin\"
+ln -sf /bin/sh \"$MIYKA_REPO_HOME/.local/bin/sh\"
+cd -- \"$MIYKA_REPO_HOME\"
 set +e
 test -f \"$HOME/.profile\" && . \"$HOME/.profile\"
 ~a
