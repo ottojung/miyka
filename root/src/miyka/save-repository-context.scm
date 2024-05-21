@@ -3,9 +3,9 @@
 
 (define (save-repository-context repository)
   (define wd
-    (repository:work-directory repository))
+    (repository:state-directory repository))
   (define wd-path
-    (work-directory:path wd))
+    (state-directory:path wd))
   (define channels-path
     (append-posix-path wd-path "channels.scm"))
 

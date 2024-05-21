@@ -23,8 +23,8 @@
        "Command restic init failed. Cannot create a log because of this.")))
 
   (let ()
-    (define wd (repository:work-directory repository))
-    (define wd-path (work-directory:path wd))
+    (define wd (repository:state-directory repository))
+    (define wd-path (state-directory:path wd))
     (make-directories wd-path))
 
   (let ()

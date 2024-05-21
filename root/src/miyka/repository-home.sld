@@ -10,6 +10,9 @@
           define-property
           define-provider))
   (import
+    (only (miyka repository-state-directory)
+          repository:state-directory))
+  (import
     (only (miyka repository-work-directory)
           repository:work-directory))
   (import

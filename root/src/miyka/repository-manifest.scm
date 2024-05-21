@@ -5,8 +5,8 @@
 
 (define-provider p
   :targets (repository:manifest)
-  :sources (repository:work-directory)
+  :sources (repository:state-directory)
   (lambda (this)
-    (define wd (repository:work-directory this))
-    (define wd-path (work-directory:path wd))
+    (define wd (repository:state-directory this))
+    (define wd-path (state-directory:path wd))
     (append-posix-path wd-path "manifest.scm")))

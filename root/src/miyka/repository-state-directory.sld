@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka repository-async-script)
-  (export repository:async-script)
+  (miyka repository-state-directory)
+  (export repository:state-directory)
   (import
     (only (euphrates append-posix-path)
           append-posix-path))
@@ -12,15 +12,15 @@
   (import
     (only (miyka repository-path) repository:path))
   (import
-    (only (miyka repository-state-directory)
-          repository:state-directory))
+    (only (miyka repository-work-directory)
+          repository:work-directory))
   (import
-    (only (miyka state-directory-path)
-          state-directory:path))
+    (only (miyka work-directory-path)
+          work-directory:path))
   (import (only (scheme base) begin define lambda))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
              (include-from-path
-               "miyka/repository-async-script.scm")))
-    (else (include "repository-async-script.scm"))))
+               "miyka/repository-state-directory.scm")))
+    (else (include "repository-state-directory.scm"))))

@@ -3,9 +3,9 @@
 
 (define (snapshot-repository-files repository)
   (define wd
-    (repository:work-directory repository))
+    (repository:state-directory repository))
   (define wd-path
-    (work-directory:path wd))
+    (state-directory:path wd))
   (define log-directory
     (repository:log-directory repository))
   (define log-directory-path
