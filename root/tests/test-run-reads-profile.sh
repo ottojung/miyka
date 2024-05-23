@@ -9,4 +9,5 @@ echo "echo hello from miyka project" \
 
 RESULT=$(echo | t_miyka run test-project)
 
-test "$RESULT" = "hello from miyka project"
+test "$RESULT" = "hello from miyka project
+hello from miyka project"

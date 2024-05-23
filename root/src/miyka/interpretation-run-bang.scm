@@ -88,7 +88,7 @@
       ((command:shell? command)
        (stack-push!
         current-footer
-        (stringf "dash -l -i -- ~s" (command:shell:path command))))
+        (stringf "dash -i -- ~s" (command:shell:path command))))
 
       (else
        (raisu* :from "interpretation:run!"
@@ -111,7 +111,7 @@
       (stack-push!
        cleanup-footer
        (stringf "RETURN_CODE=$?
-test -f ~s && dash -l -- ~s
+test -f ~s && dash -- ~s
 exit $RETURN_CODE" cleanup cleanup))))
 
   (unless (stack-empty? async-footer)
@@ -123,7 +123,7 @@ exit $RETURN_CODE" cleanup cleanup))))
 
       (stack-push!
        sync-footer
-       (stringf "{ dash -l -- ~s & } &" path))
+       (stringf "{ dash -- ~s & } &" path))
 
       (call-with-output-file
           path
@@ -154,9 +154,9 @@ exit $RETURN_CODE" cleanup cleanup))))
   (when cleanup
     (make-start-script
      wrapper-path
-     (stringf "test -f ~s && dash -l -- ~s"
+     (stringf "test -f ~s && /bin/sh -- ~s"
               cleanup cleanup))
-    (system*/exit-code "dash" "--" wrapper-path repository repo-path))
+    (system*/exit-code "/bin/sh" "--" wrapper-path repository repo-path))
 
   (when snapshot?
     (save-repository-context repository))
