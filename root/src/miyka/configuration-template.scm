@@ -12,6 +12,7 @@
 (install \"findutils\") ;; a POSIX vi editor.
 (install \"sed\") ;; a POSIX sed program.
 (install \"gawk\") ;; a POSIX awk program.
+(install \"less\") ;; a pager program.
 (install \"nss-certs\") ;; HTTPS certificates.
 (move-home)
 ;; (detach)
