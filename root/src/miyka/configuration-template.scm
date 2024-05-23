@@ -8,6 +8,7 @@
 ;; (impure)
 (install \"coreutils\")
 (install \"dash\")
+(install \"nss-certs\")
 (move-home)
 ;; (detach)
 (shell \".config/miyka/init.sh\")
