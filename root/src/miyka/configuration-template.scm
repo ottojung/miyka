@@ -6,9 +6,13 @@
 (cleanup \".config/miyka/cleanup.sh\")
 (snapshot)
 ;; (impure)
-(install \"coreutils\")
-(install \"dash\")
-(install \"nss-certs\")
+(install \"coreutils\") ;; basic POSIX utils.
+(install \"dash\") ;; a POSIX shell.
+(install \"nvi\") ;; a POSIX vi editor.
+(install \"findutils\") ;; a POSIX vi editor.
+(install \"sed\") ;; a POSIX sed program.
+(install \"gawk\") ;; a POSIX awk program.
+(install \"nss-certs\") ;; HTTPS certificates.
 (move-home)
 ;; (detach)
 (shell \".config/miyka/init.sh\")
