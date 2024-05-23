@@ -13,11 +13,11 @@
     (only (miyka repository-log-directory)
           repository:log-directory))
   (import
-    (only (miyka repository-state-directory)
-          repository:state-directory))
+    (only (miyka repository-work-directory)
+          repository:work-directory))
   (import
-    (only (miyka state-directory-path)
-          state-directory:path))
+    (only (miyka work-directory-path)
+          work-directory:path))
   (import
     (only (scheme base) = begin define quote unless))
   (cond-expand
