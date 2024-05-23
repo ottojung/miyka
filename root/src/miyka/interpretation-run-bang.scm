@@ -30,7 +30,7 @@
       (lambda (port)
         (define home-line
           (if home-moved?
-              "export HOME=\"$MIYKA_REPO_PATH/wd/home\""
+              "export HOME=\"$MIYKA_REPO_HOME\""
               ""))
         (fprintf
          port
