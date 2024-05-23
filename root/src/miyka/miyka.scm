@@ -68,6 +68,7 @@
          'snapshot-command-failed
          'snapshot-init-command-failed
          'import-command-failed
+         'link-command-failed
          )
 
  (with-properties

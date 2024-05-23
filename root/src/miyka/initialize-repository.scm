@@ -30,4 +30,16 @@
     (define home-path (home:path home))
     (make-directories home-path))
 
+  (let ()
+    (define bin (repository:bin repository))
+    (define bin-path (bin:path bin))
+    (make-directories bin-path)
+
+    (unless (= 0 (system*/exit-code
+                  "guix" "shell" "--pure" "coreutils"
+                  "--" "ln" "-s" "-T" "--" "/bin/sh" (append-posix-path bin-path "sh")
+                  ))
+      (raisu-fmt 'link-command-failed
+                 "Failed to link /bin/sh to miyka's repository root. The \"sh\" executable will not be available because of this.")))
+
   (values))

@@ -3,16 +3,22 @@
   (miyka initialize-repository)
   (export initialize-repository)
   (import
+    (only (euphrates append-posix-path)
+          append-posix-path))
+  (import
     (only (euphrates make-directories)
           make-directories))
   (import (only (euphrates raisu-fmt) raisu-fmt))
   (import
     (only (euphrates system-star-exit-code)
           system*/exit-code))
+  (import (only (miyka bin-path) bin:path))
   (import (only (miyka home-path) home:path))
   (import
     (only (miyka log-directory-path)
           log-directory:path))
+  (import
+    (only (miyka repository-bin) repository:bin))
   (import
     (only (miyka repository-home) repository:home))
   (import
