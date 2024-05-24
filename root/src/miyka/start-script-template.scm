@@ -3,10 +3,31 @@
 
 (define start-script:template
   "#! /bin/sh
-export MIYKA_REPO_NAME=\"$1\"
-export MIYKA_REPO_PATH=\"$2\"
-export MIYKA_REPO_HOME=\"$MIYKA_REPO_PATH/wd/home\"
+
+#################################
+# Get current script directory. #
+#################################
+
+SCRIPT_PATH=\"$0\"
+case \"$SCRIPT_PATH\" in
+    /*) ;; # Absolute path.
+    *) SCRIPT_PATH=\"$PWD/$SCRIPT_PATH\" ;; # Convert relative to absolute.
+esac
+
+# Extract directory.
+DIR_PATH=\"${SCRIPT_PATH%/*}\"
+test \"$DIR_PATH\" = \"$SCRIPT_PATH\" && DIR_PATH='.'
+
+###################################
+# Initialize MIYKA env variables. #
+###################################
+
+export MIYKA_REPO_HOME=\"$DIR_PATH/../..\"
+export MIYKA_REPO_PATH=\"$MIYKA_REPO_HOME/../..\"
 export MIYKA_ORIG_HOME=\"$HOME\"
+
+#################################
+
 export SHELL=sh
 ~a
 export PATH=\"$MIYKA_REPO_HOME/.local/bin:$PATH:$MIYKA_REPO_PATH/wd/bin\"

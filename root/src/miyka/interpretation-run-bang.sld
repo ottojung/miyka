@@ -51,8 +51,6 @@
     (only (miyka repository-manifest)
           repository:manifest))
   (import
-    (only (miyka repository-path) repository:path))
-  (import
     (only (miyka repository-start-script)
           repository:start-script))
   (import

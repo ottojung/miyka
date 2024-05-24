@@ -2,8 +2,6 @@
 ;;;; This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details. You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 (define (interpretation:run! repository interpretation)
-  (define repo-path
-    (repository:path repository))
   (define manifest
     (repository:manifest repository))
   (define manifest-path
@@ -54,7 +52,7 @@
      (interpretation:pure? interpretation)))
 
   (define shell-args
-    (list "/bin/sh" "--" script-path repository repo-path))
+    (list "/bin/sh" "--" script-path))
 
   (define default-guix-args
     (list "guix" "shell" (string-append "--manifest=" manifest-path)))
@@ -156,7 +154,7 @@ exit $RETURN_CODE" cleanup cleanup))))
      wrapper-path
      (stringf "test -f ~s && sh -- ~s"
               cleanup cleanup))
-    (system*/exit-code "sh" "--" wrapper-path repository repo-path))
+    (system*/exit-code "/bin/sh" "--" wrapper-path))
 
   (when snapshot?
     (save-repository-context repository))
