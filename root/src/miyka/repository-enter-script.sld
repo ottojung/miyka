@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka repository-start-script)
-  (export repository:start-script)
+  (miyka repository-enter-script)
+  (export repository:enter-script)
   (import
     (only (euphrates append-posix-path)
           append-posix-path))
@@ -22,5 +22,5 @@
     (guile (import (only (guile) include-from-path))
            (begin
              (include-from-path
-               "miyka/repository-start-script.scm")))
-    (else (include "repository-start-script.scm"))))
+               "miyka/repository-enter-script.scm")))
+    (else (include "repository-enter-script.scm"))))

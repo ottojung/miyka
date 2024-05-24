@@ -7,6 +7,12 @@ TESTCOUNT=$(echo "$FILES" | wc -w)
 INDEX=0
 FAILED=0
 
+if ! command -v guix 1>/dev/null 2>/dev/null
+then
+	echo "Guix not found, using guix mock for testing." 1>&2
+	export MIYKA_GUIX_EXECUTABLE="$PWD/scripts/guix-mock.sh"
+fi
+
 for FILE in $FILES
 do
 	INDEX=$((INDEX + 1))

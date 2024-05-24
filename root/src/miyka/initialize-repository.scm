@@ -5,17 +5,24 @@
   (make-directories (repository:path repository))
 
   (let ()
+    (define guix (get-guix-executable))
     (define log-directory
       (repository:log-directory repository))
     (define log-directory-path
       (log-directory:path log-directory))
+    (define pass
+      (repository:restic-password-file repository))
+    (define pass-path
+      (restic-password-file:path pass))
 
     (unless (= 0 (system*/exit-code
+                  guix "shell" "--pure" "restic"
+                  "--"
                   "restic"
                   "init"
                   "--quiet"
                   "--repo" log-directory-path
-                  "--password-command" "echo 1234"))
+                  "--password-file" pass-path))
       (raisu-fmt
        'snapshot-init-command-failed
        "Command restic init failed. Cannot create a log because of this.")))
@@ -33,10 +40,11 @@
   (let ()
     (define bin (repository:bin repository))
     (define bin-path (bin:path bin))
+    (define guix (get-guix-executable))
     (make-directories bin-path)
 
     (unless (= 0 (system*/exit-code
-                  "guix" "shell" "--pure" "coreutils"
+                  guix "shell" "--pure" "coreutils"
                   "--" "ln" "-s" "-T" "--" "/bin/sh" (append-posix-path bin-path "sh")
                   ))
       (raisu-fmt 'link-command-failed

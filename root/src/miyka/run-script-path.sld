@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka start-script-path)
-  (export start-script:path)
+  (miyka run-script-path)
+  (export run-script:path)
   (import
     (only (euphrates properties)
           define-property
@@ -10,5 +10,5 @@
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
-             (include-from-path "miyka/start-script-path.scm")))
-    (else (include "start-script-path.scm"))))
+             (include-from-path "miyka/run-script-path.scm")))
+    (else (include "run-script-path.scm"))))

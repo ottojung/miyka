@@ -1,12 +1,9 @@
 ;;;; Copyright (C) 2024  Otto Jung
 ;;;; This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details. You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-(define (guix-describe output-file)
-  (call-with-output-file
-      output-file
-    (lambda (port)
-      (parameterize ((current-output-port port))
-        (unless (= 0 (run-syncproc "guix" "describe" "--format=channels"))
-          (raisu-fmt
-           'guix-describe-failed
-           "Command guix describe failed. Cannot create a log because of this."))))))
+(define-property run-sync-script:path)
+
+(define-provider p
+  :targets (run-sync-script:path)
+  :sources ()
+  (lambda (this) this))

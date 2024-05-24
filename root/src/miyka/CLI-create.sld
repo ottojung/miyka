@@ -2,6 +2,7 @@
 (define-library
   (miyka CLI-create)
   (export CLI:create)
+  (import (only (euphrates fprintf) fprintf))
   (import
     (only (euphrates make-directories)
           make-directories))
@@ -18,6 +19,15 @@
     (only (miyka configuration-template)
           configuration:template))
   (import
+    (only (miyka enter-script-path)
+          enter-script:path))
+  (import
+    (only (miyka enter-script-template)
+          enter-script:template))
+  (import
+    (only (miyka get-guix-executable)
+          get-guix-executable))
+  (import
     (only (miyka init-script-path) init-script:path))
   (import
     (only (miyka init-script-template)
@@ -29,8 +39,20 @@
     (only (miyka repository-configuration)
           repository:configuration))
   (import
+    (only (miyka repository-enter-script)
+          repository:enter-script))
+  (import
     (only (miyka repository-init-script)
           repository:init-script))
+  (import
+    (only (miyka repository-restic-password-file)
+          repository:restic-password-file))
+  (import
+    (only (miyka restic-password-file-path)
+          restic-password-file:path))
+  (import
+    (only (miyka restic-password-file-random)
+          restic-password-file:random))
   (import
     (only (scheme base)
           begin

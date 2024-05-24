@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka repository-async-script)
-  (export repository:async-script)
+  (miyka repository-restic-password-file)
+  (export repository:restic-password-file)
   (import
     (only (euphrates append-posix-path)
           append-posix-path))
@@ -9,8 +9,6 @@
     (only (euphrates properties)
           define-property
           define-provider))
-  (import
-    (only (miyka repository-path) repository:path))
   (import
     (only (miyka repository-state-directory)
           repository:state-directory))
@@ -22,5 +20,5 @@
     (guile (import (only (guile) include-from-path))
            (begin
              (include-from-path
-               "miyka/repository-async-script.scm")))
-    (else (include "repository-async-script.scm"))))
+               "miyka/repository-restic-password-file.scm")))
+    (else (include "repository-restic-password-file.scm"))))

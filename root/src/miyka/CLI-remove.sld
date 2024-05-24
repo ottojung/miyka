@@ -7,6 +7,9 @@
     (only (euphrates system-star-exit-code)
           system*/exit-code))
   (import
+    (only (miyka get-guix-executable)
+          get-guix-executable))
+  (import
     (only (miyka repository-exists-on-disk-huh)
           repository:exists-on-disk?))
   (import

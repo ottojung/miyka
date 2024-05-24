@@ -2,14 +2,28 @@
 ;;;; This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details. You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 (define (interpretation:run! repository interpretation)
+  (define guix
+    (get-guix-executable))
   (define manifest
     (repository:manifest repository))
   (define manifest-path
     (manifest:path manifest))
-  (define script
-    (repository:start-script repository))
-  (define script-path
-    (start-script:path script))
+  (define enter-script
+    (repository:enter-script repository))
+  (define enter-script-path
+    (enter-script:path enter-script))
+  (define run-script
+    (repository:run-script repository))
+  (define run-script-path
+    (run-script:path run-script))
+  (define run-sync-script
+    (repository:run-sync-script repository))
+  (define run-sync-script-path
+    (run-sync-script:path run-sync-script))
+  (define run-async-script
+    (repository:run-async-script repository))
+  (define run-async-script-path
+    (run-async-script:path run-async-script))
   (define wrapper
     (repository:cleanup-wrapper repository))
   (define wrapper-path
@@ -22,7 +36,7 @@
      (stack->list
       (interpretation:commands interpretation))))
 
-  (define (make-start-script script-path footer)
+  (define (make-enter-script script-path footer)
     (call-with-output-file
         script-path
       (lambda (port)
@@ -32,7 +46,7 @@
               ""))
         (fprintf
          port
-         start-script:template
+         enter-script:template
          home-line
          footer))))
 
@@ -51,22 +65,11 @@
     (box-ref
      (interpretation:pure? interpretation)))
 
-  (define shell-args
-    (list "/bin/sh" "--" script-path))
+  (define maybe-pure
+    (if pure? "--pure" ""))
 
-  (define default-guix-args
-    (list "guix" "shell" (string-append "--manifest=" manifest-path)))
-
-  (define run-args
-    (cond
-     ((and (not pure?) (null? packages))
-      shell-args)
-
-     ((and (not pure?) (pair? packages))
-      (append default-guix-args (list "--") shell-args))
-
-     (else
-      (append default-guix-args (list "--pure") (list "--") shell-args))))
+  (define maybe-move-home
+    (if home-moved? "--move-home" ""))
 
   (define sync-footer
     (stack-make))
@@ -77,6 +80,23 @@
   (define current-footer
     sync-footer)
 
+  (define cleanup-command
+    (stringf "test -f ~s && sh -- ~s" cleanup cleanup))
+
+  (define guix-describe-command
+    "\"$MIYKA_GUIX_EXECUTABLE\" describe --format=channels > .config/miyka/channels.scm || exit 1")
+
+  (define snapshot-command
+    "\"$MIYKA_GUIX_EXECUTABLE\" shell --pure restic -- restic backup --quiet --repo \"$MIYKA_REPO_PATH\"/logs --password-file .config/miyka/password.txt -- \"$MIYKA_REPO_PATH\"/wd || exit 1")
+
+  (when cleanup
+    (stack-push! sync-footer cleanup-command))
+
+  (stack-push! sync-footer guix-describe-command)
+
+  (when snapshot?
+    (stack-push! sync-footer snapshot-command))
+
   (for-each
    (lambda (command)
      (cond
@@ -86,7 +106,7 @@
       ((command:shell? command)
        (stack-push!
         current-footer
-        (stringf "sh -i -- ~s" (command:shell:path command))))
+        (stringf "sh -- ~s" (command:shell:path command))))
 
       (else
        (raisu* :from "interpretation:run!"
@@ -94,6 +114,11 @@
                :message (stringf "Uknown command ~s." command)
                :args (list command)))))
    commands)
+
+  (unless (stack-empty? async-footer)
+    (stack-push!
+     sync-footer
+     "{ sh -- .config/miyka/run-async.sh & } &"))
 
   (when cleanup
     (let ()
@@ -109,37 +134,33 @@
       (stack-push!
        cleanup-footer
        (stringf "RETURN_CODE=$?
-test -f ~s && sh -- ~s
-exit $RETURN_CODE" cleanup cleanup))))
+~a
+exit $RETURN_CODE" cleanup-command))))
+
+  (call-with-output-file
+      run-sync-script-path
+    (lambda (port)
+      (display "#! /bin/sh" port)
+      (newline port)
+      (newline port)
+
+      (for-each
+       (lambda (line) (display line port) (newline port))
+       (reverse
+        (stack->list sync-footer)))))
 
   (unless (stack-empty? async-footer)
-    (let ()
-      (define async-script
-        (repository:async-script repository))
-      (define path
-        (async-script:path async-script))
+    (call-with-output-file
+        run-async-script-path
+      (lambda (port)
+        (display "#! /bin/sh" port)
+        (newline port)
+        (newline port)
 
-      (stack-push!
-       sync-footer
-       (stringf "{ sh -- ~s & } &" path))
-
-      (call-with-output-file
-          path
-        (lambda (port)
-          (define footer
-            (lines->string
-             (reverse
-              (stack->list async-footer))))
-          (display footer port)))))
-
-  (let ()
-    (define footer
-      (lines->string
-       (reverse
-        (stack->list sync-footer))))
-
-    (make-start-script
-     script-path footer))
+        (for-each
+         (lambda (line) (display line port) (newline port))
+         (reverse
+          (stack->list async-footer))))))
 
   (call-with-output-file
       manifest-path
@@ -149,14 +170,31 @@ exit $RETURN_CODE" cleanup cleanup))))
          (quote ,packages))
        port)))
 
-  (when cleanup
-    (make-start-script
-     wrapper-path
-     (stringf "test -f ~s && sh -- ~s"
-              cleanup cleanup))
-    (system*/exit-code "/bin/sh" "--" wrapper-path))
+  (call-with-output-file
+      run-script-path
+    (lambda (port)
+      (parameterize ((current-output-port port))
+        (display "#! /bin/sh")
+        (newline)
 
-  (when snapshot?
-    (save-repository-context repository))
+        (display "cd \"${0%/*}\"")
+        (newline)
 
-  (apply system*/exit-code run-args))
+        (display
+         (words->string
+          (list
+           guix
+           "shell"
+           maybe-pure
+           "--manifest=manifest.scm"
+           "--"
+           "/bin/sh" "\"$PWD/enter.sh\""
+           maybe-move-home
+           "--guix-executable" guix
+           "--"
+           "sh" ".config/miyka/run-sync.sh"
+           )))
+
+        (newline))))
+
+  (system*/exit-code "/bin/sh" "--" run-script-path))

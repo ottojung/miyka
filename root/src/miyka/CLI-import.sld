@@ -13,6 +13,9 @@
     (only (miyka check-if-repository-already-exists)
           check-if-repository-already-exists))
   (import
+    (only (miyka get-guix-executable)
+          get-guix-executable))
+  (import
     (only (miyka repository-path) repository:path))
   (import
     (only (scheme base)

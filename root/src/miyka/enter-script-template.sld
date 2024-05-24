@@ -1,11 +1,11 @@
 
 (define-library
-  (miyka start-script-template)
-  (export start-script:template)
+  (miyka enter-script-template)
+  (export enter-script:template)
   (import (only (scheme base) begin define))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
              (include-from-path
-               "miyka/start-script-template.scm")))
-    (else (include "start-script-template.scm"))))
+               "miyka/enter-script-template.scm")))
+    (else (include "enter-script-template.scm"))))

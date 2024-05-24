@@ -3,9 +3,10 @@
 
 (define (CLI:copy <existing-repository-name> <new-repository-name>)
   (check-if-repository-already-exists <new-repository-name>)
-  (initialize-repository <new-repository-name>)
 
   (let ()
+    (define guix
+      (get-guix-executable))
     (define existing-state
       (repository:state-directory <existing-repository-name>))
     (define existing-state-path
@@ -15,11 +16,16 @@
     (define new-state-path
       (state-directory:path new-state))
 
+    (make-directories (path-get-dirname new-state-path))
     (system*/exit-code
-     "guix" "shell" "--pure" "coreutils"
+     guix "shell" "--pure" "coreutils"
      "--"
      "cp" "-r" "-T"
      "--"
      existing-state-path
      new-state-path
-     )))
+     ))
+
+  (initialize-repository <new-repository-name>)
+
+  (values))

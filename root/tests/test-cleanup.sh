@@ -7,7 +7,7 @@ t_miyka create test-project
 echo "echo hello from miyka project" \
      > "$MIYKA_ROOT/repositories/test-project/wd/home/.config/miyka/cleanup.sh"
 
-RESULT=$(echo | t_miyka run test-project)
+RESULT=$(echo | t_miyka run test-project | grep '^hello')
 
 test "$RESULT" = "hello from miyka project
 hello from miyka project"

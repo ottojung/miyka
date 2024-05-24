@@ -13,6 +13,9 @@
     (only (euphrates system-star-exit-code)
           system*/exit-code))
   (import (only (miyka bin-path) bin:path))
+  (import
+    (only (miyka get-guix-executable)
+          get-guix-executable))
   (import (only (miyka home-path) home:path))
   (import
     (only (miyka log-directory-path)
@@ -27,8 +30,14 @@
   (import
     (only (miyka repository-path) repository:path))
   (import
+    (only (miyka repository-restic-password-file)
+          repository:restic-password-file))
+  (import
     (only (miyka repository-state-directory)
           repository:state-directory))
+  (import
+    (only (miyka restic-password-file-path)
+          restic-password-file:path))
   (import
     (only (miyka state-directory-path)
           state-directory:path))

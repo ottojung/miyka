@@ -17,11 +17,15 @@
     IMPORT_OPTS : --name <optional-name> <path>
     /         <path>
     OPT : --root <root>
+    /     --guix-executable <guix-executable>
     )
 
    :default (<root> (get-root/default))
+   :default (<guix-executable> (get-guix-executable/default))
 
-   (parameterize ((root/p <root>))
+   (parameterize ((root/p <root>)
+                  (guix-executable/p <guix-executable>)
+                  )
 
      (cond
 
@@ -69,6 +73,7 @@
          'snapshot-init-command-failed
          'import-command-failed
          'link-command-failed
+         'cannot-find-guix
          )
 
  (with-properties

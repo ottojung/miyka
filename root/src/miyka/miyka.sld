@@ -21,7 +21,13 @@
   (import (only (miyka CLI-list) CLI:list))
   (import (only (miyka CLI-remove) CLI:remove))
   (import (only (miyka CLI-run) CLI:run))
+  (import
+    (only (miyka get-guix-executable-default)
+          get-guix-executable/default))
   (import (only (miyka get-root) get-root/default))
+  (import
+    (only (miyka guix-executable-p)
+          guix-executable/p))
   (import (only (miyka root-p) root/p))
   (import
     (only (scheme base)

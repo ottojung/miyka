@@ -4,8 +4,6 @@
   (export interpretation:run!)
   (import (only (euphrates box) box-ref))
   (import (only (euphrates fprintf) fprintf))
-  (import
-    (only (euphrates lines-to-string) lines->string))
   (import (only (euphrates raisu-star) raisu*))
   (import
     (only (euphrates stack)
@@ -18,8 +16,7 @@
     (only (euphrates system-star-exit-code)
           system*/exit-code))
   (import
-    (only (miyka async-script-path)
-          async-script:path))
+    (only (euphrates words-to-string) words->string))
   (import
     (only (miyka cleanup-wrapper-path)
           cleanup-wrapper:path))
@@ -29,6 +26,15 @@
     (only (miyka command-shell)
           command:shell:path
           command:shell?))
+  (import
+    (only (miyka enter-script-path)
+          enter-script:path))
+  (import
+    (only (miyka enter-script-template)
+          enter-script:template))
+  (import
+    (only (miyka get-guix-executable)
+          get-guix-executable))
   (import
     (only (miyka interpretation-installist)
           interpretation:installist))
@@ -42,33 +48,36 @@
   (import
     (only (miyka manifest-path) manifest:path))
   (import
-    (only (miyka repository-async-script)
-          repository:async-script))
-  (import
     (only (miyka repository-cleanup-wrapper)
           repository:cleanup-wrapper))
+  (import
+    (only (miyka repository-enter-script)
+          repository:enter-script))
   (import
     (only (miyka repository-manifest)
           repository:manifest))
   (import
-    (only (miyka repository-start-script)
-          repository:start-script))
+    (only (miyka repository-run-async-script)
+          repository:run-async-script))
   (import
-    (only (miyka save-repository-context)
-          save-repository-context))
+    (only (miyka repository-run-script)
+          repository:run-script))
   (import
-    (only (miyka start-script-path)
-          start-script:path))
+    (only (miyka repository-run-sync-script)
+          repository:run-sync-script))
   (import
-    (only (miyka start-script-template)
-          start-script:template))
+    (only (miyka run-async-script-path)
+          run-async-script:path))
+  (import
+    (only (miyka run-script-path) run-script:path))
+  (import
+    (only (miyka run-sync-script-path)
+          run-sync-script:path))
   (import
     (only (scheme base)
-          and
-          append
-          apply
           begin
           cond
+          current-output-port
           define
           else
           for-each
@@ -76,14 +85,13 @@
           lambda
           let
           list
+          newline
           not
-          null?
-          pair?
+          parameterize
           quasiquote
           quote
           reverse
           set!
-          string-append
           unless
           unquote
           when))

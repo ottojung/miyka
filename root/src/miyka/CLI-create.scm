@@ -4,8 +4,6 @@
 (define (CLI:create repository)
   (check-if-repository-already-exists repository)
 
-  (initialize-repository repository)
-
   (let ()
     (define script
       (repository:init-script repository))
@@ -21,14 +19,44 @@
         (display init-script:template port))))
 
   (let ()
+    (define script
+      (repository:enter-script repository))
+    (define path
+      (enter-script:path script))
+    (define dirpath
+      (path-get-dirname path))
+
+    (make-directories dirpath)
+    (call-with-output-file
+        path
+      (lambda (port)
+        (fprintf port enter-script:template (get-guix-executable)))))
+
+  (let ()
     (define configuration
       (repository:configuration repository))
     (define path
       (configuration:path configuration))
+    (define dirpath
+      (path-get-dirname path))
 
+    (make-directories dirpath)
     (call-with-output-file
         path
       (lambda (port)
         (display configuration:template port))))
+
+  (let ()
+    (define pass
+      (repository:restic-password-file repository))
+    (define path
+      (restic-password-file:path pass))
+    (define dirpath
+      (path-get-dirname path))
+
+    (make-directories dirpath)
+    (restic-password-file:random path))
+
+  (initialize-repository repository)
 
   (values))
