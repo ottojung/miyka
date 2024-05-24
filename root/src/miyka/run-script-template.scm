@@ -4,7 +4,7 @@
 (define run-script:template
   "#! /bin/sh
 
-cd \"${0%/*}\"
+cd -- \"${0%/*}\"
 
 if test -z \"$MIYKA_GUIX_EXECUTABLE\"
 then
