@@ -71,13 +71,15 @@
   (import
     (only (miyka run-script-path) run-script:path))
   (import
+    (only (miyka run-script-template)
+          run-script:template))
+  (import
     (only (miyka run-sync-script-path)
           run-sync-script:path))
   (import
     (only (scheme base)
           begin
           cond
-          current-output-port
           define
           else
           for-each
@@ -87,7 +89,6 @@
           list
           newline
           not
-          parameterize
           quasiquote
           quote
           reverse

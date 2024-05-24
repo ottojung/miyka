@@ -173,28 +173,22 @@ exit $RETURN_CODE" cleanup-command))))
   (call-with-output-file
       run-script-path
     (lambda (port)
-      (parameterize ((current-output-port port))
-        (display "#! /bin/sh")
-        (newline)
+      (fprintf
+       port
+       run-script:template
 
-        (display "cd \"${0%/*}\"")
-        (newline)
-
-        (display
-         (words->string
-          (list
-           guix
-           "shell"
-           maybe-pure
-           "--manifest=manifest.scm"
-           "--"
-           "/bin/sh" "\"$PWD/enter.sh\""
-           maybe-move-home
-           "--guix-executable" guix
-           "--"
-           "sh" ".config/miyka/run-sync.sh"
-           )))
-
-        (newline))))
+       (words->string
+        (list
+         "\"$MIYKA_GUIX_EXECUTABLE\""
+         "shell"
+         maybe-pure
+         "--manifest=manifest.scm"
+         "--"
+         "/bin/sh" "\"$PWD/enter.sh\""
+         maybe-move-home
+         "--guix-executable" "\"$MIYKA_GUIX_EXECUTABLE\""
+         "--"
+         "sh" ".config/miyka/run-sync.sh"
+         )))))
 
   (system*/exit-code "/bin/sh" "--" run-script-path))
