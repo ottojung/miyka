@@ -8,7 +8,7 @@ export MIYKA_REPO_NAME=\"$1\"
 export MIYKA_REPO_PATH=\"$2\"
 export MIYKA_REPO_HOME=\"$MIYKA_REPO_PATH/wd/home\"
 export MIYKA_ORIG_HOME=\"$HOME\"
-export SHELL=dash
+export SHELL=sh
 ~a
 export PATH=\"$MIYKA_REPO_HOME/.local/bin:$PATH:$MIYKA_REPO_PATH/wd/bin\"
 cd -- \"$MIYKA_REPO_HOME\"

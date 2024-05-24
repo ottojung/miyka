@@ -7,7 +7,6 @@
 (snapshot)
 ;; (impure)
 (install \"coreutils\") ;; basic POSIX utils.
-(install \"dash\") ;; a POSIX shell.
 (install \"nvi\") ;; a POSIX vi editor.
 (install \"findutils\") ;; a POSIX vi editor.
 (install \"sed\") ;; a POSIX sed program.
