@@ -99,7 +99,17 @@
     "\"$MIYKA_GUIX_EXECUTABLE\" describe --format=channels > .config/miyka/channels.scm")
 
   (define snapshot-command
-    "restic backup --quiet --repo \"$MIYKA_REPO_PATH\"/logs --password-file .config/miyka/password.txt -- \"$MIYKA_REPO_PATH\"/wd")
+    "
+if cd -- \"$MIYKA_REPO_PATH\"/wd
+then
+    if ! restic backup --quiet --repo \"$MIYKA_REPO_PATH\"/logs --password-file \"$MIYKA_REPO_HOME\"/.config/miyka/password.txt -- .
+    then
+        echo 'Backup with restic failed. Will not proceed further.' 1>&2
+        exit 1
+    fi
+    cd - 1>/dev/null 2>/dev/null
+fi
+")
 
   (define setup-command
     "HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell --pure restic coreutils -- /bin/sh .config/miyka/setup.sh \"$MIYKA_REPO_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\"")
