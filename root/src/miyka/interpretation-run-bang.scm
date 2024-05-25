@@ -102,7 +102,7 @@
     "restic backup --quiet --repo \"$MIYKA_REPO_PATH\"/logs --password-file .config/miyka/password.txt -- \"$MIYKA_REPO_PATH\"/wd")
 
   (define setup-command
-    "\"$MIYKA_GUIX_EXECUTABLE\" shell --pure restic coreutils -- /bin/sh .config/miyka/setup.sh \"$MIYKA_REPO_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\"")
+    "HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell --pure restic coreutils -- /bin/sh .config/miyka/setup.sh \"$MIYKA_REPO_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\"")
 
   (when snapshot?
     (stack-push! setup-command-list snapshot-command))
