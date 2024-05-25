@@ -176,6 +176,7 @@ exit $RETURN_CODE" cleanup-command))))
     (lambda (port)
       (display "#! /bin/sh" port)
       (newline port)
+      (newline port)
 
       (display "MIYKA_REPO_HOME=\"$1\"" port)
       (newline port)
@@ -184,7 +185,7 @@ exit $RETURN_CODE" cleanup-command))))
       (newline port)
 
       (for-each
-       (lambda (line) (display line port) (newline port))
+       (lambda (line) (display line port) (newline port) (newline port))
        (reverse
         (stack->list setup-command-list)))))
 
