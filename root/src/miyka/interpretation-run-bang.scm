@@ -102,7 +102,7 @@
     "restic backup --quiet --repo \"$MIYKA_REPO_PATH\"/logs --password-file .config/miyka/password.txt -- \"$MIYKA_REPO_PATH\"/wd")
 
   (define setup-command
-    "\"$MIYKA_GUIX_EXECUTABLE\" shell --pure restic coreutils -- /bin/sh .config/miyka/setup.sh \"$MIYKA_ORIG_HOME\" \"$MIYKA_HOME_PATH\" \"$MIYKA_GUIX_EXECUTABLE\"")
+    "\"$MIYKA_GUIX_EXECUTABLE\" shell --pure restic coreutils -- /bin/sh .config/miyka/setup.sh \"$MIYKA_REPO_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\"")
 
   (when snapshot?
     (stack-push! setup-command-list snapshot-command))
@@ -120,11 +120,11 @@
      (stack-push!
       setup-command-list
       (stringf "
-if ! test -e \"$MIYKA_HOME_PATH\"/~s
+if ! test -e \"$MIYKA_REPO_HOME\"/~s
 then
     if test -e \"$MIYKA_ORIG_HOME\"/~s
     then
-        ln -srT -- \"$MIYKA_ORIG_HOME\"/~s \"$MIYKA_HOME_PATH\"/~s
+        ln -srT -- \"$MIYKA_ORIG_HOME\"/~s \"$MIYKA_REPO_HOME\"/~s
     fi
 fi
 " path path path path)))
@@ -180,9 +180,11 @@ exit $RETURN_CODE" cleanup-command))))
 
       (display "MIYKA_REPO_HOME=\"$1\"" port)
       (newline port)
-      (display "MIYKA_ORIG_HOME=\"$2\"" port)
+      (display "MIYKA_REPO_PATH=\"$2\"" port)
       (newline port)
-      (display "MIYKA_GUIX_EXECUTABLE=\"$3\"" port)
+      (display "MIYKA_ORIG_HOME=\"$3\"" port)
+      (newline port)
+      (display "MIYKA_GUIX_EXECUTABLE=\"$4\"" port)
       (newline port)
       (newline port)
 
