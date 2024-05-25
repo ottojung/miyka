@@ -66,6 +66,9 @@
     (only (miyka repository-run-sync-script)
           repository:run-sync-script))
   (import
+    (only (miyka repository-setup-script)
+          repository:setup-script))
+  (import
     (only (miyka run-async-script-path)
           run-async-script:path))
   (import
@@ -76,6 +79,9 @@
   (import
     (only (miyka run-sync-script-path)
           run-sync-script:path))
+  (import
+    (only (miyka setup-script-path)
+          setup-script:path))
   (import
     (only (scheme base)
           begin

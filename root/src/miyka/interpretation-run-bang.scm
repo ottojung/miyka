@@ -12,6 +12,10 @@
     (repository:enter-script repository))
   (define enter-script-path
     (enter-script:path enter-script))
+  (define setup-script
+    (repository:setup-script repository))
+  (define setup-script-path
+    (setup-script:path setup-script))
   (define run-script
     (repository:run-script repository))
   (define run-script-path
@@ -71,6 +75,9 @@
   (define maybe-move-home
     (if home-moved? "--move-home" ""))
 
+  (define setup-command-list
+    (stack-make))
+
   (define sync-footer
     (stack-make))
 
@@ -84,18 +91,23 @@
     (stringf "test -f ~s && sh -- ~s" cleanup cleanup))
 
   (define guix-describe-command
-    "\"$MIYKA_GUIX_EXECUTABLE\" describe --format=channels > .config/miyka/channels.scm || exit 1")
+    "\"$MIYKA_GUIX_EXECUTABLE\" describe --format=channels > .config/miyka/channels.scm")
 
   (define snapshot-command
-    "\"$MIYKA_GUIX_EXECUTABLE\" shell --pure restic -- restic backup --quiet --repo \"$MIYKA_REPO_PATH\"/logs --password-file .config/miyka/password.txt -- \"$MIYKA_REPO_PATH\"/wd || exit 1")
+    "restic backup --quiet --repo \"$MIYKA_REPO_PATH\"/logs --password-file .config/miyka/password.txt -- \"$MIYKA_REPO_PATH\"/wd")
+
+  (define setup-command
+    "\"$MIYKA_GUIX_EXECUTABLE\" shell --pure restic coreutils -- .config/miyka/setup.sh")
+
+  (when snapshot?
+    (stack-push! setup-command-list snapshot-command))
+
+  (stack-push! setup-command-list guix-describe-command)
 
   (when cleanup
     (stack-push! sync-footer cleanup-command))
 
-  (stack-push! sync-footer guix-describe-command)
-
-  (when snapshot?
-    (stack-push! sync-footer snapshot-command))
+  (stack-push! sync-footer setup-command)
 
   (for-each
    (lambda (command)
@@ -136,6 +148,18 @@
        (stringf "RETURN_CODE=$?
 ~a
 exit $RETURN_CODE" cleanup-command))))
+
+  (call-with-output-file
+      setup-script-path
+    (lambda (port)
+      (display "#! /bin/sh" port)
+      (newline port)
+      (newline port)
+
+      (for-each
+       (lambda (line) (display line port) (newline port))
+       (reverse
+        (stack->list setup-command-list)))))
 
   (call-with-output-file
       run-sync-script-path
