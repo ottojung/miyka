@@ -20,6 +20,8 @@
 (host \".cache\")                   ;; symlink .cache/ directory from the host's user home, to workspace's home.
 (host \".local/share/Trash\")       ;; same with the Trash directory.
 
+;; (git \"git://vau.place/dotfiles\")    ;; clone and deploy a git repository.
+
 (move-home)             ;; set $HOME env variable to the location of the workspace.
 
 ;; (detach)             ;; if uncommented, shell commands below this line are started asynchronously, and not waited for (they are inherited by PID=1).
