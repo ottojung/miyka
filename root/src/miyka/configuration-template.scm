@@ -4,12 +4,12 @@
 (define configuration:template
   "
 
-(cleanup \".config/miyka/cleanup.sh\")
-(snapshot)
+(cleanup \".config/miyka/cleanup.sh\") ;; run cleanup script before and after all shell scripts.
+(snapshot)              ;; efficiently save a copy the whole workspace.
 
-;; (impure)
+;; (impure)             ;; use host's packages as well as workspace's.
 
-(install \"coreutils\") ;; basic POSIX utils.
+(install \"coreutils\") ;; install basic POSIX utils.
 (install \"nvi\")       ;; a POSIX vi editor.
 (install \"findutils\") ;; a POSIX vi editor.
 (install \"sed\")       ;; a POSIX sed program.
@@ -22,7 +22,7 @@
 
 (move-home)             ;; set $HOME env variable to the location of the workspace.
 
-;; (detach)
-(shell \".config/miyka/init.sh\")
+;; (detach)             ;; if uncommented, shell commands below this line are started asynchronously, and not waited for (they are inherited by PID=1).
+(shell \".config/miyka/init.sh\") ;; run init.sh script via /bin/sh.
 
 ")
