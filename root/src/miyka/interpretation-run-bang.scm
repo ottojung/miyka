@@ -269,22 +269,24 @@ exit $RETURN_CODE" cleanup-command))))
   (call-with-output-file
       run-script-path
     (lambda (port)
+      (define NL "\\\n")
+
       (fprintf
        port
        run-script:template
 
        (words->string
         (list
-         "\"$MIYKA_GUIX_EXECUTABLE\""
-         "shell"
-         maybe-pure
-         "--manifest=manifest.scm"
-         "--"
-         "/bin/sh" "\"$PWD/enter.sh\""
-         maybe-move-home
-         "--guix-executable" "\"$MIYKA_GUIX_EXECUTABLE\""
-         "--"
+         "\"$MIYKA_GUIX_EXECUTABLE\"" NL
+         "shell" maybe-pure NL
+         "--manifest=manifest.scm" NL
+         "--" NL
+         "/bin/sh" "\"$PWD/enter.sh\"" NL
+         maybe-move-home "--guix-executable" "\"$MIYKA_GUIX_EXECUTABLE\"" NL
+         "--" NL
          "sh" ".config/miyka/run-sync.sh"
-         )))))
+         )))
+
+      (newline port)))
 
   (system*/exit-code "/bin/sh" "--" run-script-path))
