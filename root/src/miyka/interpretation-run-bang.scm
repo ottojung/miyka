@@ -100,19 +100,38 @@
 
   (define snapshot-command
     "
-if cd -- \"$MIYKA_REPO_PATH\"/wd
+#########################
+# Snapshot with Restic. #
+#########################
+
+cd -- \"$MIYKA_REPO_PATH\"/wd
+if ! restic backup --quiet --repo \"$MIYKA_REPO_PATH\"/logs --password-file \"$MIYKA_REPO_HOME\"/.config/miyka/password.txt -- .
 then
-    if ! restic backup --quiet --repo \"$MIYKA_REPO_PATH\"/logs --password-file \"$MIYKA_REPO_HOME\"/.config/miyka/password.txt -- .
-    then
-        echo 'Backup with restic failed. Will not proceed further.' 1>&2
-        exit 1
-    fi
-    cd - 1>/dev/null 2>/dev/null
+    echo 'Backup with restic failed. Will not proceed further.' 1>&2
+    exit 1
 fi
+cd - 1>/dev/null 2>/dev/null
+
 ")
 
   (define setup-command
-    "HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell --pure restic coreutils -- /bin/sh .config/miyka/setup.sh \"$MIYKA_REPO_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\"")
+    "
+##############################
+# Invoking the setup script. #
+##############################
+
+if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
+    --pure \\
+    restic coreutils \\
+    -- \\
+    /bin/sh \".config/miyka/setup.sh\" \\
+    \"$MIYKA_REPO_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\"
+then
+    echo 'Setup script failed. Will not proceed further.' 1>&2
+    exit 1
+fi
+
+")
 
   (when snapshot?
     (stack-push! setup-command-list snapshot-command))
@@ -135,7 +154,7 @@ then
     if test -e \"$MIYKA_ORIG_HOME\"/~s
     then
         mkdir -p \"$(dirname -- \"$MIYKA_REPO_HOME\"/~s)\"
-        ln -srT -- \"$MIYKA_ORIG_HOME\"/~s \"$MIYKA_REPO_HOME\"/~s
+        ln -svT -- \"$MIYKA_ORIG_HOME\"/~s \"$MIYKA_REPO_HOME\"/~s   1>&2
     fi
 fi
 " path path path path path)))
@@ -186,6 +205,9 @@ exit $RETURN_CODE" cleanup-command))))
       setup-script-path
     (lambda (port)
       (display "#! /bin/sh" port)
+      (newline port)
+      (newline port)
+      (display "set -e" port)
       (newline port)
       (newline port)
 
