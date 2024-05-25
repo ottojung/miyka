@@ -143,7 +143,8 @@ fi
   (when snapshot?
     (stack-push! setup-command-list snapshot-command))
 
-  (stack-push! setup-command-list guix-describe-command)
+  (unless (null? packages)
+    (stack-push! setup-command-list guix-describe-command))
 
   (when cleanup
     (stack-push! sync-footer cleanup-command))

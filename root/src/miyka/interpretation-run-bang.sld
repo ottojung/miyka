@@ -96,6 +96,7 @@
           list
           newline
           not
+          null?
           quasiquote
           quote
           reverse
