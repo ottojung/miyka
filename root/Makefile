@@ -36,7 +36,7 @@ $(BINARY_PATH): dist/miyka $(PREFIX_BIN)
 	cp -p -T -L -r "src" "$(CODE_INSTALL_ROOT)"
 	guile -s scripts/make-binary.scm "$(CODE_INSTALL_ROOT)" > "$@"
 	chmod +x "$@"
-	miyka --version
+	miyka --version 1>/dev/null
 
 test: build
 	sh scripts/run-tests.sh
