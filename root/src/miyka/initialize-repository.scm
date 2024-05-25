@@ -5,29 +5,6 @@
   (make-directories (repository:path repository))
 
   (let ()
-    (define guix (get-guix-executable))
-    (define backups-directory
-      (repository:backups-directory repository))
-    (define backups-directory-path
-      (backups-directory:path backups-directory))
-    (define pass
-      (repository:restic-password-file repository))
-    (define pass-path
-      (restic-password-file:path pass))
-
-    (unless (= 0 (system*/exit-code
-                  guix "shell" "--pure" "restic"
-                  "--"
-                  "restic"
-                  "init"
-                  "--quiet"
-                  "--repo" backups-directory-path
-                  "--password-file" pass-path))
-      (raisu-fmt
-       'snapshot-init-command-failed
-       "Command restic init failed. Cannot create a log because of this.")))
-
-  (let ()
     (define wd (repository:state-directory repository))
     (define wd-path (state-directory:path wd))
     (make-directories wd-path))

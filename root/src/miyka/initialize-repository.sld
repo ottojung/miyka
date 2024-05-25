@@ -18,26 +18,14 @@
           get-guix-executable))
   (import (only (miyka home-path) home:path))
   (import
-    (only (miyka backups-directory-path)
-          backups-directory:path))
-  (import
     (only (miyka repository-bin) repository:bin))
   (import
     (only (miyka repository-home) repository:home))
   (import
-    (only (miyka repository-backups-directory)
-          repository:backups-directory))
-  (import
     (only (miyka repository-path) repository:path))
-  (import
-    (only (miyka repository-restic-password-file)
-          repository:restic-password-file))
   (import
     (only (miyka repository-state-directory)
           repository:state-directory))
-  (import
-    (only (miyka restic-password-file-path)
-          restic-password-file:path))
   (import
     (only (miyka state-directory-path)
           state-directory:path))

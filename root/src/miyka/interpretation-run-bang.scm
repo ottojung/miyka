@@ -105,11 +105,18 @@
 #########################
 
 cd -- \"$MIYKA_REPO_PATH\"/wd
+
+if ! test -e \"$MIYKA_REPO_PATH\"/backups
+then
+    restic init --quiet --repo \"$MIYKA_REPO_PATH\"/backups --password-file \"$MIYKA_REPO_HOME\"/.config/miyka/password.txt
+fi
+
 if ! restic backup --quiet --repo \"$MIYKA_REPO_PATH\"/backups --password-file \"$MIYKA_REPO_HOME\"/.config/miyka/password.txt -- .
 then
     echo 'Backup with restic failed. Will not proceed further.' 1>&2
     exit 1
 fi
+
 cd - 1>/dev/null 2>/dev/null
 
 ")
