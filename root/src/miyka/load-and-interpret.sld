@@ -13,6 +13,7 @@
     (only (miyka language-cleanup) language:cleanup))
   (import
     (only (miyka language-detach) language:detach))
+  (import (only (miyka language-git) language:git))
   (import
     (only (miyka language-host) language:host))
   (import

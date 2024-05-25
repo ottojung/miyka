@@ -45,6 +45,11 @@
      (stack->list
       (interpretation:host-stack interpretation))))
 
+  (define gitlist
+    (reverse
+     (stack->list
+      (interpretation:git-stack interpretation))))
+
   (define (make-enter-script script-path footer)
     (call-with-output-file
         script-path
@@ -129,7 +134,7 @@ cd - 1>/dev/null 2>/dev/null
 
 if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
     --pure \\
-    restic coreutils \\
+    coreutils restic git make \\
     -- \\
     /bin/sh \".config/miyka/setup.sh\" \\
     \"$MIYKA_REPO_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\"
@@ -166,6 +171,47 @@ fi
 " path path path path path)))
 
    host-locations)
+
+  (unless (null? gitlist)
+    (stack-push!
+     setup-command-list
+     (stringf
+      "
+##############################
+# Deploy git configurations. #
+##############################
+
+mkdir -p .config/miyka/git-repos
+mkdir -p .config/miyka/git-lock
+
+for REPO in ~a
+do
+    NAME=\"$(basename -- \"$REPO\")\"
+
+    if test -e \".config/miyka/git-lock/$NAME\"
+    then continue
+    fi
+
+    if test -e \".config/miyka/git-repos/$NAME\"
+    then
+        cd -- \".config/miyka/git-repos/$NAME\"
+        make miyka-uninitialize || true
+        cd - 1>/dev/null 2>/dev/null
+    fi
+
+    rm -rf -- \".config/miyka/git-repos/$NAME\"
+    rm -f -- \".config/miyka/git-lock/$NAME\"
+
+    git clone --depth 1 -- \"$REPO\" \".config/miyka/git-repos/$NAME\"
+    cd -- \".config/miyka/git-repos/$NAME\"
+    make miyka-initialize
+    cd - 1>/dev/null 2>/dev/null
+    rm -rf \".config/miyka/git-repos/$NAME/.git\"
+
+done
+
+"
+      (words->string (map ~s gitlist)))))
 
   (unless (stack-empty? setup-command-list)
     (stack-push! sync-footer setup-command))
@@ -221,13 +267,13 @@ exit $RETURN_CODE" cleanup-command))))
         (newline port)
         (newline port)
 
-        (display "MIYKA_REPO_HOME=\"$1\"" port)
+        (display "export MIYKA_REPO_HOME=\"$1\"" port)
         (newline port)
-        (display "MIYKA_REPO_PATH=\"$2\"" port)
+        (display "export MIYKA_REPO_PATH=\"$2\"" port)
         (newline port)
-        (display "MIYKA_ORIG_HOME=\"$3\"" port)
+        (display "export MIYKA_ORIG_HOME=\"$3\"" port)
         (newline port)
-        (display "MIYKA_GUIX_EXECUTABLE=\"$4\"" port)
+        (display "export MIYKA_GUIX_EXECUTABLE=\"$4\"" port)
         (newline port)
         (newline port)
 

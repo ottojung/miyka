@@ -10,7 +10,8 @@
     interpretation:cleanup
     interpretation:snapshot?
     interpretation:pure?
-    interpretation:host-stack)
+    interpretation:host-stack
+    interpretation:git-stack)
   (import (only (euphrates box) make-box))
   (import
     (only (euphrates define-type9) define-type9))

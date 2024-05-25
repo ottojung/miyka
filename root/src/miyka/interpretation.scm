@@ -10,6 +10,7 @@
    snapshot?  ;; whether to snapshot before open or not.
    pure?      ;; whether to use --pure with guix.
    host-stack ;; files that are linked from host.
+   git-stack  ;; repositories to-be deployed.
    )
 
   interpretation?
@@ -21,6 +22,7 @@
   (snapshot? interpretation:snapshot?)
   (pure? interpretation:pure?)
   (host-stack interpretation:host-stack)
+  (git-stack interpretation:git-stack)
   )
 
 
@@ -32,6 +34,8 @@
   (define snapshot? (make-box #f))
   (define pure? (make-box #t))
   (define host-stack (stack-make))
+  (define git-stack (stack-make))
+
   (interpretation-constructor
    installist
    commands
@@ -40,4 +44,5 @@
    snapshot?
    pure?
    host-stack
+   git-stack
    ))

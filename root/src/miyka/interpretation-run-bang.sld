@@ -15,6 +15,7 @@
   (import
     (only (euphrates system-star-exit-code)
           system*/exit-code))
+  (import (only (euphrates tilda-s) ~s))
   (import
     (only (euphrates words-to-string) words->string))
   (import
@@ -42,6 +43,7 @@
     (only (miyka interpretation)
           interpretation:cleanup
           interpretation:commands
+          interpretation:git-stack
           interpretation:home-moved?
           interpretation:host-stack
           interpretation:pure?
@@ -94,6 +96,7 @@
           lambda
           let
           list
+          map
           newline
           not
           null?
