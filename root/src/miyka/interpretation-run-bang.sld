@@ -43,6 +43,7 @@
           interpretation:cleanup
           interpretation:commands
           interpretation:home-moved?
+          interpretation:host-stack
           interpretation:pure?
           interpretation:snapshot?))
   (import

@@ -40,6 +40,11 @@
      (stack->list
       (interpretation:commands interpretation))))
 
+  (define host-locations
+    (reverse
+     (stack->list
+      (interpretation:host-stack interpretation))))
+
   (define (make-enter-script script-path footer)
     (call-with-output-file
         script-path
@@ -97,7 +102,7 @@
     "restic backup --quiet --repo \"$MIYKA_REPO_PATH\"/logs --password-file .config/miyka/password.txt -- \"$MIYKA_REPO_PATH\"/wd")
 
   (define setup-command
-    "\"$MIYKA_GUIX_EXECUTABLE\" shell --pure restic coreutils -- .config/miyka/setup.sh")
+    "\"$MIYKA_GUIX_EXECUTABLE\" shell --pure restic coreutils -- .config/miyka/setup.sh \"$MIYKA_ORIG_HOME\" \"$MIYKA_HOME_PATH\"")
 
   (when snapshot?
     (stack-push! setup-command-list snapshot-command))
@@ -108,6 +113,22 @@
     (stack-push! sync-footer cleanup-command))
 
   (stack-push! sync-footer setup-command)
+
+  (for-each
+
+   (lambda (path)
+     (stack-push!
+      setup-command-list
+      (stringf "
+if ! test -e \"$MIYKA_HOME_PATH\"/~s
+then
+    if test -e \"$MIYKA_ORIG_HOME\"/~s
+        ln -srT -- \"$MIYKA_ORIG_HOME\"/~s \"$MIYKA_HOME_PATH\"/~s
+    fi
+fi
+" path path path path)))
+
+   host-locations)
 
   (for-each
    (lambda (command)
@@ -153,6 +174,11 @@ exit $RETURN_CODE" cleanup-command))))
       setup-script-path
     (lambda (port)
       (display "#! /bin/sh" port)
+      (newline port)
+
+      (display "MIYKA_REPO_HOME=\"$1\"" port)
+      (newline port)
+      (display "MIYKA_ORIG_HOME=\"$2\"" port)
       (newline port)
       (newline port)
 

@@ -9,6 +9,7 @@
    cleanup    ;; path to the cleanup script.
    snapshot?  ;; whether to snapshot before open or not.
    pure?      ;; whether to use --pure with guix.
+   host-stack ;; files that are linked from host.
    )
 
   interpretation?
@@ -19,6 +20,7 @@
   (cleanup interpretation:cleanup)
   (snapshot? interpretation:snapshot?)
   (pure? interpretation:pure?)
+  (host-stack interpretation:host-stack)
   )
 
 
@@ -29,6 +31,7 @@
   (define cleanup (make-box #f))
   (define snapshot? (make-box #f))
   (define pure? (make-box #t))
+  (define host-stack (stack-make))
   (interpretation-constructor
    installist
    commands
@@ -36,4 +39,5 @@
    cleanup
    snapshot?
    pure?
+   host-stack
    ))
