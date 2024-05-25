@@ -124,10 +124,11 @@ if ! test -e \"$MIYKA_REPO_HOME\"/~s
 then
     if test -e \"$MIYKA_ORIG_HOME\"/~s
     then
+        mkdir -p \"$(dirname -- \"$MIYKA_REPO_HOME\"/~s)\"
         ln -srT -- \"$MIYKA_ORIG_HOME\"/~s \"$MIYKA_REPO_HOME\"/~s
     fi
 fi
-" path path path path)))
+" path path path path path)))
 
    host-locations)
 
