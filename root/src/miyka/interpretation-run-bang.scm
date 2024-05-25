@@ -210,7 +210,7 @@ do
     cd -- \".config/miyka/git-repos/$NAME\"
     make miyka-initialize
     cd - 1>/dev/null 2>/dev/null
-    git rev-parse HEAD -C \".config/miyka/git-repos/$NAME\" > \".config/miyka/git-lock/$NAME\"
+    git -C \".config/miyka/git-repos/$NAME\" rev-parse HEAD > \".config/miyka/git-lock/$NAME\"
     rm -rf \".config/miyka/git-repos/$NAME/.git\"
 
 done
