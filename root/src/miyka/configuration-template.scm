@@ -17,8 +17,10 @@
 (install \"less\")      ;; a pager program.
 (install \"nss-certs\") ;; HTTPS certificates.
 
-(host \".cache\")       ;; symlink .cache/ directory from the host's user home, to workspace's home.
-(move-home)
+(host \".cache\")                   ;; symlink .cache/ directory from the host's user home, to workspace's home.
+(host \".local/share/Trash\")       ;; same with the Trash directory.
+
+(move-home)             ;; set $HOME env variable to the location of the workspace.
 
 ;; (detach)
 (shell \".config/miyka/init.sh\")
