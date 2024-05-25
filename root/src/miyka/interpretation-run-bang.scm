@@ -280,6 +280,8 @@ exit $RETURN_CODE" cleanup-command))))
         (newline port)
         (display "export MIYKA_GUIX_EXECUTABLE=\"$4\"" port)
         (newline port)
+        (display "export PATH=\"$PATH:$MIYKA_REPO_PATH/wd/bin\"" port)
+        (newline port)
         (newline port)
 
         (for-each
