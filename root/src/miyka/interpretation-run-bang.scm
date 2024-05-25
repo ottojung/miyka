@@ -154,23 +154,27 @@ fi
   (when cleanup
     (stack-push! sync-footer cleanup-command))
 
-  (for-each
+  (unless (null? host-locations)
+    (stack-push!
+     setup-command-list
+     (stringf "
+####################
+# Link host files. #
+####################
 
-   (lambda (path)
-     (stack-push!
-      setup-command-list
-      (stringf "
-if ! test -e \"$MIYKA_REPO_HOME\"/~s
-then
-    if test -e \"$MIYKA_ORIG_HOME\"/~s
+for LOCATION in ~a
+do
+    if ! test -e \"$MIYKA_REPO_HOME/$LOCATION\"
     then
-        mkdir -p \"$(dirname -- \"$MIYKA_REPO_HOME\"/~s)\"
-        ln -svT -- \"$MIYKA_ORIG_HOME\"/~s \"$MIYKA_REPO_HOME\"/~s   1>&2
+        if test -e \"$MIYKA_ORIG_HOME/$LOCATION\"
+        then
+            mkdir -p \"$(dirname -- \"$MIYKA_REPO_HOME/$LOCATION\")\"
+            ln -svT -- \"$MIYKA_ORIG_HOME/$LOCATION\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
+        fi
     fi
-fi
-" path path path path path)))
+done
 
-   host-locations)
+" (words->string (map ~s host-locations)))))
 
   (unless (null? gitlist)
     (stack-push!
