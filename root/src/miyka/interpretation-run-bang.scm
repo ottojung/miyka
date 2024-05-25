@@ -123,6 +123,7 @@
 if ! test -e \"$MIYKA_HOME_PATH\"/~s
 then
     if test -e \"$MIYKA_ORIG_HOME\"/~s
+    then
         ln -srT -- \"$MIYKA_ORIG_HOME\"/~s \"$MIYKA_HOME_PATH\"/~s
     fi
 fi
