@@ -149,8 +149,6 @@ fi
   (when cleanup
     (stack-push! sync-footer cleanup-command))
 
-  (stack-push! sync-footer setup-command)
-
   (for-each
 
    (lambda (path)
@@ -168,6 +166,9 @@ fi
 " path path path path path)))
 
    host-locations)
+
+  (unless (stack-empty? setup-command-list)
+    (stack-push! sync-footer setup-command))
 
   (for-each
    (lambda (command)
@@ -209,30 +210,31 @@ fi
 ~a
 exit $RETURN_CODE" cleanup-command))))
 
-  (call-with-output-file
-      setup-script-path
-    (lambda (port)
-      (display "#! /bin/sh" port)
-      (newline port)
-      (newline port)
-      (display "set -e" port)
-      (newline port)
-      (newline port)
+  (unless (stack-empty? setup-command-list)
+    (call-with-output-file
+        setup-script-path
+      (lambda (port)
+        (display "#! /bin/sh" port)
+        (newline port)
+        (newline port)
+        (display "set -e" port)
+        (newline port)
+        (newline port)
 
-      (display "MIYKA_REPO_HOME=\"$1\"" port)
-      (newline port)
-      (display "MIYKA_REPO_PATH=\"$2\"" port)
-      (newline port)
-      (display "MIYKA_ORIG_HOME=\"$3\"" port)
-      (newline port)
-      (display "MIYKA_GUIX_EXECUTABLE=\"$4\"" port)
-      (newline port)
-      (newline port)
+        (display "MIYKA_REPO_HOME=\"$1\"" port)
+        (newline port)
+        (display "MIYKA_REPO_PATH=\"$2\"" port)
+        (newline port)
+        (display "MIYKA_ORIG_HOME=\"$3\"" port)
+        (newline port)
+        (display "MIYKA_GUIX_EXECUTABLE=\"$4\"" port)
+        (newline port)
+        (newline port)
 
-      (for-each
-       (lambda (line) (display line port) (newline port) (newline port))
-       (reverse
-        (stack->list setup-command-list)))))
+        (for-each
+         (lambda (line) (display line port) (newline port) (newline port))
+         (reverse
+          (stack->list setup-command-list))))))
 
   (call-with-output-file
       run-sync-script-path
