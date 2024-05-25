@@ -134,7 +134,7 @@ cd - 1>/dev/null 2>/dev/null
 
 if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
     --pure \\
-    coreutils restic git make openssh \\
+    coreutils findutils sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
     /bin/sh \".config/miyka/setup.sh\" \\
     \"$MIYKA_REPO_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\"
