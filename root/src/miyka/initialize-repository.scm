@@ -6,10 +6,10 @@
 
   (let ()
     (define guix (get-guix-executable))
-    (define log-directory
-      (repository:log-directory repository))
-    (define log-directory-path
-      (log-directory:path log-directory))
+    (define backups-directory
+      (repository:backups-directory repository))
+    (define backups-directory-path
+      (backups-directory:path backups-directory))
     (define pass
       (repository:restic-password-file repository))
     (define pass-path
@@ -21,7 +21,7 @@
                   "restic"
                   "init"
                   "--quiet"
-                  "--repo" log-directory-path
+                  "--repo" backups-directory-path
                   "--password-file" pass-path))
       (raisu-fmt
        'snapshot-init-command-failed

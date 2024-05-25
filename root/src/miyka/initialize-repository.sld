@@ -18,15 +18,15 @@
           get-guix-executable))
   (import (only (miyka home-path) home:path))
   (import
-    (only (miyka log-directory-path)
-          log-directory:path))
+    (only (miyka backups-directory-path)
+          backups-directory:path))
   (import
     (only (miyka repository-bin) repository:bin))
   (import
     (only (miyka repository-home) repository:home))
   (import
-    (only (miyka repository-log-directory)
-          repository:log-directory))
+    (only (miyka repository-backups-directory)
+          repository:backups-directory))
   (import
     (only (miyka repository-path) repository:path))
   (import

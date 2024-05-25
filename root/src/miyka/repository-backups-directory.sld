@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka repository-log-directory)
-  (export repository:log-directory)
+  (miyka repository-backups-directory)
+  (export repository:backups-directory)
   (import
     (only (euphrates append-posix-path)
           append-posix-path))
@@ -16,5 +16,5 @@
     (guile (import (only (guile) include-from-path))
            (begin
              (include-from-path
-               "miyka/repository-log-directory.scm")))
-    (else (include "repository-log-directory.scm"))))
+               "miyka/repository-backups-directory.scm")))
+    (else (include "repository-backups-directory.scm"))))

@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka log-directory-path)
-  (export log-directory:path)
+  (miyka backups-directory-path)
+  (export backups-directory:path)
   (import
     (only (euphrates properties)
           define-property
@@ -11,5 +11,5 @@
     (guile (import (only (guile) include-from-path))
            (begin
              (include-from-path
-               "miyka/log-directory-path.scm")))
-    (else (include "log-directory-path.scm"))))
+               "miyka/backups-directory-path.scm")))
+    (else (include "backups-directory-path.scm"))))
