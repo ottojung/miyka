@@ -12,6 +12,10 @@
     (repository:enter-script repository))
   (define enter-script-path
     (enter-script:path enter-script))
+  (define ps-script
+    (repository:ps-script repository))
+  (define ps-script-path
+    (ps-script:path ps-script))
   (define setup-script
     (repository:setup-script repository))
   (define setup-script-path
@@ -98,7 +102,14 @@
     sync-footer)
 
   (define cleanup-command
-    (stringf "test -f ~s && sh -- ~s" cleanup cleanup))
+    (stringf "test -f ~s && MIYKA_PROC_ID=$MIYKA_PID_SYNC sh -- ~s" cleanup cleanup))
+
+  (define cleanup-wrapper
+    (let ()
+      (define base "echo '' > \"$MIYKA_REPO_HOME/.config/miyka/setup.pids\"")
+      (if cleanup
+          (stringf "~a\n~a" base cleanup-command)
+          base)))
 
   (define guix-describe-command
     "\"$MIYKA_GUIX_EXECUTABLE\" describe --format=channels > .config/miyka/channels.scm")
@@ -134,7 +145,7 @@ cd - 1>/dev/null 2>/dev/null
 
 if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
     --pure \\
-    coreutils findutils sed gawk nss-certs restic git make openssh gnupg \\
+    coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
     /bin/sh \".config/miyka/setup.sh\" \\
     \"$MIYKA_REPO_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\"
@@ -147,9 +158,6 @@ fi
 
   (unless (null? packages)
     (stack-push! setup-command-list guix-describe-command))
-
-  (when cleanup
-    (stack-push! sync-footer cleanup-command))
 
   (unless (null? host-locations)
     (stack-push!
@@ -241,6 +249,8 @@ done
   (when snapshot?
     (stack-push! setup-command-list snapshot-command))
 
+  (stack-push! sync-footer cleanup-wrapper)
+
   (unless (stack-empty? setup-command-list)
     (stack-push! sync-footer setup-command))
 
@@ -253,7 +263,7 @@ done
       ((command:shell? command)
        (stack-push!
         current-footer
-        (stringf "sh -- ~s" (command:shell:path command))))
+        (stringf "MIYKA_PROC_ID=$MIYKA_PID_SYNC sh -- ~s" (command:shell:path command))))
 
       (else
        (raisu* :from "interpretation:run!"
@@ -267,22 +277,61 @@ done
      sync-footer
      "{ sh -- .config/miyka/run-async.sh & } &"))
 
-  (when cleanup
-    (let ()
-      (define cleanup-footer
-        (cond
-         ((not (stack-empty? current-footer))
-          current-footer)
-         ((not (stack-empty? sync-footer))
-          sync-footer)
-         (else
-          current-footer)))
+  (let ()
+    (define cleanup-footer
+      (cond
+       ((not (stack-empty? current-footer))
+        current-footer)
+       ((not (stack-empty? sync-footer))
+        sync-footer)
+       (else
+        current-footer)))
 
-      (stack-push!
-       cleanup-footer
-       (stringf "RETURN_CODE=$?
-~a
-exit $RETURN_CODE" cleanup-command))))
+    (stack-push!
+     cleanup-footer
+     "RETURN_CODE=$?")
+
+    (stack-push!
+     cleanup-footer
+     "
+ ############################
+ # Kill dangling processes. #
+ ############################
+
+\"$MIYKA_GUIX_EXECUTABLE\" shell coreutils grep procps gawk findutils --pure -- /bin/sh -c \"
+MIYKA_REPO_HOME=$MIYKA_REPO_HOME
+MIYKA_PID_SYNC=$MIYKA_PID_SYNC
+\"'
+
+get_pids() {
+    for PID in $(ps -a -o pid | tail -n +2)
+    do
+        test -e \"/proc/$PID/environ\" || continue
+        if cat \"/proc/$PID/environ\" | tr \"\\0\" \"\\n\" | grep -q -e \"^MIYKA_PROC_ID=$MIYKA_PID_SYNC\"
+        then echo \"$PID\"
+        fi
+    done
+}
+
+for PID in $(get_pids) ; do kill -15 $PID ; done
+sleep 5
+for PID in $(get_pids) ; do kill -9 $PID ; done
+
+'
+")
+
+    (stack-push!
+     cleanup-footer
+     cleanup-wrapper)
+
+    (stack-push!
+     cleanup-footer
+     "exit $RETURN_CODE"))
+
+  (call-with-output-file
+      ps-script-path
+    (lambda (port)
+      (display ps-script:template port)))
 
   (unless (stack-empty? setup-command-list)
     (call-with-output-file
@@ -318,6 +367,11 @@ exit $RETURN_CODE" cleanup-command))))
       (display "#! /bin/sh" port)
       (newline port)
       (newline port)
+      (display "export MIYKA_PID_SYNC=$$" port)
+      (newline port)
+      (display "export MIYKA_PID_ASYNC=1" port)
+      (newline port)
+      (newline port)
 
       (for-each
        (lambda (line) (display line port) (newline port))
@@ -329,6 +383,9 @@ exit $RETURN_CODE" cleanup-command))))
         run-async-script-path
       (lambda (port)
         (display "#! /bin/sh" port)
+        (newline port)
+        (newline port)
+        (display "export MIYKA_PID_ASYNC=$$" port)
         (newline port)
         (newline port)
 

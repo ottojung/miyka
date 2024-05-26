@@ -51,6 +51,11 @@
   (import
     (only (miyka manifest-path) manifest:path))
   (import
+    (only (miyka ps-script-path) ps-script:path))
+  (import
+    (only (miyka ps-script-template)
+          ps-script:template))
+  (import
     (only (miyka repository-cleanup-wrapper)
           repository:cleanup-wrapper))
   (import
@@ -59,6 +64,9 @@
   (import
     (only (miyka repository-manifest)
           repository:manifest))
+  (import
+    (only (miyka repository-ps-script)
+          repository:ps-script))
   (import
     (only (miyka repository-run-async-script)
           repository:run-async-script))
