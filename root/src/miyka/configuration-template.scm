@@ -14,6 +14,7 @@
 (install \"coreutils\") ;; Install basic POSIX utilities.
 (install \"nvi\")       ;; Install the POSIX editor \"vi\".
 (install \"findutils\") ;; Install the POSIX \"find\" utility.
+(install \"grep\")      ;; Install the POSIX \"grep\" utility.
 (install \"sed\")       ;; Install the POSIX \"sed\" stream editor.
 (install \"gawk\")      ;; Install the POSIX \"awk\" programming language.
 (install \"less\")      ;; Install \"less\", a terminal pager program.
