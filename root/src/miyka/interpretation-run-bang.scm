@@ -168,9 +168,32 @@ do
     then
         if test -e \"$MIYKA_ORIG_HOME/$LOCATION\"
         then
-            mkdir -p \"$(dirname -- \"$MIYKA_REPO_HOME/$LOCATION\")\"
-            ln -svT -- \"$MIYKA_ORIG_HOME/$LOCATION\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
+            case \"$LOCATION\" in
+                */)
+                    if ! test -d \"$MIYKA_ORIG_HOME/$LOCATION\"
+                    then echo \"Host path \\\"$LOCATION\\\" expected to be a directory.\" 1>&2 ; exit 1
+                    fi
+                    ;;
+                *)
+                    if test -d \"$MIYKA_ORIG_HOME/$LOCATION\"
+                    then echo \"Host path \\\"$LOCATION\\\" not expected to be a directory.\" 1>&2 ; exit 1
+                    fi
+                    ;;
+            esac
         fi
+
+        case \"$LOCATION\" in
+            */)
+                LOCATION=\"${LOCATION%/}\"    # remove trailing slash.
+
+                if ! test -e \"$MIYKA_ORIG_HOME/$LOCATION\"
+                then mkdir -v -p -- \"$MIYKA_ORIG_HOME/$LOCATION\"
+                fi
+                ;;
+        esac
+
+        mkdir -p -- \"$(dirname -- \"$MIYKA_REPO_HOME/$LOCATION\")\"
+        ln -svT -- \"$MIYKA_ORIG_HOME/$LOCATION\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
     fi
 done
 

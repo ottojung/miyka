@@ -18,8 +18,10 @@
 (install \"nss-certs\") ;; HTTPS certificates.
 (install \"ncurses\")   ;; provides 'clear' and 'reset' - commands that clear the CLI.
 
-(host \".cache\")                   ;; symlink .cache/ directory from the host's user home, to workspace's home.
-(host \".local/share/Trash\")       ;; same with the Trash directory.
+(host \".cache/\")                   ;; symlink .cache/ directory from the host's user home, to workspace's home.
+(host \".local/share/Trash/\")       ;; same with the Trash directory.
+                                     ;; The trailing \"/\" means that we are linking a directory.
+                                     ;; Miyka will abort if the type of the actual file found on the host does not match the leading slash.
 
 ;; (git \"git://vau.place/dotfiles\")    ;; clone and deploy a git repository.
 
