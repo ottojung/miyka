@@ -12,4 +12,4 @@ t_miyka() {
 
 TESTNAME="$(basename "$0")"
 export MIYKA_ROOT=dist/testroot/"$TESTNAME"
-rm -rvf "$MIYKA_ROOT" 1>&2
+rm -rf "$MIYKA_ROOT" 1>&2
