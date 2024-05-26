@@ -17,6 +17,7 @@
 (install \"sed\")       ;; Install the POSIX \"sed\" stream editor.
 (install \"gawk\")      ;; Install the POSIX \"awk\" programming language.
 (install \"less\")      ;; Install \"less\", a terminal pager program.
+(install \"procps\")    ;; Install \"ps\", \"top\", \"pkill\", \"watch\", and several other common utils.
 (install \"nss-certs\") ;; Install HTTPS certificates.
 (install \"ncurses\")   ;; Install \"ncurses\" which provides \"clear\" and \"reset\" commands, essential for terminal management.
 
