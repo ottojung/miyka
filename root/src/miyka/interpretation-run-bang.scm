@@ -145,9 +145,6 @@ fi
 
 ")
 
-  (when snapshot?
-    (stack-push! setup-command-list snapshot-command))
-
   (unless (null? packages)
     (stack-push! setup-command-list guix-describe-command))
 
@@ -240,6 +237,9 @@ done
 
 "
       (words->string (map ~s gitlist)))))
+
+  (when snapshot?
+    (stack-push! setup-command-list snapshot-command))
 
   (unless (stack-empty? setup-command-list)
     (stack-push! sync-footer setup-command))
