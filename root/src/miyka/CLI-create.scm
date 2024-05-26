@@ -55,7 +55,7 @@
       (path-get-dirname path))
 
     (make-directories dirpath)
-    (restic-password-file:random path))
+    (restic-password-file:generate path))
 
   (initialize-repository repository)
 

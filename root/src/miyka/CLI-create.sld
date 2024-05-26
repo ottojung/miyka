@@ -51,8 +51,8 @@
     (only (miyka restic-password-file-path)
           restic-password-file:path))
   (import
-    (only (miyka restic-password-file-random)
-          restic-password-file:random))
+    (only (miyka restic-password-file-generate)
+          restic-password-file:generate))
   (import
     (only (scheme base)
           begin

@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka restic-password-file-random)
-  (export restic-password-file:random)
+  (miyka restic-password-file-generate)
+  (export restic-password-file:generate)
   (import (only (euphrates stringf) stringf))
   (import
     (only (euphrates system-star-exit-code)
@@ -14,5 +14,5 @@
     (guile (import (only (guile) include-from-path))
            (begin
              (include-from-path
-               "miyka/restic-password-file-random.scm")))
-    (else (include "restic-password-file-random.scm"))))
+               "miyka/restic-password-file-generate.scm")))
+    (else (include "restic-password-file-generate.scm"))))
