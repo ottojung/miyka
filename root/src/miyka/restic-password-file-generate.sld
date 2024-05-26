@@ -2,14 +2,10 @@
 (define-library
   (miyka restic-password-file-generate)
   (export restic-password-file:generate)
-  (import (only (euphrates stringf) stringf))
+  (import (only (scheme base) begin define lambda))
   (import
-    (only (euphrates system-star-exit-code)
-          system*/exit-code))
-  (import
-    (only (miyka get-guix-executable)
-          get-guix-executable))
-  (import (only (scheme base) begin define))
+    (only (scheme file) call-with-output-file))
+  (import (only (scheme write) display))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
