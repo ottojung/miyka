@@ -3,33 +3,43 @@
 
 (define configuration:template
   "
+(cleanup \".config/miyka/cleanup.sh\") ;; Execute the cleanup script before and after all shell scripts.
 
-(cleanup \".config/miyka/cleanup.sh\") ;; run cleanup script before and after all shell scripts.
-(snapshot)              ;; efficiently save a copy the whole workspace.
+(snapshot)              ;; Save a snapshot of the entire workspace efficiently.
 
-;; (impure)             ;; use host's packages as well as workspace's.
+;; Uncomment to use both host's and workspace's packages.
+;; (impure)
 
-(install \"coreutils\") ;; install basic POSIX utils.
-(install \"nvi\")       ;; a POSIX vi editor.
-(install \"findutils\") ;; a POSIX vi editor.
-(install \"sed\")       ;; a POSIX sed program.
-(install \"gawk\")      ;; a POSIX awk program.
-(install \"less\")      ;; a pager program.
-(install \"nss-certs\") ;; HTTPS certificates.
-(install \"ncurses\")   ;; provides 'clear' and 'reset' - commands that clear the CLI.
+;; Specify packages to be installed within the workspace environment.
+(install \"coreutils\") ;; Install basic POSIX utilities.
+(install \"nvi\")       ;; Install the POSIX editor \"vi\".
+(install \"findutils\") ;; Install the POSIX \"find\" utility.
+(install \"sed\")       ;; Install the POSIX \"sed\" stream editor.
+(install \"gawk\")      ;; Install the POSIX \"awk\" programming language.
+(install \"less\")      ;; Install \"less\", a terminal pager program.
+(install \"nss-certs\") ;; Install HTTPS certificates.
+(install \"ncurses\")   ;; Install \"ncurses\" which provides \"clear\" and \"reset\" commands, essential for terminal management.
 
-(host \".cache/\")                   ;; symlink .cache/ directory from the host's user home, to workspace's home.
-(host \".local/share/Trash/\")       ;; same with the Trash directory.
-(host \".Xresources\")               ;; same with the this X color scheme file.
-(host \".Xdefaults\")                ;; same with the this X color scheme file.
-                                     ;; The trailing \"/\" means that we are linking a directory.
-                                     ;; Miyka will abort if the type of the actual file found on the host does not match the leading slash.
+;; Symlink specific directories and files from the host user's home to the workspace home.
+(host \".cache/\")                   ;; Symlink the .cache/ directory.
+(host \".local/share/Trash/\")       ;; Symlink the Trash directory.
+(host \".Xresources\")               ;; Symlink the .Xresources file for X color scheme.
+(host \".Xdefaults\")                ;; Symlink the .Xdefaults file for X color scheme.
+                                     ;; Note: The trailing \"/\" indicates that a directory is being linked.
+                                     ;; Miyka will abort if the actual file type on the host does not match the expected type.
 
-;; (git \"git://vau.place/dotfiles\")    ;; clone and deploy a git repository.
+;; Clone and deploy a git repository. Uncomment and customize the URL to use.
+;; (git \"git://vau.place/dotfiles\")
 
-(move-home)             ;; set $HOME env variable to the location of the workspace.
+(move-home)             ;; Set the $HOME environment variable to the location of the workspace.
 
-;; (detach)             ;; if uncommented, shell commands below this line are started asynchronously, and not waited for (they are inherited by PID=1).
-(shell \".config/miyka/init.sh\") ;; run init.sh script via /bin/sh.
+
+;; Execute shell commands asynchronously such that they are disowned.
+;; This means that these commands will not be waited for by Miyka, and
+;; their parent process will become PID 1 (init process) instead of Miyka.
+;; (detach)
+
+;; Run the init.sh script via /bin/sh.
+(shell \".config/miyka/init.sh\")
 
 ")
