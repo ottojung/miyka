@@ -106,7 +106,7 @@
 
   (define cleanup-wrapper
     (let ()
-      (define base "echo '' > \"$MIYKA_REPO_HOME/.config/miyka/setup.pids\"")
+      (define base "")
       (if cleanup
           (stringf "~a\n~a" base cleanup-command)
           base)))
