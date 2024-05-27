@@ -112,7 +112,7 @@
           base)))
 
   (define guix-describe-command
-    "\"$MIYKA_GUIX_EXECUTABLE\" describe --format=channels > .config/miyka/channels.scm")
+    "\"$MIYKA_GUIX_EXECUTABLE\" describe --format=channels > \"$MIYKA_REPO_HOME/.config/miyka/channels.scm\"")
 
   (define snapshot-command
     "
@@ -147,7 +147,7 @@ if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
     --pure \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
-    /bin/sh \".config/miyka/setup.sh\" \\
+    /bin/sh -- \"$MIYKA_REPO_HOME/.config/miyka/setup.sh\" \\
     \"$MIYKA_REPO_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\"
 then
     echo 'Setup script failed. Will not proceed further.' 1>&2
@@ -213,7 +213,7 @@ done
 # Deploy git configurations. #
 ##############################
 
-mkdir -p .config/miyka/git-repos
+mkdir -p -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos\"
 mkdir -p -- \"$MIYKA_REPO_PATH/wd/var/miyka/git-lock\"
 
 for REPO in ~a
@@ -224,22 +224,22 @@ do
     then continue
     fi
 
-    if test -e \".config/miyka/git-repos/$NAME\"
+    if test -e \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
     then
-        cd -- \".config/miyka/git-repos/$NAME\"
+        cd -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
         make miyka-uninitialize || true
         cd - 1>/dev/null 2>/dev/null
     fi
 
-    rm -rf -- \".config/miyka/git-repos/$NAME\"
+    rm -rf -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
     rm -f -- \"$MIYKA_REPO_PATH/wd/var/miyka/git-lock/$NAME\"
 
-    git clone --depth 1 -- \"$REPO\" \".config/miyka/git-repos/$NAME\"
-    cd -- \".config/miyka/git-repos/$NAME\"
+    git clone --depth 1 -- \"$REPO\" \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
+    cd -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
     make miyka-initialize
     cd - 1>/dev/null 2>/dev/null
-    git -C \".config/miyka/git-repos/$NAME\" rev-parse HEAD > \"$MIYKA_REPO_PATH/wd/var/miyka/git-lock/$NAME\"
-    rm -rf \".config/miyka/git-repos/$NAME/.git\"
+    git -C \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\" rev-parse HEAD > \"$MIYKA_REPO_PATH/wd/var/miyka/git-lock/$NAME\"
+    rm -rf \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME/.git\"
 
 done
 
@@ -275,7 +275,7 @@ done
   (unless (stack-empty? async-footer)
     (stack-push!
      sync-footer
-     "{ sh -- .config/miyka/run-async.sh & } &"))
+     "{ sh -- \"$MIYKA_REPO_HOME/.config/miyka/run-async.sh\" & } &"))
 
   (let ()
     (define cleanup-footer
@@ -420,7 +420,7 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
          "/bin/sh" "\"$PWD/enter.sh\"" NL
          maybe-move-home "--guix-executable" "\"$MIYKA_GUIX_EXECUTABLE\"" NL
          "--" NL
-         "sh" ".config/miyka/run-sync.sh"
+         "sh" "--" "\"$PWD/run-sync.sh\""
          )))
 
       (newline port)))
