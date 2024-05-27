@@ -34,7 +34,7 @@
         (define-cli:show-help)))
 
       (--version
-       (display "1.3.0")
+       (display "1.4.0")
        (newline))
 
       (create
