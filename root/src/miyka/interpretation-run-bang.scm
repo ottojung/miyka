@@ -240,7 +240,12 @@ do
     if test -e \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
     then
         cd -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
-        make miyka-uninitialize || true
+
+        if grep -F -q 'miyka-initialize:' 'Makefile'
+        then make miyka-uninitialize || true
+        else make uninstall PREFIX=\"$MIYKA_REPO_HOME/.local\" || true
+        fi
+
         cd - 1>/dev/null 2>/dev/null
     fi
 
@@ -249,7 +254,12 @@ do
 
     git clone --depth 1 -- \"$REPO\" \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
     cd -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
-    make miyka-initialize
+
+    if grep -F -q 'miyka-initialize:' 'Makefile'
+    then make miyka-initialize
+    else make install PREFIX=\"$MIYKA_REPO_HOME/.local\"
+    fi
+
     cd - 1>/dev/null 2>/dev/null
     git -C \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\" rev-parse HEAD > \"$MIYKA_REPO_PATH/wd/var/miyka/git-lock/$NAME\"
     rm -rf \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME/.git\"
