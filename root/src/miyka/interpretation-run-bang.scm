@@ -253,7 +253,7 @@ do
     rm -rf -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
     rm -f -- \"$MIYKA_REPO_PATH/wd/var/miyka/git-lock/$NAME\"
 
-    git clone --depth 1 -- \"$REPO\" \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
+    git clone --recursive --depth 1 -- \"$REPO\" \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
     cd -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
 
     if grep -q '^miyka-initialize:' 'Makefile'
