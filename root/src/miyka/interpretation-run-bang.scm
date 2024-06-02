@@ -169,37 +169,42 @@ fi
 
 for LOCATION in ~a
 do
-    if ! test -e \"$MIYKA_REPO_HOME/$LOCATION\"
-    then
-        if test -e \"$MIYKA_ORIG_HOME/$LOCATION\"
-        then
-            case \"$LOCATION\" in
-                */)
-                    if ! test -d \"$MIYKA_ORIG_HOME/$LOCATION\"
-                    then echo \"Host path \\\"$LOCATION\\\" expected to be a directory.\" 1>&2 ; exit 1
-                    fi
-                    ;;
-                *)
-                    if test -d \"$MIYKA_ORIG_HOME/$LOCATION\"
-                    then echo \"Host path \\\"$LOCATION\\\" not expected to be a directory.\" 1>&2 ; exit 1
-                    fi
-                    ;;
-            esac
-        fi
+    if test -e \"$MIYKA_REPO_HOME/$LOCATION\"
+    then continue
+    fi
 
+    if test -L \"$MIYKA_REPO_HOME/$LOCATION\"
+    then continue
+    fi
+
+    if test -e \"$MIYKA_ORIG_HOME/$LOCATION\"
+    then
         case \"$LOCATION\" in
             */)
-                LOCATION=\"${LOCATION%/}\"    # remove trailing slash.
-
-                if ! test -e \"$MIYKA_ORIG_HOME/$LOCATION\"
-                then mkdir -v -p -- \"$MIYKA_ORIG_HOME/$LOCATION\"
+                if ! test -d \"$MIYKA_ORIG_HOME/$LOCATION\"
+                then echo \"Host path \\\"$LOCATION\\\" expected to be a directory.\" 1>&2 ; exit 1
+                fi
+                ;;
+            *)
+                if test -d \"$MIYKA_ORIG_HOME/$LOCATION\"
+                then echo \"Host path \\\"$LOCATION\\\" not expected to be a directory.\" 1>&2 ; exit 1
                 fi
                 ;;
         esac
-
-        mkdir -p -- \"$(dirname -- \"$MIYKA_REPO_HOME/$LOCATION\")\"
-        ln -svT -- \"$MIYKA_ORIG_HOME/$LOCATION\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
     fi
+
+    case \"$LOCATION\" in
+       */)
+            LOCATION=\"${LOCATION%/}\"    # remove trailing slash.
+
+            if ! test -e \"$MIYKA_ORIG_HOME/$LOCATION\"
+            then mkdir -v -p -- \"$MIYKA_ORIG_HOME/$LOCATION\"
+            fi
+            ;;
+    esac
+
+    mkdir -p -- \"$(dirname -- \"$MIYKA_REPO_HOME/$LOCATION\")\"
+    ln -svT -- \"$MIYKA_ORIG_HOME/$LOCATION\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
 done
 
 " (words->string (map ~s host-locations)))))
