@@ -27,4 +27,13 @@
       (raisu-fmt 'link-command-failed
                  "Failed to link /bin/sh to miyka's repository root. The \"sh\" executable will not be available because of this.")))
 
+  (let ()
+    (define id (repository:id repository))
+    (define id-path (id:path id))
+    (make-directories (path-get-dirname id-path))
+    (call-with-output-file
+        id-path
+      (lambda (port)
+        (display (random-variable-name 16) port))))
+
   (values))

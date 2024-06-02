@@ -2,7 +2,6 @@
 (define-library
   (miyka CLI-create)
   (export CLI:create)
-  (import (only (euphrates fprintf) fprintf))
   (import
     (only (euphrates make-directories)
           make-directories))
@@ -19,15 +18,6 @@
     (only (miyka configuration-template)
           configuration:template))
   (import
-    (only (miyka enter-script-path)
-          enter-script:path))
-  (import
-    (only (miyka enter-script-template)
-          enter-script:template))
-  (import
-    (only (miyka get-guix-executable)
-          get-guix-executable))
-  (import
     (only (miyka init-script-path) init-script:path))
   (import
     (only (miyka init-script-template)
@@ -38,9 +28,6 @@
   (import
     (only (miyka repository-configuration)
           repository:configuration))
-  (import
-    (only (miyka repository-enter-script)
-          repository:enter-script))
   (import
     (only (miyka repository-init-script)
           repository:init-script))
