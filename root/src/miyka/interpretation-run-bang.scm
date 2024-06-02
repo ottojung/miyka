@@ -123,14 +123,17 @@ mkdir -p -- \"$MIYKA_REPO_PATH/wd/tmp\"
 # Snapshot with Restic. #
 #########################
 
-cd -- \"$MIYKA_REPO_PATH\"/wd
+MIYKA_REAL_REPO_PATH=\"$(readlink -f -- \"$MIYKA_REPO_PATH\")\"
+MIYKA_REPO_ID=\"$(basename -- \"$MIYKA_REAL_REPO_PATH\")\"
 
-if ! test -e \"$MIYKA_REPO_PATH\"/backups
+cd -- \"$MIYKA_ROOT\"
+
+if ! test -e \"$MIYKA_ROOT\"/backups
 then
-    restic init --quiet --repo \"$MIYKA_REPO_PATH\"/backups --password-file \"$MIYKA_REPO_HOME\"/.config/miyka/password.txt
+    restic init --quiet --repo \"$MIYKA_ROOT\"/backups --password-command 'echo 1234'
 fi
 
-if ! restic backup --quiet --repo \"$MIYKA_REPO_PATH\"/backups --password-file \"$MIYKA_REPO_HOME\"/.config/miyka/password.txt -- .
+if ! restic backup --quiet --repo \"$MIYKA_ROOT\"/backups --password-command 'echo 1234' --tag id:\"$MIYKA_REPO_ID\" --tag time:$(date +%s) -- repositories/\"$MIYKA_REPO_ID/wd\"
 then
     echo 'Backup with restic failed. Will not proceed further.' 1>&2
     exit 1

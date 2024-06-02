@@ -46,17 +46,6 @@
       (lambda (port)
         (display configuration:template port))))
 
-  (let ()
-    (define pass
-      (repository:restic-password-file repository))
-    (define path
-      (restic-password-file:path pass))
-    (define dirpath
-      (path-get-dirname path))
-
-    (make-directories dirpath)
-    (restic-password-file:generate path))
-
   (initialize-repository repository)
 
   (values))

@@ -45,15 +45,6 @@
     (only (miyka repository-init-script)
           repository:init-script))
   (import
-    (only (miyka repository-restic-password-file)
-          repository:restic-password-file))
-  (import
-    (only (miyka restic-password-file-path)
-          restic-password-file:path))
-  (import
-    (only (miyka restic-password-file-generate)
-          restic-password-file:generate))
-  (import
     (only (scheme base)
           begin
           define
