@@ -19,20 +19,6 @@
         (display init-script:template port))))
 
   (let ()
-    (define script
-      (repository:enter-script repository))
-    (define path
-      (enter-script:path script))
-    (define dirpath
-      (path-get-dirname path))
-
-    (make-directories dirpath)
-    (call-with-output-file
-        path
-      (lambda (port)
-        (fprintf port enter-script:template (get-guix-executable)))))
-
-  (let ()
     (define configuration
       (repository:configuration repository))
     (define path

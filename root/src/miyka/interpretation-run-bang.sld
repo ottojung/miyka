@@ -4,6 +4,12 @@
   (export interpretation:run!)
   (import (only (euphrates box) box-ref))
   (import (only (euphrates fprintf) fprintf))
+  (import
+    (only (euphrates make-directories)
+          make-directories))
+  (import
+    (only (euphrates path-get-dirname)
+          path-get-dirname))
   (import (only (euphrates raisu-star) raisu*))
   (import
     (only (euphrates stack)

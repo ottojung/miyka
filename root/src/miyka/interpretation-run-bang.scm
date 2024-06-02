@@ -343,6 +343,20 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
      cleanup-footer
      "exit $RETURN_CODE"))
 
+  (let ()
+    (define script
+      (repository:enter-script repository))
+    (define path
+      (enter-script:path script))
+    (define dirpath
+      (path-get-dirname path))
+
+    (make-directories dirpath)
+    (call-with-output-file
+        path
+      (lambda (port)
+        (fprintf port enter-script:template))))
+
   (call-with-output-file
       ps-script-path
     (lambda (port)
