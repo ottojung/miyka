@@ -129,15 +129,14 @@ MIYKA_REPO_ID=\"$(basename -- \"$MIYKA_REAL_REPO_PATH\")\"
 
 cd -- \"$MIYKA_ROOT\"
 
-if ! test -e \"$MIYKA_ROOT\"/backups
+if ! test -e ./backups
 then
-    restic init --quiet --repo \"$MIYKA_ROOT\"/backups --password-command 'echo 1234'
+    restic init --quiet --repo ./backups --password-command 'echo 1234'
 fi
 
-if ! restic backup --quiet --repo \"$MIYKA_ROOT\"/backups --password-command 'echo 1234' --tag id:\"$MIYKA_REPO_ID\" --tag time:$(date +%s) -- repositories/\"$MIYKA_REPO_ID/wd\"
+if ! restic backup --quiet --repo ./backups --password-command 'echo 1234' --tag id:\"$MIYKA_REPO_ID\" --tag time:$(date +%s) -- \"repositories/$MIYKA_REPO_ID/wd\"
 then
-    echo 'Backup with restic failed. Will not proceed further.' 1>&2
-    exit 1
+    echo 'Backup with restic failed.' 1>&2
 fi
 
 cd - 1>/dev/null 2>/dev/null
