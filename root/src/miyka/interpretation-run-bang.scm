@@ -257,9 +257,6 @@ done
 "
       (words->string (map ~s gitlist)))))
 
-  (when snapshot?
-    (stack-push! setup-command-list snapshot-command))
-
   (stack-push! sync-footer cleanup-wrapper)
 
   (unless (stack-empty? setup-command-list)
@@ -334,6 +331,11 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
     (stack-push!
      cleanup-footer
      cleanup-wrapper)
+
+    (when snapshot?
+      (stack-push!
+       cleanup-footer
+       snapshot-command))
 
     (stack-push!
      cleanup-footer
