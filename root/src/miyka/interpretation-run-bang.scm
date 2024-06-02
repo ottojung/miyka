@@ -151,7 +151,7 @@ if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
     /bin/sh -- \"$MIYKA_REPO_HOME/.config/miyka/setup.sh\" \\
-    \"$MIYKA_REPO_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\"
+    \"$MIYKA_REPO_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_ROOT\" \"$MIYKA_GUIX_EXECUTABLE\"
 then
     echo 'Setup script failed. Will not proceed further.' 1>&2
     exit 1
@@ -358,7 +358,9 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
         (newline port)
         (display "export MIYKA_ORIG_HOME=\"$3\"" port)
         (newline port)
-        (display "export MIYKA_GUIX_EXECUTABLE=\"$4\"" port)
+        (display "export MIYKA_ROOT=\"$4\"" port)
+        (newline port)
+        (display "export MIYKA_GUIX_EXECUTABLE=\"$5\"" port)
         (newline port)
         (display "export PATH=\"$PATH:$MIYKA_REPO_PATH/wd/bin\"" port)
         (newline port)
