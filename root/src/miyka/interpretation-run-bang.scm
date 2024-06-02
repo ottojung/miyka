@@ -109,6 +109,7 @@
       (define base "
 rm -rf -- \"$MIYKA_REPO_PATH/wd/tmp\"
 mkdir -p -- \"$MIYKA_REPO_PATH/wd/tmp\"
+ln -sT -- \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH/wd/tmp/miyka-orig-home\"
 ")
       (if cleanup
           (stringf "~a\n~a" base cleanup-command)
@@ -173,6 +174,8 @@ fi
 # Link host files. #
 ####################
 
+MIYKA_HOME_LINK=\"$MIYKA_REPO_PATH/wd/tmp/miyka-orig-home\"
+
 for LOCATION in ~a
 do
     if test -e \"$MIYKA_REPO_HOME/$LOCATION\"
@@ -183,16 +186,16 @@ do
     then continue
     fi
 
-    if test -e \"$MIYKA_ORIG_HOME/$LOCATION\"
+    if test -e \"$MIYKA_HOME_LINK/$LOCATION\"
     then
         case \"$LOCATION\" in
             */)
-                if ! test -d \"$MIYKA_ORIG_HOME/$LOCATION\"
+                if ! test -d \"$MIYKA_HOME_LINK/$LOCATION\"
                 then echo \"Host path \\\"$LOCATION\\\" expected to be a directory.\" 1>&2 ; exit 1
                 fi
                 ;;
             *)
-                if test -d \"$MIYKA_ORIG_HOME/$LOCATION\"
+                if test -d \"$MIYKA_HOME_LINK/$LOCATION\"
                 then echo \"Host path \\\"$LOCATION\\\" not expected to be a directory.\" 1>&2 ; exit 1
                 fi
                 ;;
@@ -203,14 +206,14 @@ do
        */)
             LOCATION=\"${LOCATION%/}\"    # remove trailing slash.
 
-            if ! test -e \"$MIYKA_ORIG_HOME/$LOCATION\"
-            then mkdir -v -p -- \"$MIYKA_ORIG_HOME/$LOCATION\"
+            if ! test -e \"$MIYKA_HOME_LINK/$LOCATION\"
+            then mkdir -v -p -- \"$MIYKA_HOME_LINK/$LOCATION\"
             fi
             ;;
     esac
 
     mkdir -p -- \"$(dirname -- \"$MIYKA_REPO_HOME/$LOCATION\")\"
-    ln -svT -- \"$MIYKA_ORIG_HOME/$LOCATION\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
+    ln -svT -- \"$MIYKA_HOME_LINK/$LOCATION\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
 done
 
 " (words->string (map ~s host-locations)))))
