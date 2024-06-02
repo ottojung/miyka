@@ -106,7 +106,10 @@
 
   (define cleanup-wrapper
     (let ()
-      (define base "")
+      (define base "
+rm -rf -- \"$MIYKA_REPO_PATH/wd/tmp\"
+mkdir -p -- \"$MIYKA_REPO_PATH/wd/tmp\"
+")
       (if cleanup
           (stringf "~a\n~a" base cleanup-command)
           base)))
