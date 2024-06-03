@@ -4,10 +4,17 @@
 (define (CLI:list)
   (define repos-dir (get-repositories-directory))
   (when (file-or-directory-exists? repos-dir)
-    (for-each
-     (lambda (paired-names)
-       (define-tuple (fullname name) paired-names)
-       (display name)
-       (newline))
+    (let ()
+      (define files
+        (map cadr (directory-files #t repos-dir)))
 
-     (directory-files #t repos-dir))))
+      (define sorted
+        (euphrates:list-sort
+         files
+         (lambda (a b) (string<? a b))))
+
+      (for-each
+       (lambda (name)
+         (display name)
+         (newline))
+       sorted))))
