@@ -243,7 +243,7 @@ do
         cd -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
 
         if grep -q '^miyka-initialize:' 'Makefile'
-        then make miyka-uninitialize || true
+        then make miyka-uninitialize PREFIX=\"$MIYKA_REPO_HOME/.local\" || true
         else make uninstall PREFIX=\"$MIYKA_REPO_HOME/.local\" || true
         fi
 
@@ -257,7 +257,7 @@ do
     cd -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
 
     if grep -q '^miyka-initialize:' 'Makefile'
-    then make miyka-initialize
+    then make miyka-initialize PREFIX=\"$MIYKA_REPO_HOME/.local\"
     else make install PREFIX=\"$MIYKA_REPO_HOME/.local\"
     fi
 
