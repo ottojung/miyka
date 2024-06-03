@@ -263,7 +263,7 @@ do
 
     cd - 1>/dev/null 2>/dev/null
     git -C \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\" rev-parse HEAD > \"$MIYKA_REPO_PATH/wd/var/miyka/git-lock/$NAME\"
-    rm -rf \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME/.git\"
+    rm -rf -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME/.git\"
 
 done
 
