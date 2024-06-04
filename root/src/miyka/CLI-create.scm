@@ -4,6 +4,8 @@
 (define (CLI:create repository)
   (check-if-repository-already-exists repository)
 
+  (initialize-repository repository)
+
   (let ()
     (define script
       (repository:init-script repository))
@@ -31,7 +33,5 @@
         path
       (lambda (port)
         (display configuration:template port))))
-
-  (initialize-repository repository)
 
   (values))

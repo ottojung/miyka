@@ -125,7 +125,6 @@ ln -sT -- \"$MIYKA_ORIG_HOME\" \"$MIYKA_WORK_PATH/tmp/miyka-orig-home\"
 #########################
 
 MIYKA_REAL_REPO_PATH=\"$(readlink -f -- \"$MIYKA_REPO_PATH\")\"
-MIYKA_REPO_NAME=\"$(basename -- \"$MIYKA_REAL_REPO_PATH\")\"
 MIYKA_REPO_ID=\"$(cat -- \"$MIYKA_WORK_PATH/var/miyka/id\")\"
 
 cd -- \"$MIYKA_ROOT\"
@@ -135,7 +134,7 @@ then
     restic init --quiet --repo ./backups --password-command 'echo 1234'
 fi
 
-if ! restic backup --quiet --repo ./backups --password-command 'echo 1234' --tag id:\"$MIYKA_REPO_ID\" --tag time:$(date +%s) --tag action:exit -- \"repositories/$MIYKA_REPO_NAME/wd\"
+if ! restic backup --quiet --repo ./backups --password-command 'echo 1234' --tag id:\"$MIYKA_REPO_ID\" --tag time:$(date +%s) --tag action:exit -- \"repositories/$MIYKA_REPO_ID/wd\"
 then
     echo 'Backup with restic failed.' 1>&2
 fi

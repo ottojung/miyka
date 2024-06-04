@@ -2,14 +2,16 @@
 
 . tests/common/header.sh
 
-t_miyka create test-project
+t_miyka create "test-project"
+
+HOME_PATH=$(t_miyka get home of "test-project")
 
 echo '(shell ".config/miyka/init.sh") (move-home)' \
-     > "$MIYKA_ROOT/repositories/test-project/wd/home/.config/miyka/configuration.lisp"
+     > "$HOME_PATH/.config/miyka/configuration.lisp"
 
 echo 'echo 2 + 3' \
-     > "$MIYKA_ROOT/repositories/test-project/wd/home/.config/miyka/init.sh"
+     > "$HOME_PATH/.config/miyka/init.sh"
 
-RESULT=$(t_miyka run test-project)
+RESULT=$(t_miyka run "test-project")
 
 test "$RESULT" = "2 + 3"

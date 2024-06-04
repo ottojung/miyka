@@ -3,15 +3,21 @@
   (miyka repository-exists-on-disk-huh)
   (export repository:exists-on-disk?)
   (import
-    (only (euphrates file-or-directory-exists-q)
-          file-or-directory-exists?))
-  (import
     (only (euphrates properties)
           define-property
           define-provider))
   (import
-    (only (miyka repository-path) repository:path))
-  (import (only (scheme base) begin lambda))
+    (only (miyka get-repositories-name-map)
+          get-repositories-name-map))
+  (import
+    (only (miyka repository-name) repository:name))
+  (import
+    (only (scheme base)
+          assoc
+          begin
+          define
+          lambda
+          not))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

@@ -12,8 +12,9 @@
   (import
     (only (miyka get-repositories-directory)
           get-repositories-directory))
+  (import (only (miyka id-value) id:value))
   (import
-    (only (miyka repository-name) repository:name))
+    (only (miyka repository-id) repository:id))
   (import (only (scheme base) begin define lambda))
   (cond-expand
     (guile (import (only (guile) include-from-path))

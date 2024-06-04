@@ -3,9 +3,6 @@
   (miyka CLI-list)
   (export CLI:list)
   (import
-    (only (euphrates directory-files)
-          directory-files))
-  (import
     (only (euphrates euphrates-list-sort)
           euphrates:list-sort))
   (import
@@ -15,9 +12,12 @@
     (only (miyka get-repositories-directory)
           get-repositories-directory))
   (import
+    (only (miyka get-repositories-name-map)
+          get-repositories-name-map))
+  (import
     (only (scheme base)
           begin
-          cadr
+          car
           define
           for-each
           lambda

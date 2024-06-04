@@ -4,6 +4,8 @@
 (define (CLI:copy <existing-repository-name> <new-repository-name>)
   (check-if-repository-already-exists <new-repository-name>)
 
+  (initialize-repository <new-repository-name>)
+
   (let ()
     (define guix
       (get-guix-executable))
@@ -25,7 +27,5 @@
      existing-state-path
      new-state-path
      ))
-
-  (initialize-repository <new-repository-name>)
 
   (values))

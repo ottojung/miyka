@@ -5,6 +5,8 @@
 
 (define-provider p
   :targets (repository:exists-on-disk?)
-  :sources (repository:path)
+  :sources (repository:name)
   (lambda (this)
-    (file-or-directory-exists? (repository:path this))))
+    (define name-map (get-repositories-name-map))
+    (define name (repository:name this))
+    (not (not (assoc name name-map)))))

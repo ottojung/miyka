@@ -5,12 +5,15 @@
   (define repos-dir (get-repositories-directory))
   (when (file-or-directory-exists? repos-dir)
     (let ()
-      (define files
-        (map cadr (directory-files #t repos-dir)))
+      (define name-map
+        (get-repositories-name-map))
+
+      (define names
+        (map car name-map))
 
       (define sorted
         (euphrates:list-sort
-         files
+         names
          (lambda (a b) (string<? a b))))
 
       (for-each
