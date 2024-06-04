@@ -107,9 +107,9 @@
   (define cleanup-wrapper
     (let ()
       (define base "
-rm -rf -- \"$MIYKA_REPO_PATH/wd/tmp\"
-mkdir -p -- \"$MIYKA_REPO_PATH/wd/tmp\"
-ln -sT -- \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH/wd/tmp/miyka-orig-home\"
+rm -rf -- \"$MIYKA_WORK_PATH/tmp\"
+mkdir -p -- \"$MIYKA_WORK_PATH/tmp\"
+ln -sT -- \"$MIYKA_ORIG_HOME\" \"$MIYKA_WORK_PATH/tmp/miyka-orig-home\"
 ")
       (if cleanup
           (stringf "~a\n~a" base cleanup-command)
@@ -126,7 +126,7 @@ ln -sT -- \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH/wd/tmp/miyka-orig-home\"
 
 MIYKA_REAL_REPO_PATH=\"$(readlink -f -- \"$MIYKA_REPO_PATH\")\"
 MIYKA_REPO_NAME=\"$(basename -- \"$MIYKA_REAL_REPO_PATH\")\"
-MIYKA_REPO_ID=\"$(cat -- \"$MIYKA_REPO_PATH/wd/var/miyka/id\")\"
+MIYKA_REPO_ID=\"$(cat -- \"$MIYKA_WORK_PATH/var/miyka/id\")\"
 
 cd -- \"$MIYKA_ROOT\"
 
@@ -155,7 +155,7 @@ if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
     /bin/sh -- \"$MIYKA_REPO_HOME/.config/miyka/setup.sh\" \\
-    \"$MIYKA_REPO_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_ROOT\" \"$MIYKA_GUIX_EXECUTABLE\"
+    \"$MIYKA_REPO_HOME\" \"$MIYKA_WORK_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ROOT\" \"$MIYKA_GUIX_EXECUTABLE\"
 then
     echo 'Setup script failed. Will not proceed further.' 1>&2
     exit 1
@@ -174,7 +174,7 @@ fi
 # Link host files. #
 ####################
 
-MIYKA_HOME_LINK=\"$MIYKA_REPO_PATH/wd/tmp/miyka-orig-home\"
+MIYKA_HOME_LINK=\"$MIYKA_WORK_PATH/tmp/miyka-orig-home\"
 
 for LOCATION in ~a
 do
@@ -228,13 +228,13 @@ done
 ##############################
 
 mkdir -p -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos\"
-mkdir -p -- \"$MIYKA_REPO_PATH/wd/var/miyka/git-lock\"
+mkdir -p -- \"$MIYKA_WORK_PATH/var/miyka/git-lock\"
 
 for REPO in ~a
 do
     NAME=\"$(basename -- \"$REPO\")\"
 
-    if test -e \"$MIYKA_REPO_PATH/wd/var/miyka/git-lock/$NAME\"
+    if test -e \"$MIYKA_WORK_PATH/var/miyka/git-lock/$NAME\"
     then continue
     fi
 
@@ -251,7 +251,7 @@ do
     fi
 
     rm -rf -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
-    rm -f -- \"$MIYKA_REPO_PATH/wd/var/miyka/git-lock/$NAME\"
+    rm -f -- \"$MIYKA_WORK_PATH/var/miyka/git-lock/$NAME\"
 
     git clone --recursive --depth 1 -- \"$REPO\" \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
     cd -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\"
@@ -262,7 +262,7 @@ do
     fi
 
     cd - 1>/dev/null 2>/dev/null
-    git -C \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\" rev-parse HEAD > \"$MIYKA_REPO_PATH/wd/var/miyka/git-lock/$NAME\"
+    git -C \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME\" rev-parse HEAD > \"$MIYKA_WORK_PATH/var/miyka/git-lock/$NAME\"
     rm -rf -- \"$MIYKA_REPO_HOME/.config/miyka/git-repos/$NAME/.git\"
 
 done
@@ -386,15 +386,17 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
 
         (display "export MIYKA_REPO_HOME=\"$1\"" port)
         (newline port)
-        (display "export MIYKA_REPO_PATH=\"$2\"" port)
+        (display "export MIYKA_WORK_PATH=\"$2\"" port)
         (newline port)
         (display "export MIYKA_ORIG_HOME=\"$3\"" port)
         (newline port)
-        (display "export MIYKA_ROOT=\"$4\"" port)
+        (display "export MIYKA_REPO_PATH=\"$4\"" port)
         (newline port)
-        (display "export MIYKA_GUIX_EXECUTABLE=\"$5\"" port)
+        (display "export MIYKA_ROOT=\"$5\"" port)
         (newline port)
-        (display "export PATH=\"$PATH:$MIYKA_REPO_PATH/wd/bin\"" port)
+        (display "export MIYKA_GUIX_EXECUTABLE=\"$6\"" port)
+        (newline port)
+        (display "export PATH=\"$PATH:$MIYKA_WORK_PATH/bin\"" port)
         (newline port)
         (newline port)
 

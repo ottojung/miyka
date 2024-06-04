@@ -16,8 +16,9 @@ DIR_PATH=\"${SCRIPT_PATH%/*}\"
 ###################################
 
 export MIYKA_REPO_HOME=\"$DIR_PATH/../..\"
-export MIYKA_REPO_PATH=\"$MIYKA_REPO_HOME/../..\"
+export MIYKA_WORK_PATH=\"$MIYKA_REPO_HOME/..\"
 export MIYKA_ORIG_HOME=\"$HOME\"
+export MIYKA_REPO_PATH=\"$MIYKA_WORK_PATH/..\"
 export MIYKA_GUIX_EXECUTABLE=guix
 
 if test -z \"$MIYKA_ROOT\"
