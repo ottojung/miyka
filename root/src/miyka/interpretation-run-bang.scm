@@ -135,7 +135,7 @@ then
     restic init --quiet --repo ./backups --password-command 'echo 1234'
 fi
 
-if ! restic backup --quiet --repo ./backups --password-command 'echo 1234' --tag id:\"$MIYKA_REPO_ID\" --tag action:exit -- \"repositories/$MIYKA_REPO_NAME/wd\"
+if ! restic backup --quiet --repo ./backups --password-command 'echo 1234' --tag id:\"$MIYKA_REPO_ID\" --tag time:$(date +%s) --tag action:exit -- \"repositories/$MIYKA_REPO_NAME/wd\"
 then
     echo 'Backup with restic failed.' 1>&2
 fi
