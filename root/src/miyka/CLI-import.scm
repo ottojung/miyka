@@ -3,33 +3,40 @@
 
 (define (CLI:import path-to-repository name)
   (define guix (get-guix-executable))
+  (define repository name)
 
   (check-if-repository-already-exists name)
 
   (let ()
-    (define id-path
-      (append-posix-path path-to-repository "wd" "var" "miyka" "id"))
-    (define id-value
-      (~a (call-with-input-file id-path read)))
+    (with-properties
+     :for-everything
+     (let ()
+       (set-property! (repository:path repository) path-to-repository)
+       (let ()
+         (define id-path (id:path repository))
+         (define id-value
+           (~a (call-with-input-file id-path read)))
 
-    (register-repository-name name id-value)
-    (define target-path (repository:path name))
+         (register-repository-name repository id-value))))
 
-    (unless (= 0 (system*/exit-code
-                  guix "shell" "--pure" "coreutils"
-                  "--" "mv" "-T" "--" path-to-repository target-path
-                  ))
-      (raisu-fmt 'import-command-failed
-                 "Failed to move the imported files into Miyka's root."))
+    (let ()
+      (define target-path (repository:path repository))
 
-    (unless (= 0 (system*/exit-code
-                  guix "shell" "--pure" "coreutils"
-                  "--" "ln" "-sfT" "--" target-path path-to-repository
-                  ))
-      (raisu-fmt 'import-command-failed
-                 "Failed to symlink the imported repository to the original path. The repository has been moved to ~s."
-                 target-path))
+      (unless (= 0 (system*/exit-code
+                    guix "shell" "--pure" "coreutils"
+                    "--" "mv" "-T" "--" path-to-repository target-path
+                    ))
+        (raisu-fmt 'import-command-failed
+                   "Failed to move the imported files into Miyka's root."))
 
-    )
+      (unless (= 0 (system*/exit-code
+                    guix "shell" "--pure" "coreutils"
+                    "--" "ln" "-sfT" "--" target-path path-to-repository
+                    ))
+        (raisu-fmt 'import-command-failed
+                   "Failed to symlink the imported repository to the original path. The repository has been moved to ~s."
+                   target-path))
+
+      ))
 
   (values))

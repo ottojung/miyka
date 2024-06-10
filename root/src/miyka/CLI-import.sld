@@ -3,8 +3,9 @@
   (miyka CLI-import)
   (export CLI:import)
   (import
-    (only (euphrates append-posix-path)
-          append-posix-path))
+    (only (euphrates properties)
+          set-property!
+          with-properties))
   (import (only (euphrates raisu-fmt) raisu-fmt))
   (import
     (only (euphrates system-star-exit-code)
@@ -16,6 +17,7 @@
   (import
     (only (miyka get-guix-executable)
           get-guix-executable))
+  (import (only (miyka id-path) id:path))
   (import
     (only (miyka register-repository-name)
           register-repository-name))
