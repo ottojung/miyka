@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka repository-init-script)
-  (export repository:init-script)
+  (miyka repository-configuration-directory)
+  (export repository:configuration-directory)
   (import
     (only (euphrates append-posix-path)
           append-posix-path))
@@ -9,12 +9,9 @@
     (only (euphrates properties)
           define-property
           define-provider))
+  (import (only (miyka home-path) home:path))
   (import
-    (only (miyka configuration-directory-path)
-          configuration-directory:path))
-  (import
-    (only (miyka repository-configuration-directory)
-          repository:configuration-directory))
+    (only (miyka repository-home) repository:home))
   (import
     (only (miyka repository-path) repository:path))
   (import (only (scheme base) begin define lambda))
@@ -22,5 +19,6 @@
     (guile (import (only (guile) include-from-path))
            (begin
              (include-from-path
-               "miyka/repository-init-script.scm")))
-    (else (include "repository-init-script.scm"))))
+               "miyka/repository-configuration-directory.scm")))
+    (else (include
+            "repository-configuration-directory.scm"))))

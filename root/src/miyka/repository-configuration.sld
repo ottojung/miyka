@@ -10,13 +10,13 @@
           define-property
           define-provider))
   (import
+    (only (miyka configuration-directory-path)
+          configuration-directory:path))
+  (import
+    (only (miyka repository-configuration-directory)
+          repository:configuration-directory))
+  (import
     (only (miyka repository-path) repository:path))
-  (import
-    (only (miyka repository-state-directory)
-          repository:state-directory))
-  (import
-    (only (miyka state-directory-path)
-          state-directory:path))
   (import (only (scheme base) begin define lambda))
   (cond-expand
     (guile (import (only (guile) include-from-path))

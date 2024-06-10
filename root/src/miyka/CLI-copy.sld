@@ -15,17 +15,17 @@
     (only (miyka check-if-repository-already-exists)
           check-if-repository-already-exists))
   (import
+    (only (miyka configuration-directory-path)
+          configuration-directory:path))
+  (import
     (only (miyka get-guix-executable)
           get-guix-executable))
   (import
     (only (miyka initialize-repository)
           initialize-repository))
   (import
-    (only (miyka repository-state-directory)
-          repository:state-directory))
-  (import
-    (only (miyka state-directory-path)
-          state-directory:path))
+    (only (miyka repository-configuration-directory)
+          repository:configuration-directory))
   (import
     (only (scheme base) begin define let values))
   (cond-expand

@@ -9,23 +9,23 @@
   (let ()
     (define guix
       (get-guix-executable))
-    (define existing-state
-      (repository:state-directory <existing-repository-name>))
-    (define existing-state-path
-      (state-directory:path existing-state))
-    (define new-state
-      (repository:state-directory <new-repository-name>))
-    (define new-state-path
-      (state-directory:path new-state))
+    (define existing-configuration
+      (repository:configuration-directory <existing-repository-name>))
+    (define existing-configuration-path
+      (configuration-directory:path existing-configuration))
+    (define new-configuration
+      (repository:configuration-directory <new-repository-name>))
+    (define new-configuration-path
+      (configuration-directory:path new-configuration))
 
-    (make-directories (path-get-dirname new-state-path))
+    (make-directories (path-get-dirname new-configuration-path))
     (system*/exit-code
      guix "shell" "--pure" "coreutils"
      "--"
      "cp" "-r" "-T"
      "--"
-     existing-state-path
-     new-state-path
+     existing-configuration-path
+     new-configuration-path
      ))
 
   (values))
