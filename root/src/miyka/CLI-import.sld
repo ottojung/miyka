@@ -3,12 +3,13 @@
   (miyka CLI-import)
   (export CLI:import)
   (import
-    (only (euphrates path-get-basename)
-          path-get-basename))
+    (only (euphrates append-posix-path)
+          append-posix-path))
   (import (only (euphrates raisu-fmt) raisu-fmt))
   (import
     (only (euphrates system-star-exit-code)
           system*/exit-code))
+  (import (only (euphrates tilda-a) ~a))
   (import
     (only (miyka check-if-repository-already-exists)
           check-if-repository-already-exists))
@@ -16,16 +17,22 @@
     (only (miyka get-guix-executable)
           get-guix-executable))
   (import
+    (only (miyka register-repository-name)
+          register-repository-name))
+  (import
     (only (miyka repository-path) repository:path))
   (import
     (only (scheme base)
           =
           begin
           define
-          or
+          let
           quote
           unless
           values))
+  (import
+    (only (scheme file) call-with-input-file))
+  (import (only (scheme read) read))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

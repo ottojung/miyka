@@ -6,9 +6,6 @@
     (only (euphrates append-posix-path)
           append-posix-path))
   (import
-    (only (euphrates assoc-set-value)
-          assoc-set-value))
-  (import
     (only (euphrates file-or-directory-exists-q)
           file-or-directory-exists?))
   (import
@@ -28,11 +25,11 @@
   (import
     (only (miyka get-guix-executable)
           get-guix-executable))
-  (import
-    (only (miyka get-repositories-name-map)
-          get-repositories-name-map))
   (import (only (miyka home-path) home:path))
   (import (only (miyka id-path) id:path))
+  (import
+    (only (miyka register-repository-name)
+          register-repository-name))
   (import
     (only (miyka repository-bin) repository:bin))
   (import
@@ -40,15 +37,10 @@
   (import
     (only (miyka repository-id) repository:id))
   (import
-    (only (miyka repository-name) repository:name))
-  (import
     (only (miyka repository-path) repository:path))
   (import
     (only (miyka repository-state-directory)
           repository:state-directory))
-  (import
-    (only (miyka set-repositories-name-map)
-          set-repositories-name-map))
   (import
     (only (miyka state-directory-path)
           state-directory:path))

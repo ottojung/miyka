@@ -15,10 +15,8 @@
     /         list
     /         copy <existing-name> <new-name>
     /         remove <name>
-    /         import IMPORT_OPTS
+    /         import <path> as <name>
     /         get GET_ARGUMENTS
-    IMPORT_OPTS : --name <optional-name> <path>
-    /         <path>
     GET_ARGUMENTS : home of <name>
     OPT : --root <root>
     /     --guix-executable <guix-executable>
@@ -60,7 +58,7 @@
        (CLI:remove <name>))
 
       (import
-       (CLI:import <path> <optional-name>))
+       (CLI:import <path> <name>))
 
       ((and get home of)
        (CLI:get-repository-home <name>))

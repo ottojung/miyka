@@ -2,23 +2,19 @@
 ;;;; This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details. You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 (define (initialize-repository repository)
-  (let ()
-    (define name-map (get-repositories-name-map))
-    (define name (repository:name repository))
-    (define id-value (random-variable-name 16))
-    (define name-map* (assoc-set-value name id-value name-map))
-    (set-repositories-name-map name-map*)
+  (define id-value (random-variable-name 16))
 
-    (let ()
-      (define id (repository:id repository))
-      (define id-path (id:path id))
-      (make-directories (path-get-dirname id-path))
-      (call-with-output-file
-          id-path
-        (lambda (port)
-          (display id-value port)))))
-
+  (register-repository-name repository id-value)
   (make-directories (repository:path repository))
+
+  (let ()
+    (define id (repository:id repository))
+    (define id-path (id:path id))
+    (make-directories (path-get-dirname id-path))
+    (call-with-output-file
+        id-path
+      (lambda (port)
+        (display id-value port))))
 
   (let ()
     (define wd (repository:state-directory repository))
