@@ -236,13 +236,13 @@ done
 ##############################
 
 mkdir -p -- \"$MIYKA_REPO_HOME/.miyka/git-repos\"
-mkdir -p -- \"$MIYKA_WORK_PATH/var/miyka/git-lock\"
+mkdir -p -- \"$MIYKA_REPO_HOME/.miyka/git-lock\"
 
 for REPO in ~a
 do
     NAME=\"$(basename -- \"$REPO\")\"
 
-    if test -e \"$MIYKA_WORK_PATH/var/miyka/git-lock/$NAME\"
+    if test -e \"$MIYKA_REPO_HOME/.miyka/git-lock/$NAME\"
     then continue
     fi
 
@@ -259,7 +259,7 @@ do
     fi
 
     rm -rf -- \"$MIYKA_REPO_HOME/.miyka/git-repos/$NAME\"
-    rm -f -- \"$MIYKA_WORK_PATH/var/miyka/git-lock/$NAME\"
+    rm -f -- \"$MIYKA_REPO_HOME/.miyka/git-lock/$NAME\"
 
     git clone --recursive --depth 1 -- \"$REPO\" \"$MIYKA_REPO_HOME/.miyka/git-repos/$NAME\"
     cd -- \"$MIYKA_REPO_HOME/.miyka/git-repos/$NAME\"
@@ -270,7 +270,7 @@ do
     fi
 
     cd - 1>/dev/null 2>/dev/null
-    git -C \"$MIYKA_REPO_HOME/.miyka/git-repos/$NAME\" rev-parse HEAD > \"$MIYKA_WORK_PATH/var/miyka/git-lock/$NAME\"
+    git -C \"$MIYKA_REPO_HOME/.miyka/git-repos/$NAME\" rev-parse HEAD > \"$MIYKA_REPO_HOME/.miyka/git-lock/$NAME\"
     rm -rf -- \"$MIYKA_REPO_HOME/.miyka/git-repos/$NAME/.git\"
 
 done
