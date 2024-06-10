@@ -125,7 +125,9 @@ ln -sT -- \"$MIYKA_ORIG_HOME\" \"$MIYKA_WORK_PATH/tmp/miyka-orig-home\"
 #########################
 
 MIYKA_REAL_REPO_PATH=\"$(readlink -f -- \"$MIYKA_REPO_PATH\")\"
-MIYKA_REPO_ID=\"$(cat -- \"$MIYKA_WORK_PATH/var/miyka/id\")\"
+MIYKA_REPO_ID=\"$(cat -- \"$MIYKA_WORK_PATH/etc/miyka/id\")\"
+MIYKA_GLOBAL_ID_PATH=\"$MIYKA_ROOT/globalid\"
+HOSTNAME=\"$(cat -- '/etc/hostname')\"
 
 cd -- \"$MIYKA_ROOT\"
 
@@ -134,7 +136,14 @@ then
     restic init --quiet --repo ./backups --password-command 'echo 1234'
 fi
 
-if ! restic backup --quiet --repo ./backups --password-command 'echo 1234' --tag id:\"$MIYKA_REPO_ID\" --tag time:$(date +%s) --tag action:exit -- \"repositories/$MIYKA_REPO_ID/wd\"
+if ! test -f \"$MIYKA_GLOBAL_ID_PATH\"
+then
+    cat -- '/dev/urandom' | base32 | head -c 16  > \"$MIYKA_GLOBAL_ID_PATH\"
+fi
+
+MIYKA_GLOBAL_ID=\"$(cat -- \"$MIYKA_GLOBAL_ID_PATH\")\"
+
+if ! restic backup --quiet --repo ./backups --password-command 'echo 1234' --tag id:\"$MIYKA_REPO_ID\" --tag time:$(date +%s) --tag action:exit --tag hostname:\"$HOSTNAME\" --tag globalid:\"$MIYKA_GLOBAL_ID_PATH\" -- \"repositories/$MIYKA_REPO_ID/wd\"
 then
     echo 'Backup with restic failed.' 1>&2
 fi
