@@ -9,7 +9,7 @@
   (lambda (this)
     (define wd (repository:work-directory this))
     (define wd-path (work-directory:path wd))
-    (append-posix-path wd-path "var" "miyka" "id")))
+    (append-posix-path wd-path "etc" "miyka" "id")))
 
 (define-provider p:id:value/1
   :targets (id:value)
