@@ -21,7 +21,7 @@
 
   (unless (= 0 (system*/exit-code
                 guix "shell" "--pure" "coreutils"
-                "--" "ln" "-srf" "--" target-path path-to-repository
+                "--" "ln" "-sfT" "--" target-path path-to-repository
                 ))
 
     (raisu-fmt 'import-command-failed
