@@ -79,6 +79,7 @@
          'import-command-failed
          'link-command-failed
          'cannot-find-guix
+         'imported-repository-does-not-have-id
          )
 
  (with-properties

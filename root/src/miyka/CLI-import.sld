@@ -3,10 +3,14 @@
   (miyka CLI-import)
   (export CLI:import)
   (import
+    (only (euphrates file-or-directory-exists-q)
+          file-or-directory-exists?))
+  (import
     (only (euphrates properties)
           set-property!
           with-properties))
   (import (only (euphrates raisu-fmt) raisu-fmt))
+  (import (only (euphrates stringf) stringf))
   (import
     (only (euphrates system-star-exit-code)
           system*/exit-code))

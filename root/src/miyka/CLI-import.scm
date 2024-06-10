@@ -15,7 +15,15 @@
        (let ()
          (define id-path (id:path repository))
          (define id-value
-           (~a (call-with-input-file id-path read)))
+           (begin
+             (unless (file-or-directory-exists? id-path)
+               (raisu-fmt
+                'imported-repository-does-not-have-id
+                (stringf "Imported repository at ~s does not have an id file at ~s."
+                         path-to-repository
+                         id-path)))
+
+             (~a (call-with-input-file id-path read))))
 
          (register-repository-name repository id-value))))
 
