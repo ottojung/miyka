@@ -235,7 +235,7 @@ done
 # Deploy git configurations. #
 ##############################
 
-mkdir -p -- \"$MIYKA_REPO_HOME/.miyka/git-repos\"
+mkdir -p -- \"$MIYKA_REPO_HOME/.miyka/git\"
 mkdir -p -- \"$MIYKA_REPO_HOME/.miyka/git-lock\"
 
 for REPO in ~a
@@ -246,9 +246,9 @@ do
     then continue
     fi
 
-    if test -e \"$MIYKA_REPO_HOME/.miyka/git-repos/$NAME\"
+    if test -e \"$MIYKA_REPO_HOME/.miyka/git/$NAME\"
     then
-        cd -- \"$MIYKA_REPO_HOME/.miyka/git-repos/$NAME\"
+        cd -- \"$MIYKA_REPO_HOME/.miyka/git/$NAME\"
 
         if grep -q '^miyka-initialize:' 'Makefile'
         then make miyka-uninitialize PREFIX=\"$MIYKA_REPO_HOME/.local\" || true
@@ -258,11 +258,11 @@ do
         cd - 1>/dev/null 2>/dev/null
     fi
 
-    rm -rf -- \"$MIYKA_REPO_HOME/.miyka/git-repos/$NAME\"
+    rm -rf -- \"$MIYKA_REPO_HOME/.miyka/git/$NAME\"
     rm -f -- \"$MIYKA_REPO_HOME/.miyka/git-lock/$NAME\"
 
-    git clone --recursive --depth 1 -- \"$REPO\" \"$MIYKA_REPO_HOME/.miyka/git-repos/$NAME\"
-    cd -- \"$MIYKA_REPO_HOME/.miyka/git-repos/$NAME\"
+    git clone --recursive --depth 1 -- \"$REPO\" \"$MIYKA_REPO_HOME/.miyka/git/$NAME\"
+    cd -- \"$MIYKA_REPO_HOME/.miyka/git/$NAME\"
 
     if grep -q '^miyka-initialize:' 'Makefile'
     then make miyka-initialize PREFIX=\"$MIYKA_REPO_HOME/.local\"
@@ -270,8 +270,8 @@ do
     fi
 
     cd - 1>/dev/null 2>/dev/null
-    git -C \"$MIYKA_REPO_HOME/.miyka/git-repos/$NAME\" rev-parse HEAD > \"$MIYKA_REPO_HOME/.miyka/git-lock/$NAME\"
-    rm -rf -- \"$MIYKA_REPO_HOME/.miyka/git-repos/$NAME/.git\"
+    git -C \"$MIYKA_REPO_HOME/.miyka/git/$NAME\" rev-parse HEAD > \"$MIYKA_REPO_HOME/.miyka/git-lock/$NAME\"
+    rm -rf -- \"$MIYKA_REPO_HOME/.miyka/git/$NAME/.git\"
 
 done
 
