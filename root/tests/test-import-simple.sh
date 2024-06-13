@@ -12,11 +12,11 @@ then
     exit 1
 fi
 
-TMP="$(mktemp -d)"
+TMP="$MIYKA_ROOT/testdir"
 mkdir -p -- "$TMP"
 rmdir "$TMP"
 
-mv -T -- $(readlink -f "$HOME_PATH/../..") "$TMP"
+mv -T -- $(readlink -f "$HOME_PATH/../../..") "$TMP"
 
 if test -d "$HOME_PATH"
 then
