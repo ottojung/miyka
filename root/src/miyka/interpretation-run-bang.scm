@@ -124,7 +124,6 @@ ln -sT -- \"$MIYKA_ORIG_HOME\" \"$MIYKA_WORK_PATH/tmp/miyka-orig-home\"
 # Snapshot with Restic. #
 #########################
 
-MIYKA_REAL_REPO_PATH=\"$(readlink -f -- \"$MIYKA_REPO_PATH\")\"
 MIYKA_REPO_ID=\"$(cat -- \"$MIYKA_WORK_PATH/etc/miyka/id\")\"
 MIYKA_GLOBAL_ID_PATH=\"$MIYKA_ROOT/globalid\"
 HOSTNAME=\"$(cat -- '/etc/hostname')\"
