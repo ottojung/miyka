@@ -10,13 +10,13 @@
     (define guix
       (get-guix-executable))
     (define existing-configuration
-      (repository:configuration-directory <existing-repository-name>))
+      (repository:configuration <existing-repository-name>))
     (define existing-configuration-path
-      (configuration-directory:path existing-configuration))
+      (configuration:path existing-configuration))
     (define new-configuration
-      (repository:configuration-directory <new-repository-name>))
+      (repository:configuration <new-repository-name>))
     (define new-configuration-path
-      (configuration-directory:path new-configuration))
+      (configuration:path new-configuration))
 
     (make-directories (path-get-dirname new-configuration-path))
     (system*/exit-code
