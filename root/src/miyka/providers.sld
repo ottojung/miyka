@@ -16,11 +16,8 @@
   (import
     (only (miyka get-repositories-name-map)
           get-repositories-name-map))
-  (import (only (miyka home-path) home:path))
   (import (only (miyka id-path) id:path))
   (import (only (miyka id-value) id:value))
-  (import
-    (only (miyka repository-home) repository:home))
   (import
     (only (miyka repository-id) repository:id))
   (import

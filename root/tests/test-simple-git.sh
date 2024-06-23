@@ -27,15 +27,16 @@ cd -
 t_miyka create "test-project"
 
 HOME_PATH=$(t_miyka get home of "test-project")
+CONFIG_PATH=$(t_miyka get config path of "test-project")
 
 echo "(git \"file://$PWD/$MIYKA_ROOT/temporary/repo1\") (move-home) (install \"coreutils\") (install \"dash\")" \
-     > "$HOME_PATH/.config/miyka/configuration.lisp"
+     > "$CONFIG_PATH"
 
 if test -f "$HOME_PATH/file1.txt"
 then exit 1
 fi
 
-t_miyka run "test-project"
+echo | t_miyka run "test-project"
 
 if ! test -f "$HOME_PATH/file1.txt"
 then exit 1

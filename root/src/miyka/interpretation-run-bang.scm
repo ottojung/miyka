@@ -107,16 +107,16 @@
   (define cleanup-wrapper
     (let ()
       (define base "
-rm -rf -- \"$MIYKA_WORK_PATH/tmp\"
-mkdir -p -- \"$MIYKA_WORK_PATH/tmp\"
-ln -sT -- \"$MIYKA_ORIG_HOME\" \"$MIYKA_WORK_PATH/tmp/miyka-orig-home\"
+rm -rf -- \"$MIYKA_WORK_PATH/temporary\"
+mkdir -p -- \"$MIYKA_WORK_PATH/temporary\"
+ln -sT -- \"$MIYKA_ORIG_HOME\" \"$MIYKA_WORK_PATH/temporary/miyka-orig-home\"
 ")
       (if cleanup
           (stringf "~a\n~a" base cleanup-command)
           base)))
 
   (define guix-describe-command
-    "\"$MIYKA_GUIX_EXECUTABLE\" describe --format=channels > \"$MIYKA_REPO_HOME/.miyka/channels.scm\"")
+    "\"$MIYKA_GUIX_EXECUTABLE\" describe --format=channels > \"$MIYKA_WORK_PATH/state/channels.scm\"")
 
   (define snapshot-command
     "
@@ -124,7 +124,7 @@ ln -sT -- \"$MIYKA_ORIG_HOME\" \"$MIYKA_WORK_PATH/tmp/miyka-orig-home\"
 # Snapshot with Restic. #
 #########################
 
-MIYKA_REPO_ID=\"$(cat -- \"$MIYKA_WORK_PATH/etc/miyka/id\")\"
+MIYKA_REPO_ID=\"$(cat -- \"$MIYKA_WORK_PATH/id.txt\")\"
 MIYKA_GLOBAL_ID_PATH=\"$MIYKA_ROOT/globalid\"
 HOSTNAME=\"$(cat -- '/etc/hostname')\"
 
@@ -161,7 +161,7 @@ if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
     --pure \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
-    /bin/sh -- \"$MIYKA_REPO_HOME/.miyka/setup.sh\" \\
+    /bin/sh -- \"$MIYKA_WORK_PATH/state/setup.sh\" \\
     \"$MIYKA_REPO_HOME\" \"$MIYKA_WORK_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ROOT\" \"$MIYKA_GUIX_EXECUTABLE\"
 then
     echo 'Setup script failed. Will not proceed further.' 1>&2
@@ -181,7 +181,7 @@ fi
 # Link host files. #
 ####################
 
-MIYKA_HOME_LINK=\"$MIYKA_WORK_PATH/tmp/miyka-orig-home\"
+MIYKA_HOME_LINK=\"$MIYKA_WORK_PATH/temporary/miyka-orig-home\"
 
 for LOCATION in ~a
 do
@@ -234,20 +234,20 @@ done
 # Deploy git configurations. #
 ##############################
 
-mkdir -p -- \"$MIYKA_REPO_HOME/.miyka/git\"
-mkdir -p -- \"$MIYKA_REPO_HOME/.miyka/git-lock\"
+mkdir -p -- \"$MIYKA_WORK_PATH/state/git\"
+mkdir -p -- \"$MIYKA_WORK_PATH/state/git-lock\"
 
 for REPO in ~a
 do
     NAME=\"$(basename -- \"$REPO\")\"
 
-    if test -e \"$MIYKA_REPO_HOME/.miyka/git-lock/$NAME\"
+    if test -e \"$MIYKA_WORK_PATH/state/git-lock/$NAME\"
     then continue
     fi
 
-    if test -e \"$MIYKA_REPO_HOME/.miyka/git/$NAME\"
+    if test -e \"$MIYKA_WORK_PATH/state/git/$NAME\"
     then
-        cd -- \"$MIYKA_REPO_HOME/.miyka/git/$NAME\"
+        cd -- \"$MIYKA_WORK_PATH/state/git/$NAME\"
 
         if grep -q '^miyka-initialize:' 'Makefile'
         then make miyka-uninitialize PREFIX=\"$MIYKA_REPO_HOME/.local\" || true
@@ -257,11 +257,11 @@ do
         cd - 1>/dev/null 2>/dev/null
     fi
 
-    rm -rf -- \"$MIYKA_REPO_HOME/.miyka/git/$NAME\"
-    rm -f -- \"$MIYKA_REPO_HOME/.miyka/git-lock/$NAME\"
+    rm -rf -- \"$MIYKA_WORK_PATH/state/git/$NAME\"
+    rm -f -- \"$MIYKA_WORK_PATH/state/git-lock/$NAME\"
 
-    git clone --recursive --depth 1 -- \"$REPO\" \"$MIYKA_REPO_HOME/.miyka/git/$NAME\"
-    cd -- \"$MIYKA_REPO_HOME/.miyka/git/$NAME\"
+    git clone --recursive --depth 1 -- \"$REPO\" \"$MIYKA_WORK_PATH/state/git/$NAME\"
+    cd -- \"$MIYKA_WORK_PATH/state/git/$NAME\"
 
     if grep -q '^miyka-initialize:' 'Makefile'
     then make miyka-initialize PREFIX=\"$MIYKA_REPO_HOME/.local\"
@@ -269,8 +269,8 @@ do
     fi
 
     cd - 1>/dev/null 2>/dev/null
-    git -C \"$MIYKA_REPO_HOME/.miyka/git/$NAME\" rev-parse HEAD > \"$MIYKA_REPO_HOME/.miyka/git-lock/$NAME\"
-    rm -rf -- \"$MIYKA_REPO_HOME/.miyka/git/$NAME/.git\"
+    git -C \"$MIYKA_WORK_PATH/state/git/$NAME\" rev-parse HEAD > \"$MIYKA_WORK_PATH/state/git-lock/$NAME\"
+    rm -rf -- \"$MIYKA_WORK_PATH/state/git/$NAME/.git\"
 
 done
 
@@ -303,7 +303,7 @@ done
   (unless (stack-empty? async-footer)
     (stack-push!
      sync-footer
-     "{ sh -- \"$MIYKA_REPO_HOME/.miyka/run-async.sh\" & } &"))
+     "{ sh -- \"$MIYKA_WORK_PATH/state/run-async.sh\" & } &"))
 
   (let ()
     (define cleanup-footer

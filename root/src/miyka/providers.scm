@@ -9,7 +9,7 @@
   (lambda (this)
     (define wd (repository:work-directory this))
     (define wd-path (work-directory:path wd))
-    (append-posix-path wd-path "etc" "miyka" "id")))
+    (append-posix-path wd-path "id.txt")))
 
 (define-provider p:id:value/1
   :targets (id:value)
@@ -54,6 +54,6 @@
   :targets (repository:state-directory)
   :sources (repository:path)
   (lambda (this)
-    (define parent (repository:home this))
-    (define parent-path (home:path parent))
-    (append-posix-path parent ".miyka")))
+    (define parent (repository:work-directory this))
+    (define parent-path (work-directory:path parent))
+    (append-posix-path parent "state")))

@@ -22,6 +22,9 @@
   (import (only (miyka CLI-create) CLI:create))
   (import (only (miyka CLI-edit) CLI:edit))
   (import
+    (only (miyka CLI-get-config-path)
+          CLI:get-config-path))
+  (import
     (only (miyka CLI-get-repository-home)
           CLI:get-repository-home))
   (import (only (miyka CLI-import) CLI:import))

@@ -5,9 +5,10 @@
 t_miyka create "test-project"
 
 HOME_PATH=$(t_miyka get home of "test-project")
+CONFIG_PATH=$(t_miyka get config path of "test-project")
 
 echo '(shell ".config/miyka/init.sh") (move-home)' \
-     > "$HOME_PATH/.config/miyka/configuration.lisp"
+     > "$CONFIG_PATH"
 
 echo 'echo 2 + 3' \
      > "$HOME_PATH/.config/miyka/init.sh"
