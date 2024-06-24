@@ -82,6 +82,9 @@
     (only (miyka repository-setup-script)
           repository:setup-script))
   (import
+    (only (miyka repository-teardown-script)
+          repository:teardown-script))
+  (import
     (only (miyka run-script-path) run-script:path))
   (import
     (only (miyka run-script-template)
@@ -92,6 +95,9 @@
   (import
     (only (miyka setup-script-path)
           setup-script:path))
+  (import
+    (only (miyka teardown-script-path)
+          teardown-script:path))
   (import
     (only (scheme base)
           begin

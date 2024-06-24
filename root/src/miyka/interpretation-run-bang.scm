@@ -20,6 +20,10 @@
     (repository:setup-script repository))
   (define setup-script-path
     (setup-script:path setup-script))
+  (define teardown-script
+    (repository:teardown-script repository))
+  (define teardown-script-path
+    (teardown-script:path teardown-script))
   (define run-script
     (repository:run-script repository))
   (define run-script-path
@@ -88,6 +92,9 @@
   (define setup-command-list
     (stack-make))
 
+  (define teardown-command-list
+    (stack-make))
+
   (define sync-footer
     (stack-make))
 
@@ -99,7 +106,6 @@
       (define base "
 rm -rf -- \"$MIYKA_WORK_PATH/temporary\"
 mkdir -p -- \"$MIYKA_WORK_PATH/temporary\"
-ln -sT -- \"$MIYKA_ORIG_HOME\" \"$MIYKA_WORK_PATH/temporary/miyka-orig-home\"
 ")
       (if cleanup
           (stringf "~a\n~a" base cleanup-command)
@@ -152,11 +158,37 @@ if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
     /bin/sh -- \"$MIYKA_WORK_PATH/state/setup.sh\" \\
-    \"$MIYKA_REPO_HOME\" \"$MIYKA_WORK_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ROOT\" \"$MIYKA_GUIX_EXECUTABLE\"
+    \"$MIYKA_REPO_HOME\" \"$MIYKA_WORK_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ROOT\" \"$MIYKA_GUIX_EXECUTABLE\" \"$MIYKA_PID_SYNC\"
 then
     echo 'Setup script failed. Will not proceed further.' 1>&2
     exit 1
 fi
+
+")
+
+  (define teardown-command
+    "
+########################
+# The teardown script. #
+########################
+
+teardown() {
+
+if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
+    --pure \\
+    coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
+    -- \\
+    /bin/sh -- \"$MIYKA_WORK_PATH/state/teardown.sh\" \\
+    \"$MIYKA_REPO_HOME\" \"$MIYKA_WORK_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ROOT\" \"$MIYKA_GUIX_EXECUTABLE\" \"$MIYKA_PID_SYNC\"
+then
+    echo 'Teardown script failed.' 1>&2
+fi
+
+trap '' exit hup int quit abrt kill alrm term
+
+}
+
+trap 'teardown' exit hup int quit abrt kill alrm term
 
 ")
 
@@ -172,6 +204,7 @@ fi
 ####################
 
 MIYKA_HOME_LINK=\"$MIYKA_WORK_PATH/temporary/miyka-orig-home\"
+ln -sT -- \"$MIYKA_ORIG_HOME\" \"$MIYKA_HOME_LINK\"
 
 for LOCATION in ~a
 do
@@ -274,6 +307,8 @@ done
   (unless (stack-empty? setup-command-list)
     (stack-push! sync-footer setup-command))
 
+  (stack-push! sync-footer teardown-command)
+
   (for-each
    (lambda (command)
      (cond
@@ -290,20 +325,11 @@ done
    commands)
 
   (stack-push!
-   sync-footer
-   "RETURN_CODE=$?")
-
-  (stack-push!
-   sync-footer
+   teardown-command-list
    "
  ############################
  # Kill dangling processes. #
  ############################
-
-\"$MIYKA_GUIX_EXECUTABLE\" shell coreutils grep procps gawk findutils --pure -- /bin/sh -c \"
-MIYKA_REPO_HOME=$MIYKA_REPO_HOME
-MIYKA_PID_SYNC=$MIYKA_PID_SYNC
-\"'
 
 get_pids() {
     for PID in $(ps -a -o pid | tail -n +2)
@@ -319,21 +345,16 @@ for PID in $(get_pids) ; do kill -15 $PID ; done
 sleep 5
 for PID in $(get_pids) ; do kill -9 $PID ; done
 
-'
 ")
 
   (stack-push!
-   sync-footer
+   teardown-command-list
    cleanup-wrapper)
 
   (when snapshot?
     (stack-push!
-     sync-footer
+     teardown-command-list
      snapshot-command))
-
-  (stack-push!
-   sync-footer
-   "exit $RETURN_CODE")
 
   (let ()
     (define script
@@ -377,6 +398,8 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
         (newline port)
         (display "export MIYKA_GUIX_EXECUTABLE=\"$6\"" port)
         (newline port)
+        (display "export MIYKA_PID_SYNC=\"$7\"" port)
+        (newline port)
         (display "export PATH=\"$PATH:$MIYKA_WORK_PATH/bin\"" port)
         (newline port)
         (newline port)
@@ -385,6 +408,40 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
          (lambda (line) (display line port) (newline port) (newline port))
          (reverse
           (stack->list setup-command-list))))))
+
+  (unless (stack-empty? teardown-command-list)
+    (call-with-output-file
+        teardown-script-path
+      (lambda (port)
+        (display "#! /bin/sh" port)
+        (newline port)
+        (newline port)
+        (display "set -e" port)
+        (newline port)
+        (newline port)
+
+        (display "export MIYKA_REPO_HOME=\"$1\"" port)
+        (newline port)
+        (display "export MIYKA_WORK_PATH=\"$2\"" port)
+        (newline port)
+        (display "export MIYKA_ORIG_HOME=\"$3\"" port)
+        (newline port)
+        (display "export MIYKA_REPO_PATH=\"$4\"" port)
+        (newline port)
+        (display "export MIYKA_ROOT=\"$5\"" port)
+        (newline port)
+        (display "export MIYKA_GUIX_EXECUTABLE=\"$6\"" port)
+        (newline port)
+        (display "export MIYKA_PID_SYNC=\"$7\"" port)
+        (newline port)
+        (display "export PATH=\"$PATH:$MIYKA_WORK_PATH/bin\"" port)
+        (newline port)
+        (newline port)
+
+        (for-each
+         (lambda (line) (display line port) (newline port) (newline port))
+         (reverse
+          (stack->list teardown-command-list))))))
 
   (call-with-output-file
       run-sync-script-path
