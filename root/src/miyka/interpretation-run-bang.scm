@@ -12,10 +12,10 @@
     (repository:enter-script repository))
   (define enter-script-path
     (enter-script:path enter-script))
-  (define ps-script
-    (repository:ps-script repository))
-  (define ps-script-path
-    (ps-script:path ps-script))
+  (define relative-path-script
+    (repository:relative-path-script repository))
+  (define relative-path-script-path
+    (relative-path-script:path relative-path-script))
   (define setup-script
     (repository:setup-script repository))
   (define setup-script-path
@@ -181,7 +181,8 @@ fi
 # Link host files. #
 ####################
 
-MIYKA_HOME_LINK=\"$MIYKA_WORK_PATH/temporary/miyka-orig-home\"
+MIYKA_RELATIVE_WORK_PATH=../..
+MIYKA_HOME_LINK=\"$MIYKA_RELATIVE_WORK_PATH/temporary/miyka-orig-home\"
 
 for LOCATION in ~a
 do
@@ -220,7 +221,9 @@ do
     esac
 
     mkdir -p -- \"$(dirname -- \"$MIYKA_REPO_HOME/$LOCATION\")\"
-    ln -svT -- \"$MIYKA_HOME_LINK/$LOCATION\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
+
+    LINK_VALUE=\"$(echo | awk -v first_path=\"home/u/$LOCATION/..\" -v second_path=\"temporary/miyka-orig-home/$LOCATION\" -f \"$MIYKA_WORK_PATH/state/relative-path.awk\")\"
+    ln -svT -- \"$LINK_VALUE\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
 done
 
 " (words->string (map ~s host-locations)))))
@@ -376,9 +379,9 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
         (fprintf port enter-script:template))))
 
   (call-with-output-file
-      ps-script-path
+      relative-path-script-path
     (lambda (port)
-      (display ps-script:template port)))
+      (display relative-path-script:template port)))
 
   (unless (stack-empty? setup-command-list)
     (call-with-output-file

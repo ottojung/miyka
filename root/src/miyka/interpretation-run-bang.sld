@@ -57,10 +57,11 @@
   (import
     (only (miyka manifest-path) manifest:path))
   (import
-    (only (miyka ps-script-path) ps-script:path))
+    (only (miyka relative-path-script-path)
+          relative-path-script:path))
   (import
-    (only (miyka ps-script-template)
-          ps-script:template))
+    (only (miyka relative-path-script-template)
+          relative-path-script:template))
   (import
     (only (miyka repository-cleanup-wrapper)
           repository:cleanup-wrapper))
@@ -71,8 +72,8 @@
     (only (miyka repository-manifest)
           repository:manifest))
   (import
-    (only (miyka repository-ps-script)
-          repository:ps-script))
+    (only (miyka repository-relative-path-script)
+          repository:relative-path-script))
   (import
     (only (miyka repository-run-async-script)
           repository:run-async-script))
