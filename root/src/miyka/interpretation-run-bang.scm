@@ -171,8 +171,7 @@ fi
 # Link host files. #
 ####################
 
-MIYKA_RELATIVE_WORK_PATH=../..
-MIYKA_HOME_LINK=\"$MIYKA_RELATIVE_WORK_PATH/temporary/miyka-orig-home\"
+MIYKA_HOME_LINK=\"$MIYKA_WORK_PATH/temporary/miyka-orig-home\"
 
 for LOCATION in ~a
 do
