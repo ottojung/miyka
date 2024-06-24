@@ -91,9 +91,6 @@
   (define sync-footer
     (stack-make))
 
-  (define current-footer
-    sync-footer)
-
   (define cleanup-command
     (stringf "test -f ~s && MIYKA_PROC_ID=$MIYKA_PID_SYNC sh -- ~s" cleanup cleanup))
 
@@ -283,7 +280,7 @@ done
      (cond
       ((command:shell? command)
        (stack-push!
-        current-footer
+        sync-footer
         (stringf "MIYKA_PROC_ID=$MIYKA_PID_SYNC sh -- ~s" (command:shell:path command))))
 
       (else
@@ -293,23 +290,13 @@ done
                :args (list command)))))
    commands)
 
-  (let ()
-    (define cleanup-footer
-      (cond
-       ((not (stack-empty? current-footer))
-        current-footer)
-       ((not (stack-empty? sync-footer))
-        sync-footer)
-       (else
-        current-footer)))
+  (stack-push!
+   sync-footer
+   "RETURN_CODE=$?")
 
-    (stack-push!
-     cleanup-footer
-     "RETURN_CODE=$?")
-
-    (stack-push!
-     cleanup-footer
-     "
+  (stack-push!
+   sync-footer
+   "
  ############################
  # Kill dangling processes. #
  ############################
@@ -336,18 +323,18 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
 '
 ")
 
-    (stack-push!
-     cleanup-footer
-     cleanup-wrapper)
+  (stack-push!
+   sync-footer
+   cleanup-wrapper)
 
-    (when snapshot?
-      (stack-push!
-       cleanup-footer
-       snapshot-command))
-
+  (when snapshot?
     (stack-push!
-     cleanup-footer
-     "exit $RETURN_CODE"))
+     sync-footer
+     snapshot-command))
+
+  (stack-push!
+   sync-footer
+   "exit $RETURN_CODE")
 
   (let ()
     (define script

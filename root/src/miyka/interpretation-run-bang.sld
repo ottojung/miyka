@@ -105,7 +105,6 @@
           list
           map
           newline
-          not
           null?
           quasiquote
           quote
