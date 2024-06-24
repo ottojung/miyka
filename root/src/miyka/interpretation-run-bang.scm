@@ -28,10 +28,6 @@
     (repository:run-sync-script repository))
   (define run-sync-script-path
     (run-sync-script:path run-sync-script))
-  (define run-async-script
-    (repository:run-async-script repository))
-  (define run-async-script-path
-    (run-async-script:path run-async-script))
   (define wrapper
     (repository:cleanup-wrapper repository))
   (define wrapper-path
@@ -93,9 +89,6 @@
     (stack-make))
 
   (define sync-footer
-    (stack-make))
-
-  (define async-footer
     (stack-make))
 
   (define current-footer
@@ -288,9 +281,6 @@ done
   (for-each
    (lambda (command)
      (cond
-      ((command:detach? command)
-       (set! current-footer async-footer))
-
       ((command:shell? command)
        (stack-push!
         current-footer
@@ -302,11 +292,6 @@ done
                :message (stringf "Uknown command ~s." command)
                :args (list command)))))
    commands)
-
-  (unless (stack-empty? async-footer)
-    (stack-push!
-     sync-footer
-     "{ sh -- \"$MIYKA_WORK_PATH/state/run-async.sh\" & } &"))
 
   (let ()
     (define cleanup-footer
@@ -423,30 +408,12 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
       (newline port)
       (display "export MIYKA_PID_SYNC=$$" port)
       (newline port)
-      (display "export MIYKA_PID_ASYNC=1" port)
-      (newline port)
       (newline port)
 
       (for-each
        (lambda (line) (display line port) (newline port))
        (reverse
         (stack->list sync-footer)))))
-
-  (unless (stack-empty? async-footer)
-    (call-with-output-file
-        run-async-script-path
-      (lambda (port)
-        (display "#! /bin/sh" port)
-        (newline port)
-        (newline port)
-        (display "export MIYKA_PID_ASYNC=$$" port)
-        (newline port)
-        (newline port)
-
-        (for-each
-         (lambda (line) (display line port) (newline port))
-         (reverse
-          (stack->list async-footer))))))
 
   (call-with-output-file
       manifest-path

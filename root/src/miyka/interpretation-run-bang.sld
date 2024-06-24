@@ -28,8 +28,6 @@
     (only (miyka cleanup-wrapper-path)
           cleanup-wrapper:path))
   (import
-    (only (miyka command-detach) command:detach?))
-  (import
     (only (miyka command-shell)
           command:shell:path
           command:shell?))
@@ -75,9 +73,6 @@
     (only (miyka repository-relative-path-script)
           repository:relative-path-script))
   (import
-    (only (miyka repository-run-async-script)
-          repository:run-async-script))
-  (import
     (only (miyka repository-run-script)
           repository:run-script))
   (import
@@ -86,9 +81,6 @@
   (import
     (only (miyka repository-setup-script)
           repository:setup-script))
-  (import
-    (only (miyka run-async-script-path)
-          run-async-script:path))
   (import
     (only (miyka run-script-path) run-script:path))
   (import
@@ -118,7 +110,6 @@
           quasiquote
           quote
           reverse
-          set!
           unless
           unquote
           when))
