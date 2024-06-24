@@ -35,12 +35,6 @@
 
 (move-home)             ;; Set the $HOME environment variable to the location of the workspace.
 
-
-;; Execute shell commands asynchronously such that they are disowned.
-;; This means that these commands will not be waited for by Miyka, and
-;; their parent process will become PID 1 (init process) instead of Miyka.
-;; (detach)
-
 ;; Run the init.sh script via /bin/sh.
 (shell \".config/miyka/init.sh\")
 
