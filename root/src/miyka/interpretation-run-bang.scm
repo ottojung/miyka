@@ -416,9 +416,6 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
         (display "#! /bin/sh" port)
         (newline port)
         (newline port)
-        (display "set -e" port)
-        (newline port)
-        (newline port)
 
         (display "export MIYKA_REPO_HOME=\"$1\"" port)
         (newline port)
@@ -483,6 +480,7 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
          "--" NL
          "/bin/sh" "\"$PWD/enter.sh\"" NL
          maybe-move-home "--guix-executable" "\"$MIYKA_GUIX_EXECUTABLE\"" NL
+         "--miyka-root" "\"$MIYKA_ROOT\"" NL
          "--" NL
          "sh" "--" "\"$PWD/run-sync.sh\""
          )))

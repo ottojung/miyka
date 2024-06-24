@@ -4,6 +4,13 @@
 (define run-script:template
   "#! /bin/sh
 
+case \"$MIYKA_ROOT\" in
+    /*) ;;
+    *)
+        export MIYKA_ROOT=\"$PWD/$MIYKA_ROOT\"
+        ;;
+esac
+
 cd -- \"${0%/*}\"
 
 if test -z \"$MIYKA_GUIX_EXECUTABLE\"
