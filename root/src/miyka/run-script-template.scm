@@ -4,6 +4,16 @@
 (define run-script:template
   "#! /bin/sh
 
+if test -z \"$MIYKA_ROOT\"
+then
+    if test -z \"$XDG_DATA_HOME\"
+    then BASE=\"$HOME/.local/share\"
+    else BASE=\"$XDG_DATA_HOME\"
+    fi
+
+    export MIYKA_ROOT=\"$BASE/miyka/root\"
+fi
+
 case \"$MIYKA_ROOT\" in
     /*) ;;
     *)
