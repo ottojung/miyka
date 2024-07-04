@@ -38,6 +38,8 @@
   (import
     (only (miyka guix-executable-p)
           guix-executable/p))
+  (import
+    (only (miyka miyka-version) miyka:version))
   (import (only (miyka providers) providers))
   (import (only (miyka root-p) root/p))
   (import

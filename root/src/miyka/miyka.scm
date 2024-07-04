@@ -36,7 +36,7 @@
         (define-cli:show-help)))
 
       (--version
-       (display "1.6.1")
+       (display miyka:version)
        (newline))
 
       (create
