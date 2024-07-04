@@ -9,7 +9,7 @@ HOME_PATH=$(t_miyka get home of "test-project")
 echo "echo hello from miyka project" \
      > "$HOME_PATH/.config/miyka/init.sh"
 
-RESULT=$(t_miyka copy "test-project" "copy-project")
+RESULT=$(t_miyka copy "test-project" as "copy-project")
 
 OTHER_HOME_PATH=$(t_miyka get home of "copy-project")
 

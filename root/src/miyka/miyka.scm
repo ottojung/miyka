@@ -13,7 +13,7 @@
     /         edit <name>
     /         run <name>
     /         list
-    /         copy <existing-name> <new-name>
+    /         copy <existing-name> as <new-name>
     /         remove <name>
     /         import <path> as <name>
     /         get GET_ARGUMENTS
