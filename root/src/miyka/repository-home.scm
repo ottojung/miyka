@@ -9,4 +9,4 @@
   (lambda (this)
     (define wd (repository:work-directory this))
     (define wd-path (work-directory:path wd))
-    (append-posix-path wd-path "home" "u")))
+    (append-posix-path wd-path "home")))

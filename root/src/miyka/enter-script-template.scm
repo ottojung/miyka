@@ -15,7 +15,7 @@ DIR_PATH=\"${SCRIPT_PATH%/*}\"
 # Initialize MIYKA env variables. #
 ###################################
 
-export MIYKA_REPO_HOME=\"$DIR_PATH/../home/u\"
+export MIYKA_REPO_HOME=\"$DIR_PATH/../home\"
 export MIYKA_WORK_PATH=\"$DIR_PATH/..\"
 export MIYKA_ORIG_HOME=\"$HOME\"
 export MIYKA_REPO_PATH=\"$MIYKA_WORK_PATH/..\"
