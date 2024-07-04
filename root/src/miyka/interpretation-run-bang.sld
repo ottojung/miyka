@@ -55,6 +55,8 @@
   (import
     (only (miyka manifest-path) manifest:path))
   (import
+    (only (miyka miyka-version) miyka:version))
+  (import
     (only (miyka relative-path-script-path)
           relative-path-script:path))
   (import
@@ -85,6 +87,9 @@
     (only (miyka repository-teardown-script)
           repository:teardown-script))
   (import
+    (only (miyka repository-versionfile)
+          repository:versionfile))
+  (import
     (only (miyka run-script-path) run-script:path))
   (import
     (only (miyka run-script-template)
@@ -98,6 +103,8 @@
   (import
     (only (miyka teardown-script-path)
           teardown-script:path))
+  (import
+    (only (miyka versionfile-path) versionfile:path))
   (import
     (only (scheme base)
           begin

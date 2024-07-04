@@ -8,6 +8,10 @@
     (repository:manifest repository))
   (define manifest-path
     (manifest:path manifest))
+  (define versionfile
+    (repository:versionfile repository))
+  (define versionfile-path
+    (versionfile:path versionfile))
   (define enter-script
     (repository:enter-script repository))
   (define enter-script-path
@@ -374,6 +378,12 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
       relative-path-script-path
     (lambda (port)
       (display relative-path-script:template port)))
+
+  (call-with-output-file
+      versionfile-path
+    (lambda (port)
+      (display miyka:version port)
+      (newline port)))
 
   (unless (stack-empty? setup-command-list)
     (call-with-output-file
