@@ -7,6 +7,6 @@
   :targets (repository:versionfile)
   :sources (repository:work-directory)
   (lambda (this)
-    (define wd (repository:work-directory this))
-    (define wd-path (work-directory:path wd))
+    (define wd (repository:state-directory this))
+    (define wd-path (state-directory:path wd))
     (append-posix-path wd-path "version.txt")))
