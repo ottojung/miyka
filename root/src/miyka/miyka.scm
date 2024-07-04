@@ -19,6 +19,7 @@
     /         get GET_ARGUMENTS
     GET_ARGUMENTS : home of <name>
     /               config path of <name>
+    /               root path of <name>
     OPT : --root <root>
     /     --guix-executable <guix-executable>
     )
@@ -65,6 +66,9 @@
 
       ((and get config path of)
        (CLI:get-config-path <name>))
+
+      ((and get root path of)
+       (CLI:get-root-path <name>))
 
       ))))
 

@@ -27,6 +27,9 @@
   (import
     (only (miyka CLI-get-repository-home)
           CLI:get-repository-home))
+  (import
+    (only (miyka CLI-get-root-path)
+          CLI:get-root-path))
   (import (only (miyka CLI-import) CLI:import))
   (import (only (miyka CLI-list) CLI:list))
   (import (only (miyka CLI-remove) CLI:remove))
