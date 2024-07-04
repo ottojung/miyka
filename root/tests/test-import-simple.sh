@@ -5,6 +5,7 @@
 t_miyka create "test-project1"
 
 HOME_PATH=$(t_miyka get home of "test-project1")
+ROOT_PATH=$(t_miyka get root path of "test-project1")
 
 if ! test -d "$HOME_PATH"
 then
@@ -16,7 +17,7 @@ TMP="$MIYKA_ROOT/testdir"
 mkdir -p -- "$TMP"
 rmdir "$TMP"
 
-mv -T -- $(readlink -f "$HOME_PATH/../..") "$TMP"
+mv -T -- $(readlink -f "$ROOT_PATH") "$TMP"
 
 if test -d "$HOME_PATH"
 then
