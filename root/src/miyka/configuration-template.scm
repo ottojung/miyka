@@ -28,8 +28,8 @@
 (host \".local/share/Trash/\")       ;; Symlink the Trash directory.
 (host \".Xresources\")               ;; Symlink the .Xresources file for X color scheme.
 (host \".Xdefaults\")                ;; Symlink the .Xdefaults file for X color scheme.
-                                     ;; Note: The trailing \"/\" indicates that a directory is being linked.
-                                     ;; Miyka will abort if the actual file type on the host does not match the expected type.
+                                   ;; Note: The trailing \"/\" indicates that a directory is being linked.
+                                   ;; Miyka will abort if the actual file type on the host does not match the expected type.
 
 ;; Clone and deploy a git repository. Uncomment and customize the URL to use.
 ;; (git \"git://vau.place/dotfiles\")
