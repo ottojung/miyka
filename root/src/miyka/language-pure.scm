@@ -4,4 +4,4 @@
 (define (language:pure)
   (define interpretation (interpretation/p))
   (define pure? (interpretation:pure? interpretation))
-  (box-set! pure? #f))
+  (box-set! pure? #t))

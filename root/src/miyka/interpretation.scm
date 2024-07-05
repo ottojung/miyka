@@ -32,7 +32,7 @@
   (define home-moved? (make-box #f))
   (define cleanup (make-box #f))
   (define snapshot? (make-box #f))
-  (define pure? (make-box #t))
+  (define pure? (make-box #f))
   (define host-stack (stack-make))
   (define git-stack (stack-make))
 
