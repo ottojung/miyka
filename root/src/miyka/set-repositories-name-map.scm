@@ -3,7 +3,7 @@
 
 (define (set-repositories-name-map name-map)
   (define path (get-repositories-name-map-path))
-  (call-with-output-file
+  (call-with-output-file/lazy
       path
     (lambda (port)
       (write name-map port))))

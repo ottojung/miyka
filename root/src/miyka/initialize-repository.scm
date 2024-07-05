@@ -11,7 +11,7 @@
     (define id (repository:id repository))
     (define id-path (id:path id))
     (make-directories (path-get-dirname id-path))
-    (call-with-output-file
+    (call-with-output-file/lazy
         id-path
       (lambda (port)
         (display id-value port))))

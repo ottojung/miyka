@@ -59,7 +59,7 @@
       (interpretation:git-stack interpretation))))
 
   (define (make-enter-script script-path footer)
-    (call-with-output-file
+    (call-with-output-file/lazy
         script-path
       (lambda (port)
         (define home-line
@@ -369,24 +369,24 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
       (path-get-dirname path))
 
     (make-directories dirpath)
-    (call-with-output-file
+    (call-with-output-file/lazy
         path
       (lambda (port)
         (fprintf port enter-script:template))))
 
-  (call-with-output-file
+  (call-with-output-file/lazy
       relative-path-script-path
     (lambda (port)
       (display relative-path-script:template port)))
 
-  (call-with-output-file
+  (call-with-output-file/lazy
       versionfile-path
     (lambda (port)
       (display miyka:version port)
       (newline port)))
 
   (unless (stack-empty? setup-command-list)
-    (call-with-output-file
+    (call-with-output-file/lazy
         setup-script-path
       (lambda (port)
         (display "#! /bin/sh" port)
@@ -420,7 +420,7 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
           (stack->list setup-command-list))))))
 
   (unless (stack-empty? teardown-command-list)
-    (call-with-output-file
+    (call-with-output-file/lazy
         teardown-script-path
       (lambda (port)
         (display "#! /bin/sh" port)
@@ -450,7 +450,7 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
          (reverse
           (stack->list teardown-command-list))))))
 
-  (call-with-output-file
+  (call-with-output-file/lazy
       run-sync-script-path
     (lambda (port)
       (display "#! /bin/sh" port)
@@ -465,7 +465,7 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
        (reverse
         (stack->list sync-footer)))))
 
-  (call-with-output-file
+  (call-with-output-file/lazy
       manifest-path
     (lambda (port)
       (write
@@ -473,7 +473,7 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
          (quote ,packages))
        port)))
 
-  (call-with-output-file
+  (call-with-output-file/lazy
       run-script-path
     (lambda (port)
       (define NL "\\\n")

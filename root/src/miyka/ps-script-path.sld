@@ -6,6 +6,5 @@
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
-             (include-from-path
-               "miyka/ps-script-path.scm")))
+             (include-from-path "miyka/ps-script-path.scm")))
     (else (include "ps-script-path.scm"))))

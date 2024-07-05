@@ -6,9 +6,10 @@
     (only (euphrates file-or-directory-exists-q)
           file-or-directory-exists?))
   (import
-    (only (scheme base) begin define lambda unless))
+    (only (miyka call-with-output-file-lazy)
+          call-with-output-file/lazy))
   (import
-    (only (scheme file) call-with-output-file))
+    (only (scheme base) begin define lambda unless))
   (import (only (scheme write) display))
   (cond-expand
     (guile (import (only (guile) include-from-path))

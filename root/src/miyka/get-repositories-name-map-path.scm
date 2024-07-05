@@ -9,7 +9,7 @@
 
      (unless (file-or-directory-exists? result)
        (make-directories root)
-       (call-with-output-file
+       (call-with-output-file/lazy
            result
          (lambda (port)
            (write '() port))))

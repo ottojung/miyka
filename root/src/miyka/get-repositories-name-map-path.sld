@@ -12,6 +12,9 @@
     (only (euphrates make-directories)
           make-directories))
   (import (only (euphrates memconst) memconst))
+  (import
+    (only (miyka call-with-output-file-lazy)
+          call-with-output-file/lazy))
   (import (only (miyka get-root) get-root))
   (import
     (only (scheme base)
@@ -21,8 +24,6 @@
           let
           quote
           unless))
-  (import
-    (only (scheme file) call-with-output-file))
   (import (only (scheme write) write))
   (cond-expand
     (guile (import (only (guile) include-from-path))

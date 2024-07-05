@@ -15,7 +15,7 @@
       (path-get-dirname path))
 
     (make-directories dirpath)
-    (call-with-output-file
+    (call-with-output-file/lazy
         path
       (lambda (port)
         (display init-script:template port))))
@@ -29,7 +29,7 @@
       (path-get-dirname path))
 
     (make-directories dirpath)
-    (call-with-output-file
+    (call-with-output-file/lazy
         path
       (lambda (port)
         (display configuration:template port))))

@@ -3,11 +3,12 @@
   (miyka set-repositories-name-map)
   (export set-repositories-name-map)
   (import
+    (only (miyka call-with-output-file-lazy)
+          call-with-output-file/lazy))
+  (import
     (only (miyka get-repositories-name-map-path)
           get-repositories-name-map-path))
   (import (only (scheme base) begin define lambda))
-  (import
-    (only (scheme file) call-with-output-file))
   (import (only (scheme write) write))
   (cond-expand
     (guile (import (only (guile) include-from-path))

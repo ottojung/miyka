@@ -25,6 +25,9 @@
   (import
     (only (euphrates words-to-string) words->string))
   (import
+    (only (miyka call-with-output-file-lazy)
+          call-with-output-file/lazy))
+  (import
     (only (miyka cleanup-wrapper-path)
           cleanup-wrapper:path))
   (import
@@ -125,8 +128,6 @@
           unless
           unquote
           when))
-  (import
-    (only (scheme file) call-with-output-file))
   (import (only (scheme write) display write))
   (cond-expand
     (guile (import (only (guile) include-from-path))

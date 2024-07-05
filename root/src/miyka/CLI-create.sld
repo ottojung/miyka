@@ -9,6 +9,9 @@
     (only (euphrates path-get-dirname)
           path-get-dirname))
   (import
+    (only (miyka call-with-output-file-lazy)
+          call-with-output-file/lazy))
+  (import
     (only (miyka check-if-repository-already-exists)
           check-if-repository-already-exists))
   (import
@@ -38,8 +41,6 @@
           lambda
           let
           values))
-  (import
-    (only (scheme file) call-with-output-file))
   (import (only (scheme write) display))
   (cond-expand
     (guile (import (only (guile) include-from-path))

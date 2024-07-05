@@ -23,6 +23,9 @@
           system*/exit-code))
   (import (only (miyka bin-path) bin:path))
   (import
+    (only (miyka call-with-output-file-lazy)
+          call-with-output-file/lazy))
+  (import
     (only (miyka get-guix-executable)
           get-guix-executable))
   (import (only (miyka home-path) home:path))
@@ -54,8 +57,6 @@
           quote
           unless
           values))
-  (import
-    (only (scheme file) call-with-output-file))
   (import (only (scheme write) display))
   (cond-expand
     (guile (import (only (guile) include-from-path))
