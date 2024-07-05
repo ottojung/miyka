@@ -15,7 +15,7 @@
   (import
     (only (miyka language-host) language:host))
   (import
-    (only (miyka language-impure) language:impure))
+    (only (miyka language-pure) language:pure))
   (import
     (only (miyka language-install) language:install))
   (import

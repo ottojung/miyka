@@ -7,8 +7,8 @@
 
 (snapshot)              ;; Save a snapshot of the entire workspace efficiently.
 
-;; Uncomment to use both host's and workspace's packages.
-;; (impure)
+;; Comment out to use both host's and workspace's packages.
+(pure)
 
 ;; Specify packages to be installed within the workspace environment.
 (install \"coreutils\") ;; Install basic POSIX utilities.

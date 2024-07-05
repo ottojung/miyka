@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka language-impure)
-  (export language:impure)
+  (miyka language-pure)
+  (export language:pure)
   (import (only (euphrates box) box-set!))
   (import
     (only (miyka interpretation-p) interpretation/p))
@@ -12,5 +12,5 @@
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
-             (include-from-path "miyka/language-impure.scm")))
-    (else (include "language-impure.scm"))))
+             (include-from-path "miyka/language-pure.scm")))
+    (else (include "language-pure.scm"))))
