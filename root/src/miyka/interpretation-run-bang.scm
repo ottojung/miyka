@@ -250,7 +250,6 @@ do
 
     LINK_VALUE=\"$(echo | awk -v first_path=\"home/$LOCATION/..\" -v second_path=\"temporary/miyka-orig-home/$LOCATION\" -f \"$MIYKA_WORK_PATH/state/relative-path.awk\")\"
     ln -svT -- \"$LINK_VALUE\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
-    touch -t 200711121015 -- \"$MIYKA_REPO_HOME/$LOCATION\"     1>&2
 done
 
 " (words->string (map ~s host-locations)))))
