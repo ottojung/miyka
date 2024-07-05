@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka touch-file)
-  (export touch-file)
+  (miyka create-file)
+  (export create-file)
   (import
     (only (euphrates file-or-directory-exists-q)
           file-or-directory-exists?))
@@ -14,5 +14,5 @@
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
-             (include-from-path "miyka/touch-file.scm")))
-    (else (include "touch-file.scm"))))
+             (include-from-path "miyka/create-file.scm")))
+    (else (include "create-file.scm"))))

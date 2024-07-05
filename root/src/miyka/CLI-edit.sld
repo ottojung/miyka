@@ -20,7 +20,7 @@
           repository:exists-on-disk?))
   (import
     (only (miyka repository-name) repository:name))
-  (import (only (miyka touch-file) touch-file))
+  (import (only (miyka create-file) create-file))
   (import
     (only (scheme base)
           =

@@ -17,7 +17,7 @@
     (define path
       (configuration:path configuration))
 
-    (touch-file path)
+    (create-file path)
 
     (let ()
       (define result
