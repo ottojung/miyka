@@ -248,8 +248,15 @@ do
 
     mkdir -p -- \"$(dirname -- \"$MIYKA_REPO_HOME/$LOCATION\")\"
 
-    LINK_VALUE=\"$(echo | awk -v first_path=\"home/$LOCATION/..\" -v second_path=\"temporary/miyka-orig-home/$LOCATION\" -f \"$MIYKA_WORK_PATH/state/relative-path.awk\")\"
-    ln -svT -- \"$LINK_VALUE\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
+    if test -d \"$MIYKA_HOME_LINK/$LOCATION\"
+    then
+        LINK_VALUE=\"$(echo | awk -v first_path=\"home/$LOCATION/..\" -v second_path=\"temporary/miyka-orig-home/$LOCATION\" -f \"$MIYKA_WORK_PATH/state/relative-path.awk\")\"
+        ln -svT -- \"$LINK_VALUE\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
+    else
+        if test -f \"$MIYKA_ORIG_HOME/$LOCATION\"
+        then cp -vT  -- \"$MIYKA_ORIG_HOME/$LOCATION\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
+        fi
+    fi
 done
 
 " (words->string (map ~s host-locations)))))

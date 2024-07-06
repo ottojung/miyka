@@ -23,11 +23,11 @@
 (install \"nss-certs\") ;; Install HTTPS certificates.
 (install \"ncurses\")   ;; Install \"ncurses\" which provides \"clear\" and \"reset\" commands, essential for terminal management.
 
-;; Symlink specific directories and files from the host user's home to the workspace home.
+;; Symlink specific directories and copy files from the host user's home to the workspace home.
 (host \".cache/\")                   ;; Symlink the .cache/ directory.
 (host \".local/share/Trash/\")       ;; Symlink the Trash directory.
-(host \".Xresources\")               ;; Symlink the .Xresources file for X color scheme.
-(host \".Xdefaults\")                ;; Symlink the .Xdefaults file for X color scheme.
+(host \".Xresources\")               ;; Copy the .Xresources file for X color scheme.
+(host \".Xdefaults\")                ;; Copy the .Xdefaults file for X color scheme.
                                    ;; Note: The trailing \"/\" indicates that a directory is being linked.
                                    ;; Miyka will abort if the actual file type on the host does not match the expected type.
 
