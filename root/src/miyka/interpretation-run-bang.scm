@@ -83,9 +83,12 @@
     (box-ref
      (interpretation:snapshot? interpretation)))
 
-  (define pure?
+  (define environment
     (box-ref
-     (interpretation:pure? interpretation)))
+     (interpretation:environment interpretation)))
+
+  (define pure?
+    (list? environment))
 
   (define maybe-pure
     (if pure? "--pure" ""))

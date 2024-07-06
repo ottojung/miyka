@@ -50,10 +50,10 @@
     (only (miyka interpretation)
           interpretation:cleanup
           interpretation:commands
+          interpretation:environment
           interpretation:git-stack
           interpretation:home-moved?
           interpretation:host-stack
-          interpretation:pure?
           interpretation:snapshot?))
   (import
     (only (miyka manifest-path) manifest:path))
@@ -119,6 +119,7 @@
           lambda
           let
           list
+          list?
           map
           newline
           null?
@@ -128,6 +129,7 @@
           unless
           unquote
           when))
+  (import (only (scheme eval) environment))
   (import (only (scheme write) display write))
   (cond-expand
     (guile (import (only (guile) include-from-path))

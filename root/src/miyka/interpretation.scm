@@ -4,13 +4,13 @@
 (define-type9 interpretation
   (interpretation-constructor
    installstack
-   commands   ;; sequential intstructions run after install step.
+   commands         ;; sequential intstructions run after install step.
    home-moved?
-   cleanup    ;; path to the cleanup script.
-   snapshot?  ;; whether to snapshot before open or not.
-   pure?      ;; whether to use --pure with guix.
-   host-stack ;; files that are linked from host.
-   git-stack  ;; repositories to-be deployed.
+   cleanup          ;; path to the cleanup script.
+   snapshot?        ;; whether to snapshot before open or not.
+   environment      ;; restrict environment to listed variables, or inherit all if not set.
+   host-stack       ;; files that are linked from host.
+   git-stack        ;; repositories to-be deployed.
    )
 
   interpretation?
@@ -20,7 +20,7 @@
   (home-moved? interpretation:home-moved?)
   (cleanup interpretation:cleanup)
   (snapshot? interpretation:snapshot?)
-  (pure? interpretation:pure?)
+  (environment interpretation:environment)
   (host-stack interpretation:host-stack)
   (git-stack interpretation:git-stack)
   )
@@ -32,7 +32,7 @@
   (define home-moved? (make-box #f))
   (define cleanup (make-box #f))
   (define snapshot? (make-box #f))
-  (define pure? (make-box #f))
+  (define environment (make-box #f))
   (define host-stack (stack-make))
   (define git-stack (stack-make))
 
@@ -42,7 +42,7 @@
    home-moved?
    cleanup
    snapshot?
-   pure?
+   environment
    host-stack
    git-stack
    ))

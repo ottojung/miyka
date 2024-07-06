@@ -7,8 +7,8 @@
 
 (snapshot)              ;; Save a snapshot of the entire workspace efficiently.
 
-;; Comment out to use both host's and workspace's packages.
-(pure)
+;; Restrict environment to listed variables. Comment out to inherit every environment variable from host. If (move-home) is not used, then $HOME will also be inherited.
+(environment \"DISPLAY\" \"XDG_RUNTIME_DIR\")
 
 ;; Specify packages to be installed within the workspace environment.
 (install \"coreutils\") ;; Install basic POSIX utilities.

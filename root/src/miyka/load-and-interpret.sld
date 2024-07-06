@@ -11,11 +11,12 @@
     (only (miyka interpretation) make-interpretation))
   (import
     (only (miyka language-cleanup) language:cleanup))
+  (import
+    (only (miyka language-environment)
+          language:environment))
   (import (only (miyka language-git) language:git))
   (import
     (only (miyka language-host) language:host))
-  (import
-    (only (miyka language-pure) language:pure))
   (import
     (only (miyka language-install) language:install))
   (import
