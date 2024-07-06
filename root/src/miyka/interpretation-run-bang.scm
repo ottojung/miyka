@@ -330,29 +330,6 @@ done
 
   (stack-push!
    teardown-command-list
-   "
- ############################
- # Kill dangling processes. #
- ############################
-
-get_pids() {
-    for PID in $(ps -a -o pid | tail -n +2)
-    do
-        test -e \"/proc/$PID/environ\" || continue
-        if cat \"/proc/$PID/environ\" | tr \"\\0\" \"\\n\" | grep -q -e \"^MIYKA_PROC_ID=$MIYKA_PID_SYNC\"
-        then echo \"$PID\"
-        fi
-    done
-}
-
-for PID in $(get_pids) ; do kill -15 $PID ; done
-sleep 5
-for PID in $(get_pids) ; do kill -9 $PID ; done
-
-")
-
-  (stack-push!
-   teardown-command-list
    cleanup-wrapper)
 
   (when snapshot?
