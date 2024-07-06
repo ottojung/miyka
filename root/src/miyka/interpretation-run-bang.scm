@@ -467,22 +467,29 @@ done
     (lambda (port)
       (define NL "\\\n")
 
+      (define env-options
+        (map
+         (lambda (name)
+           (list "--env" name (~s (string-append "$" name))))
+         (or environment '())))
+
       (fprintf
        port
        run-script:template
 
        (words->string
-        (list
-         "\"$MIYKA_GUIX_EXECUTABLE\"" NL
-         "shell" maybe-pure NL
-         "--manifest=manifest.scm" NL
-         "--" NL
-         "/bin/sh" "\"$PWD/enter.sh\"" NL
-         maybe-move-home "--guix-executable" "\"$MIYKA_GUIX_EXECUTABLE\"" NL
-         "--env" "MIYKA_ROOT" "\"$MIYKA_ROOT\"" NL
-         "--" NL
-         "sh" "--" "\"$PWD/run-sync.sh\""
-         )))
+        (list-collapse
+         (list
+          "\"$MIYKA_GUIX_EXECUTABLE\"" NL
+          "shell" maybe-pure NL
+          "--manifest=manifest.scm" NL
+          "--" NL
+          "/bin/sh" "\"$PWD/enter.sh\"" NL
+          maybe-move-home "--guix-executable" "\"$MIYKA_GUIX_EXECUTABLE\"" NL
+          "--env" "MIYKA_ROOT" "\"$MIYKA_ROOT\"" env-options NL
+          "--" NL
+          "sh" "--" "\"$PWD/run-sync.sh\""
+          ))))
 
       (newline port)))
 

@@ -5,6 +5,8 @@
   (import (only (euphrates box) box-ref))
   (import (only (euphrates fprintf) fprintf))
   (import
+    (only (euphrates list-collapse) list-collapse))
+  (import
     (only (euphrates make-directories)
           make-directories))
   (import
@@ -123,9 +125,11 @@
           map
           newline
           null?
+          or
           quasiquote
           quote
           reverse
+          string-append
           unless
           unquote
           when))
