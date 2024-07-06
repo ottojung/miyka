@@ -229,8 +229,8 @@ do
                 fi
                 ;;
             *)
-                if test -d \"$MIYKA_HOME_LINK/$LOCATION\"
-                then echo \"Host path \\\"$LOCATION\\\" not expected to be a directory.\" 1>&2 ; exit 1
+                if ! test -f \"$MIYKA_HOME_LINK/$LOCATION\"
+                then echo \"Host path \\\"$LOCATION\\\" expected to be a regular file.\" 1>&2 ; exit 1
                 fi
                 ;;
         esac
