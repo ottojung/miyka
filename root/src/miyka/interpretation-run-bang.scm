@@ -490,7 +490,7 @@ for PID in $(get_pids) ; do kill -9 $PID ; done
          "--" NL
          "/bin/sh" "\"$PWD/enter.sh\"" NL
          maybe-move-home "--guix-executable" "\"$MIYKA_GUIX_EXECUTABLE\"" NL
-         "--miyka-root" "\"$MIYKA_ROOT\"" NL
+         "--env" "MIYKA_ROOT" "\"$MIYKA_ROOT\"" NL
          "--" NL
          "sh" "--" "\"$PWD/run-sync.sh\""
          )))

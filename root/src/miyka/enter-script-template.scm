@@ -52,12 +52,15 @@ do
             shift
             export MIYKA_GUIX_EXECUTABLE=\"$1\"
             ;;
-        --miyka-root)
+        --env)
             shift
-            export MIYKA_ROOT=\"$1\"
+            KEY=\"$1\"
+            shift
+            VALUE=\"$1\"
+            export \"$KEY\"=\"$VALUE\"
             ;;
         --help)
-            echo \"Usage: enter.sh [--move-home] [--guix-executable <path>] [--miyka-root <path>] -- ARGS...\" 1>&2
+            echo \"Usage: enter.sh [--move-home] [--guix-executable <path>] [--env <KEY> <VALUE>] -- ARGS...\" 1>&2
             echo \"Run ARGS in workspaces's environment.\" 1>&2
             exit 0
             ;;
