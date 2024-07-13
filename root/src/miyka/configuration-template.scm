@@ -22,6 +22,8 @@
 (install \"procps\")    ;; Install \"ps\", \"top\", \"pkill\", \"watch\", and several other common utils.
 (install \"nss-certs\") ;; Install HTTPS certificates.
 (install \"ncurses\")   ;; Install \"ncurses\" which provides \"clear\" and \"reset\" commands, essential for terminal management.
+(install \"man-db\")    ;; Install the \"man\" utility.
+(install \"glibc-locales\") ;; Install internalization packages. Mainly for UTF8 support.
 
 ;; Symlink specific directories and copy files from the host user's home to the workspace home.
 (host \".cache/\")                   ;; Symlink the .cache/ directory.
