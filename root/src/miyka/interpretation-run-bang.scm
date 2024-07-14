@@ -201,8 +201,8 @@ trap 'teardown' exit hup int quit abrt kill alrm term
 
   (define profile-command
     "
-if test -f \"$MIYKA_REPO_HOME\"/.profile
-then . \"$MIYKA_REPO_HOME\"/.profile
+if test -f ./.profile
+then . ./.profile
 fi
 ")
 
