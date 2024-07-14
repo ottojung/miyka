@@ -8,6 +8,7 @@
   (import
     (only (euphrates path-get-dirname)
           path-get-dirname))
+  (import (only (euphrates raisu-fmt) raisu-fmt))
   (import
     (only (euphrates system-star-exit-code)
           system*/exit-code))
@@ -27,7 +28,16 @@
     (only (miyka repository-configuration)
           repository:configuration))
   (import
-    (only (scheme base) begin define let values))
+    (only (miyka repository-exists-on-disk-huh)
+          repository:exists-on-disk?))
+  (import
+    (only (scheme base)
+          begin
+          define
+          let
+          quote
+          unless
+          values))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin (include-from-path "miyka/CLI-copy.scm")))
