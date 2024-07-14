@@ -265,6 +265,7 @@ do
     else
         if test -f \"$MIYKA_ORIG_HOME/$LOCATION\"
         then cp -T  -- \"$MIYKA_ORIG_HOME/$LOCATION\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
+        else continue
         fi
     fi
 
