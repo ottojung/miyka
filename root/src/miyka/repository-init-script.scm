@@ -9,4 +9,4 @@
   (lambda (this)
     (define parent (repository:home this))
     (define parent-path (home:path parent))
-    (append-posix-path parent-path ".config" "miyka" "init.sh")))
+    (append-posix-path parent-path ".config" "miyka" "run.sh")))

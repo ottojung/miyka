@@ -7,7 +7,7 @@ t_miyka create "test-project"
 HOME_PATH=$(t_miyka get home of "test-project")
 
 echo "echo hello from miyka project" \
-     > "$HOME_PATH/.config/miyka/init.sh"
+     > "$HOME_PATH/.config/miyka/run.sh"
 
 RESULT=$(t_miyka run "test-project")
 

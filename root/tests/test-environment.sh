@@ -13,7 +13,7 @@ cat "$TMP" | sed 's/(environment /(environment "X1" /' > "$CONFIG_PATH"
 rm -f "$TMP"
 
 echo "echo X1 is "'$X1' \
-     > "$HOME_PATH/.config/miyka/init.sh"
+     > "$HOME_PATH/.config/miyka/run.sh"
 
 export X1=42
 RESULT=$(t_miyka run "test-project")

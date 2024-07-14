@@ -38,7 +38,7 @@
 
 (move-home)             ;; Set the $HOME environment variable to the location of the workspace.
 
-;; Run the init.sh script via /bin/sh.
-(shell \".config/miyka/init.sh\")
+;; Run the run.sh script via /bin/sh.
+(shell \".config/miyka/run.sh\")
 
 ")
