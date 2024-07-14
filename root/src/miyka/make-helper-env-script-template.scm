@@ -10,12 +10,13 @@ export MIYKA_GUIX_EXECUTABLE=\"$1\"
 shift
 export MIYKA_ROOT=\"$1\"
 shift
-export ORIGINAL_PWD=\"$1\"
+export MIYKA_ORIG_HOME=\"$1\"
+shift
+export MIYKA_ORIG_PWD=\"$1\"
 shift
 
 export MIYKA_REPO_HOME=\"$MIYKA_STAT_PATH/../home\"
 export MIYKA_WORK_PATH=\"$MIYKA_STAT_PATH/..\"
-export MIYKA_ORIG_HOME=\"$HOME\"
 export MIYKA_REPO_PATH=\"$MIYKA_WORK_PATH/..\"
 
 export SHELL=/bin/sh

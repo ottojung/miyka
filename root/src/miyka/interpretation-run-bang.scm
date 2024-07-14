@@ -82,9 +82,6 @@
   (define maybe-pure
     (if pure? "--pure" ""))
 
-  (define maybe-move-home
-    (if home-moved? "--move-home" ""))
-
   (define setup-command-list
     (stack-make))
 
@@ -143,7 +140,7 @@ if ! \"$2\" shell \\
     --pure \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
-    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" /bin/sh -- \"$1\"/setup.sh
+    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" \"$5\" /bin/sh -- \"$1\"/setup.sh
 then
     echo 'Setup script failed. Will not proceed further.' 1>&2
     exit 1
@@ -163,14 +160,14 @@ if ! \"$2\" shell \\
     --pure \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
-    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" /bin/sh -- \"$1\"/teardown.sh
+    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" \"$5\" /bin/sh -- \"$1\"/teardown.sh
 then
     echo 'Teardown script failed.' 1>&2
 fi
 
 }
 
-trap 'teardown \"$1\" \"$2\" \"$3\"' exit hup int quit abrt kill alrm term
+trap 'teardown \"$1\" \"$2\" \"$3\" \"$4\" \"$5\"' exit hup int quit abrt kill alrm term
 
 ")
 
@@ -189,7 +186,7 @@ trap 'teardown \"$1\" \"$2\" \"$3\"' exit hup int quit abrt kill alrm term
           (~s (string-append "$" name)))
         (or environment '()))
        "\"$1\"/../home"
-       "\"$4\""
+       "\"$5\""
        ))))
 
   (unless (null? packages)
@@ -385,6 +382,11 @@ done
      (display "#! /bin/sh" port)
      (newline port)
      (newline port)
+
+     (when home-moved?
+       (display "HOME=\"$1\"/../home" port)
+       (newline port)
+       (newline port))
 
      (display teardown-command port)
      (unless (stack-empty? setup-command-list)
