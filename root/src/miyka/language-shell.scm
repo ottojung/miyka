@@ -3,6 +3,5 @@
 
 (define (language:shell path)
   (define interpretation (interpretation/p))
-  (define commands (interpretation:commands interpretation))
   (define command (command:shell:make path))
-  (stack-push! commands command))
+  (box-set! (interpretation:command interpretation) command))

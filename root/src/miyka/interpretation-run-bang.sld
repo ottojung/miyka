@@ -4,7 +4,6 @@
   (export interpretation:run!)
   (import (only (euphrates box) box-ref))
   (import (only (euphrates fprintf) fprintf))
-  (import (only (euphrates identity) identity))
   (import
     (only (euphrates lines-to-string) lines->string))
   (import
@@ -56,7 +55,7 @@
   (import
     (only (miyka interpretation)
           interpretation:cleanup
-          interpretation:commands
+          interpretation:command
           interpretation:environment
           interpretation:git-stack
           interpretation:home-moved?
@@ -126,9 +125,7 @@
     (only (miyka versionfile-path) versionfile:path))
   (import
     (only (scheme base)
-          and
           begin
-          car
           define
           for-each
           if
@@ -149,9 +146,6 @@
           when))
   (import (only (scheme eval) environment))
   (import (only (scheme write) display write))
-  (cond-expand
-    (guile (import (only (srfi srfi-1) filter)))
-    (else (import (only (srfi 1) filter))))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

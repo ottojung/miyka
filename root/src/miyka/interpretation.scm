@@ -4,8 +4,8 @@
 (define-type9 interpretation
   (interpretation-constructor
    installstack
-   commands         ;; sequential intstructions run after install step.
-   home-moved?
+   command          ;; shell scripts that is run after package installation and setup.
+   home-moved?      ;; whether $HOME shall be set.
    cleanup          ;; path to the cleanup script.
    snapshot?        ;; whether to snapshot before open or not.
    environment      ;; restrict environment to listed variables, or inherit all if not set.
@@ -16,7 +16,7 @@
   interpretation?
 
   (installstack interpretation:installstack)
-  (commands interpretation:commands)
+  (command interpretation:command)
   (home-moved? interpretation:home-moved?)
   (cleanup interpretation:cleanup)
   (snapshot? interpretation:snapshot?)
@@ -28,7 +28,7 @@
 
 (define (make-interpretation)
   (define installist (stack-make))
-  (define commands (stack-make))
+  (define command (make-box #f))
   (define home-moved? (make-box #f))
   (define cleanup (make-box #f))
   (define snapshot? (make-box #f))
@@ -38,7 +38,7 @@
 
   (interpretation-constructor
    installist
-   commands
+   command
    home-moved?
    cleanup
    snapshot?

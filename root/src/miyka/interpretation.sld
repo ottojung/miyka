@@ -5,7 +5,7 @@
     make-interpretation
     interpretation?
     interpretation:installstack
-    interpretation:commands
+    interpretation:command
     interpretation:home-moved?
     interpretation:cleanup
     interpretation:snapshot?

@@ -47,10 +47,9 @@
   (define packages
     (interpretation:installist interpretation))
 
-  (define commands
-    (reverse
-     (stack->list
-      (interpretation:commands interpretation))))
+  (define command
+    (box-ref
+     (interpretation:command interpretation)))
 
   (define host-locations
     (reverse
@@ -421,18 +420,10 @@ done
 shift" name))
          (or environment '()))))
 
-     (define command/list
-       (filter
-        identity
-        (map
-         (lambda (command)
-           (and (command:shell? command)
-                (stringf "/bin/sh -- \"$1\"/~s" (command:shell:path command))))
-         commands)))
-
-     (define command
-       (if (null? command/list)
-           "" (car command/list)))
+     (define command/str
+       (if (command:shell? command)
+           (stringf "/bin/sh -- \"$1\"/~s" (command:shell:path command))
+           ""))
 
      (fprintf
       port
@@ -440,7 +431,7 @@ shift" name))
       cleanup-command
       path-value
       env-definitions
-      command)))
+      command/str)))
 
   (call-with-output-file/lazy
    run-script-path
