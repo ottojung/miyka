@@ -423,7 +423,7 @@ shift" name))
 
      (define command/str
        (if (command:shell? command)
-           (stringf "cd \"$2\" && /bin/sh -- \"$1\"/~s" (command:shell:path command))
+           (stringf "/bin/sh -- \"$1\"/~s" (command:shell:path command))
            ""))
 
      (fprintf

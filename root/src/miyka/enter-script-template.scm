@@ -18,7 +18,7 @@ if test -f \"$1\"/.profile
 then .  \"$1\"/.profile
 fi
 
-cleanup \"$1\"
+( cleanup \"$1\" )
 ~a
 
 ")
