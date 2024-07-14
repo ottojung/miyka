@@ -18,8 +18,8 @@
     /         import <path> as <name>
     /         get GET_ARGUMENTS
     GET_ARGUMENTS : home of <name>
-    /               config path of <name>
-    /               root path of <name>
+    /               config-path of <name>
+    /               root-path of <name>
     OPT : --root <root>
     /     --guix-executable <guix-executable>
     )
@@ -64,10 +64,10 @@
       ((and get home of)
        (CLI:get-repository-home <name>))
 
-      ((and get config path of)
+      ((and get config-path of)
        (CLI:get-config-path <name>))
 
-      ((and get root path of)
+      ((and get root-path of)
        (CLI:get-root-path <name>))
 
       ))))

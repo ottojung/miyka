@@ -5,7 +5,7 @@
 t_miyka create "test-project1"
 
 HOME_PATH=$(t_miyka get home of "test-project1")
-ROOT_PATH=$(t_miyka get root path of "test-project1")
+ROOT_PATH=$(t_miyka get root-path of "test-project1")
 
 if ! test -d "$HOME_PATH"
 then

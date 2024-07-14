@@ -5,7 +5,7 @@
 t_miyka create "test-project"
 
 HOME_PATH=$(t_miyka get home of "test-project")
-CONFIG_PATH=$(t_miyka get config path of "test-project")
+CONFIG_PATH=$(t_miyka get config-path of "test-project")
 
 TMP="$MIYKA_ROOT/temp1.lisp"
 cat -- "$CONFIG_PATH" > "$TMP"
