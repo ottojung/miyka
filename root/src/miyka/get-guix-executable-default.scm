@@ -5,7 +5,7 @@
   (or (system-environment-get guix-executable-env-variable-name)
       (let ()
         (define-pair (re status)
-          (system-re "readlink -f \"$(command -v guix)\""))
+          (system-re "realpath -- \"$(command -v guix)\""))
 
         (and (= 0 status)
              (string-strip re)))))

@@ -4,6 +4,9 @@
   (export interpretation:run!)
   (import (only (euphrates box) box-ref))
   (import (only (euphrates fprintf) fprintf))
+  (import (only (euphrates identity) identity))
+  (import
+    (only (euphrates lines-to-string) lines->string))
   (import
     (only (euphrates list-collapse) list-collapse))
   (import
@@ -12,7 +15,6 @@
   (import
     (only (euphrates path-get-dirname)
           path-get-dirname))
-  (import (only (euphrates raisu-star) raisu*))
   (import
     (only (euphrates stack)
           stack->list
@@ -46,6 +48,9 @@
     (only (miyka get-guix-executable)
           get-guix-executable))
   (import
+    (only (miyka guix-executable-p)
+          guix-executable/p))
+  (import
     (only (miyka interpretation-installist)
           interpretation:installist))
   (import
@@ -57,6 +62,12 @@
           interpretation:home-moved?
           interpretation:host-stack
           interpretation:snapshot?))
+  (import
+    (only (miyka make-helper-env-script-path)
+          make-helper-env-script:path))
+  (import
+    (only (miyka make-helper-env-script-template)
+          make-helper-env-script:template))
   (import
     (only (miyka manifest-path) manifest:path))
   (import
@@ -73,6 +84,9 @@
   (import
     (only (miyka repository-enter-script)
           repository:enter-script))
+  (import
+    (only (miyka repository-make-helper-env-script)
+          repository:make-helper-env-script))
   (import
     (only (miyka repository-manifest)
           repository:manifest))
@@ -112,10 +126,10 @@
     (only (miyka versionfile-path) versionfile:path))
   (import
     (only (scheme base)
+          and
           begin
-          cond
+          car
           define
-          else
           for-each
           if
           lambda
@@ -135,6 +149,9 @@
           when))
   (import (only (scheme eval) environment))
   (import (only (scheme write) display write))
+  (cond-expand
+    (guile (import (only (srfi srfi-1) filter)))
+    (else (import (only (srfi 1) filter))))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

@@ -32,6 +32,10 @@
     (repository:run-script repository))
   (define run-script-path
     (run-script:path run-script))
+  (define make-helper-env-script
+    (repository:make-helper-env-script repository))
+  (define make-helper-env-script-path
+    (make-helper-env-script:path make-helper-env-script))
   (define run-sync-script
     (repository:run-sync-script repository))
   (define run-sync-script-path
@@ -57,20 +61,6 @@
     (reverse
      (stack->list
       (interpretation:git-stack interpretation))))
-
-  (define (make-enter-script script-path footer)
-    (call-with-output-file/lazy
-        script-path
-      (lambda (port)
-        (define home-line
-          (if home-moved?
-              "export HOME=\"$MIYKA_REPO_HOME\""
-              ""))
-        (fprintf
-         port
-         enter-script:template
-         home-line
-         footer))))
 
   (define cleanup
     (box-ref (interpretation:cleanup interpretation)))
@@ -102,21 +92,11 @@
   (define teardown-command-list
     (stack-make))
 
-  (define sync-footer
-    (stack-make))
-
-  (define cleanup-command
-    (stringf "test -f ~s && sh -- ~s" cleanup cleanup))
-
-  (define cleanup-wrapper
-    (let ()
-      (define base "
+  (define make-temporary-command
+    "
 rm -rf -- \"$MIYKA_WORK_PATH/temporary\"
 mkdir -p -- \"$MIYKA_WORK_PATH/temporary\"
 ")
-      (if cleanup
-          (stringf "~a\n~a" base cleanup-command)
-          base)))
 
   (define guix-describe-command
     "\"$MIYKA_GUIX_EXECUTABLE\" describe --format=channels > \"$MIYKA_WORK_PATH/state/channels.scm\"")
@@ -128,7 +108,7 @@ mkdir -p -- \"$MIYKA_WORK_PATH/temporary\"
 #########################
 
 MIYKA_REPO_ID=\"$(cat -- \"$MIYKA_WORK_PATH/id.txt\")\"
-MIYKA_GLOBAL_ID_PATH=\"$MIYKA_ROOT/globalid\"
+MIYKA_GLOBALID_PATH=\"./globalid\"
 HOSTNAME=\"$(cat -- '/etc/hostname')\"
 
 cd -- \"$MIYKA_ROOT\"
@@ -138,14 +118,14 @@ then
     restic init --quiet --repo ./backups --password-command 'echo 1234'
 fi
 
-if ! test -f \"$MIYKA_GLOBAL_ID_PATH\"
+if ! test -f \"$MIYKA_GLOBALID_PATH\"
 then
-    cat -- '/dev/urandom' | base32 | head -c 16  > \"$MIYKA_GLOBAL_ID_PATH\"
+    cat -- '/dev/urandom' | base32 | head -c 16  > \"$MIYKA_GLOBALID_PATH\"
 fi
 
-MIYKA_GLOBAL_ID=\"$(cat -- \"$MIYKA_GLOBAL_ID_PATH\")\"
+MIYKA_GLOBALID=\"$(cat -- \"$MIYKA_GLOBALID_PATH\")\"
 
-if ! restic backup --quiet --repo ./backups --password-command 'echo 1234' --tag id:\"$MIYKA_REPO_ID\" --tag time:$(date +%s) --tag action:exit --tag hostname:\"$HOSTNAME\" --tag globalid:\"$MIYKA_GLOBAL_ID\" -- \"repositories/$MIYKA_REPO_ID/wd\"
+if ! restic backup --quiet --repo ./backups --password-command 'echo 1234' --tag id:\"$MIYKA_REPO_ID\" --tag time:$(date +%s) --tag action:exit --tag hostname:\"$HOSTNAME\" --tag globalid:\"$MIYKA_GLOBALID\" -- \"repositories/$MIYKA_REPO_ID/wd\"
 then
     echo 'Backup with restic failed.' 1>&2
 fi
@@ -160,12 +140,11 @@ cd - 1>/dev/null 2>/dev/null
 # Invoking the setup script. #
 ##############################
 
-if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
+if ! \"$2\" shell \\
     --pure \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
-    /bin/sh -- \"$MIYKA_WORK_PATH/state/setup.sh\" \\
-    \"$MIYKA_REPO_HOME\" \"$MIYKA_WORK_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ROOT\" \"$MIYKA_GUIX_EXECUTABLE\"
+    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" /bin/sh -- \"$1\"/setup.sh
 then
     echo 'Setup script failed. Will not proceed further.' 1>&2
     exit 1
@@ -181,30 +160,40 @@ fi
 
 teardown() {
 
-if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
+if ! \"$2\" shell \\
     --pure \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
-    /bin/sh -- \"$MIYKA_WORK_PATH/state/teardown.sh\" \\
-    \"$MIYKA_REPO_HOME\" \"$MIYKA_WORK_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ROOT\" \"$MIYKA_GUIX_EXECUTABLE\"
+    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" /bin/sh -- \"$1\"/teardown.sh
 then
     echo 'Teardown script failed.' 1>&2
 fi
 
-trap '' exit hup int quit abrt kill alrm term
-
 }
 
-trap 'teardown' exit hup int quit abrt kill alrm term
+trap 'teardown \"$1\" \"$2\" \"$3\"' exit hup int quit abrt kill alrm term
 
 ")
 
-  (define profile-command
-    "
-if test -f ./.profile
-then . ./.profile
-fi
-")
+  (define enter-command
+    (words->string
+     (list-collapse
+      (list
+       "\"$2\""
+       "shell"
+       maybe-pure
+       "--manifest=\"$1\"/manifest.scm"
+       "--"
+       "/bin/sh" "--" "\"$1\"/enter.sh" "\"$1\"/../home"
+       (map
+        (lambda (name)
+          (~s (string-append "$" name)))
+        (or environment '()))
+       "\"$1\"/../home"
+       ))))
+
+  (unless (null? packages)
+    (stack-push! setup-command-list make-temporary-command))
 
   (unless (null? packages)
     (stack-push! setup-command-list guix-describe-command))
@@ -326,32 +315,9 @@ done
 "
       (words->string (map ~s gitlist)))))
 
-  (stack-push! sync-footer cleanup-wrapper)
-
-  (unless (stack-empty? setup-command-list)
-    (stack-push! sync-footer setup-command))
-
-  (stack-push! sync-footer teardown-command)
-  (stack-push! sync-footer profile-command)
-
-  (for-each
-   (lambda (command)
-     (cond
-      ((command:shell? command)
-       (stack-push!
-        sync-footer
-        (stringf "sh -- ~s" (command:shell:path command))))
-
-      (else
-       (raisu* :from "interpretation:run!"
-               :type 'unknown-command
-               :message (stringf "Uknown command ~s." command)
-               :args (list command)))))
-   commands)
-
   (stack-push!
    teardown-command-list
-   cleanup-wrapper)
+   make-temporary-command)
 
   (when snapshot?
     (stack-push!
@@ -366,133 +332,122 @@ done
     (define dirpath
       (path-get-dirname path))
 
-    (make-directories dirpath)
-    (call-with-output-file/lazy
-        path
-      (lambda (port)
-        (fprintf port enter-script:template))))
+    (make-directories dirpath))
 
   (call-with-output-file/lazy
-      relative-path-script-path
-    (lambda (port)
-      (display relative-path-script:template port)))
+   relative-path-script-path
+   (lambda (port)
+     (display relative-path-script:template port)))
 
   (call-with-output-file/lazy
-      versionfile-path
-    (lambda (port)
-      (display miyka:version port)
-      (newline port)))
+   make-helper-env-script-path
+   (lambda (port)
+     (display make-helper-env-script:template port)))
+
+  (call-with-output-file/lazy
+   versionfile-path
+   (lambda (port)
+     (display miyka:version port)
+     (newline port)))
 
   (unless (stack-empty? setup-command-list)
     (call-with-output-file/lazy
-        setup-script-path
-      (lambda (port)
-        (display "#! /bin/sh" port)
-        (newline port)
-        (newline port)
-        (display "set -e" port)
-        (newline port)
-        (newline port)
+     setup-script-path
+     (lambda (port)
+       (display "#! /bin/sh" port)
+       (newline port)
+       (newline port)
+       (display "set -e" port)
+       (newline port)
+       (newline port)
 
-        (display "export MIYKA_REPO_HOME=\"$1\"" port)
-        (newline port)
-        (display "export MIYKA_WORK_PATH=\"$2\"" port)
-        (newline port)
-        (display "export MIYKA_ORIG_HOME=\"$3\"" port)
-        (newline port)
-        (display "export MIYKA_REPO_PATH=\"$4\"" port)
-        (newline port)
-        (display "export MIYKA_ROOT=\"$5\"" port)
-        (newline port)
-        (display "export MIYKA_GUIX_EXECUTABLE=\"$6\"" port)
-        (newline port)
-        (display "export PATH=\"$PATH:$MIYKA_WORK_PATH/bin\"" port)
-        (newline port)
-        (newline port)
-
-        (for-each
-         (lambda (line) (display line port) (newline port) (newline port))
-         (reverse
-          (stack->list setup-command-list))))))
+       (for-each
+        (lambda (line) (display line port) (newline port) (newline port))
+        (reverse
+         (stack->list setup-command-list))))))
 
   (unless (stack-empty? teardown-command-list)
     (call-with-output-file/lazy
-        teardown-script-path
-      (lambda (port)
-        (display "#! /bin/sh" port)
-        (newline port)
-        (newline port)
+     teardown-script-path
+     (lambda (port)
+       (display "#! /bin/sh" port)
+       (newline port)
+       (newline port)
 
-        (display "export MIYKA_REPO_HOME=\"$1\"" port)
-        (newline port)
-        (display "export MIYKA_WORK_PATH=\"$2\"" port)
-        (newline port)
-        (display "export MIYKA_ORIG_HOME=\"$3\"" port)
-        (newline port)
-        (display "export MIYKA_REPO_PATH=\"$4\"" port)
-        (newline port)
-        (display "export MIYKA_ROOT=\"$5\"" port)
-        (newline port)
-        (display "export MIYKA_GUIX_EXECUTABLE=\"$6\"" port)
-        (newline port)
-        (display "export PATH=\"$PATH:$MIYKA_WORK_PATH/bin\"" port)
-        (newline port)
-        (newline port)
-
-        (for-each
-         (lambda (line) (display line port) (newline port) (newline port))
-         (reverse
-          (stack->list teardown-command-list))))))
+       (for-each
+        (lambda (line) (display line port) (newline port) (newline port))
+        (reverse
+         (stack->list teardown-command-list))))))
 
   (call-with-output-file/lazy
-      run-sync-script-path
-    (lambda (port)
-      (display "#! /bin/sh" port)
-      (newline port)
-      (newline port)
+   run-sync-script-path
+   (lambda (port)
+     (display "#! /bin/sh" port)
+     (newline port)
+     (newline port)
 
-      (for-each
-       (lambda (line) (display line port) (newline port))
-       (reverse
-        (stack->list sync-footer)))))
-
-  (call-with-output-file/lazy
-      manifest-path
-    (lambda (port)
-      (write
-       `(specifications->manifest
-         (quote ,packages))
-       port)))
+     (display teardown-command port)
+     (unless (stack-empty? setup-command-list)
+       (display setup-command port))
+     (display enter-command port)
+     (newline port)))
 
   (call-with-output-file/lazy
-      run-script-path
-    (lambda (port)
-      (define NL "\\\n")
+   manifest-path
+   (lambda (port)
+     (write
+      `(specifications->manifest
+        (quote ,packages))
+      port)))
 
-      (define env-options
+  (call-with-output-file/lazy
+   enter-script-path
+
+   (lambda (port)
+
+     (define path-value
+       "\"$1\"/.local/bin:\"$PATH\":\"$1\"/../bin")
+
+     (define cleanup-command
+       (if cleanup
+           (stringf "test -f \"$1\"/~s && /bin/sh -- \"$1\"/~s" cleanup cleanup)
+           "true"))
+
+     (define env-definitions
+       (lines->string
         (map
          (lambda (name)
-           (list "--env" name (~s (string-append "$" name))))
-         (or environment '())))
+           (stringf "export ~a=\"$1\"
+shift" name))
+         (or environment '()))))
 
-      (fprintf
-       port
-       run-script:template
+     (define command/list
+       (filter
+        identity
+        (map
+         (lambda (command)
+           (and (command:shell? command)
+                (stringf "/bin/sh -- \"$1\"/~s" (command:shell:path command))))
+         commands)))
 
-       (words->string
-        (list-collapse
-         (list
-          "\"$MIYKA_GUIX_EXECUTABLE\"" NL
-          "shell" maybe-pure NL
-          "--manifest=manifest.scm" NL
-          "--" NL
-          "/bin/sh" "\"$PWD/enter.sh\"" NL
-          maybe-move-home "--guix-executable" "\"$MIYKA_GUIX_EXECUTABLE\"" NL
-          "--env" "MIYKA_ROOT" "\"$MIYKA_ROOT\"" env-options NL
-          "--" NL
-          "sh" "--" "\"$PWD/run-sync.sh\""
-          ))))
+     (define command
+       (if (null? command/list)
+           "" (car command/list)))
 
-      (newline port)))
+     (fprintf
+      port
+      enter-script:template
+      cleanup-command
+      path-value
+      env-definitions
+      command)))
 
-  (system*/exit-code "/bin/sh" "--" run-script-path))
+  (call-with-output-file/lazy
+   run-script-path
+   (lambda (port)
+     (display run-script:template port)))
+
+  (system*/exit-code
+   "/bin/sh" "--"
+   run-script-path
+   (or (guix-executable/p) "")))

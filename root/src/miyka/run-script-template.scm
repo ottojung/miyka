@@ -4,29 +4,30 @@
 (define run-script:template
   "#! /bin/sh
 
-if test -z \"$MIYKA_ROOT\"
-then
-    if test -z \"$XDG_DATA_HOME\"
-    then BASE=\"$HOME/.local/share\"
-    else BASE=\"$XDG_DATA_HOME\"
+get_guix() {
+    if test -z \"$1\"
+    then
+        if test -z \"$MIYKA_GUIX_EXECUTABLE\"
+        then command -v guix
+        else printf '%s' \"$MIYKA_GUIX_EXECUTABLE\"
+        fi
+    else
+        printf '%s' \"$1\"
     fi
+}
 
-    export MIYKA_ROOT=\"$BASE/miyka/root\"
-fi
+get_miyka_root() {
+    if test -z \"$MIYKA_ROOT\"
+    then
+        if test -z \"$XDG_DATA_HOME\"
+        then printf '%s' \"$HOME/.local/share/miyka/root\"
+        else printf '%s' \"$XDG_DATA_HOME/miyka/root\"
+        fi
+    else
+        printf '%s' \"$MIYKA_ROOT\"
+    fi
+}
 
-case \"$MIYKA_ROOT\" in
-    /*) ;;
-    *)
-        export MIYKA_ROOT=\"$PWD/$MIYKA_ROOT\"
-        ;;
-esac
+exec /bin/sh \"${0%/*}\"/run-sync.sh \"${0%/*}\" \"$(get_guix)\" \"$(get_miyka_root)\"
 
-cd -- \"${0%/*}\"
-
-if test -z \"$MIYKA_GUIX_EXECUTABLE\"
-then
-    MIYKA_GUIX_EXECUTABLE=\"$(command -v guix)\"
-fi
-
-exec ~a
 ")
