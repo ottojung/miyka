@@ -199,6 +199,13 @@ trap 'teardown' exit hup int quit abrt kill alrm term
 
 ")
 
+  (define profile-command
+    "
+if test -f \"$MIYKA_REPO_HOME\"/.profile
+then . \"$MIYKA_REPO_HOME\"/.profile
+fi
+")
+
   (unless (null? packages)
     (stack-push! setup-command-list guix-describe-command))
 
@@ -324,6 +331,7 @@ done
     (stack-push! sync-footer setup-command))
 
   (stack-push! sync-footer teardown-command)
+  (stack-push! sync-footer profile-command)
 
   (for-each
    (lambda (command)

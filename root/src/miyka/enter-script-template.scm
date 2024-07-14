@@ -81,7 +81,6 @@ done
 ##############
 
 cd -- \"$MIYKA_REPO_HOME\"
-test -f \"$HOME/.profile\" && . \"$HOME/.profile\"
 
 exec \"$@\"
 ")
