@@ -106,7 +106,7 @@
     (stack-make))
 
   (define cleanup-command
-    (stringf "test -f ~s && MIYKA_PROC_ID=$MIYKA_PID_SYNC sh -- ~s" cleanup cleanup))
+    (stringf "test -f ~s && sh -- ~s" cleanup cleanup))
 
   (define cleanup-wrapper
     (let ()
@@ -165,7 +165,7 @@ if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
     /bin/sh -- \"$MIYKA_WORK_PATH/state/setup.sh\" \\
-    \"$MIYKA_REPO_HOME\" \"$MIYKA_WORK_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ROOT\" \"$MIYKA_GUIX_EXECUTABLE\" \"$MIYKA_PID_SYNC\"
+    \"$MIYKA_REPO_HOME\" \"$MIYKA_WORK_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ROOT\" \"$MIYKA_GUIX_EXECUTABLE\"
 then
     echo 'Setup script failed. Will not proceed further.' 1>&2
     exit 1
@@ -186,7 +186,7 @@ if ! HOME=\"$MIYKA_ORIG_HOME\" \"$MIYKA_GUIX_EXECUTABLE\" shell \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
     /bin/sh -- \"$MIYKA_WORK_PATH/state/teardown.sh\" \\
-    \"$MIYKA_REPO_HOME\" \"$MIYKA_WORK_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ROOT\" \"$MIYKA_GUIX_EXECUTABLE\" \"$MIYKA_PID_SYNC\"
+    \"$MIYKA_REPO_HOME\" \"$MIYKA_WORK_PATH\" \"$MIYKA_ORIG_HOME\" \"$MIYKA_REPO_PATH\" \"$MIYKA_ROOT\" \"$MIYKA_GUIX_EXECUTABLE\"
 then
     echo 'Teardown script failed.' 1>&2
 fi
@@ -340,7 +340,7 @@ done
       ((command:shell? command)
        (stack-push!
         sync-footer
-        (stringf "MIYKA_PROC_ID=$MIYKA_PID_SYNC sh -- ~s" (command:shell:path command))))
+        (stringf "sh -- ~s" (command:shell:path command))))
 
       (else
        (raisu* :from "interpretation:run!"
@@ -406,8 +406,6 @@ done
         (newline port)
         (display "export MIYKA_GUIX_EXECUTABLE=\"$6\"" port)
         (newline port)
-        (display "export MIYKA_PID_SYNC=\"$7\"" port)
-        (newline port)
         (display "export PATH=\"$PATH:$MIYKA_WORK_PATH/bin\"" port)
         (newline port)
         (newline port)
@@ -437,8 +435,6 @@ done
         (newline port)
         (display "export MIYKA_GUIX_EXECUTABLE=\"$6\"" port)
         (newline port)
-        (display "export MIYKA_PID_SYNC=\"$7\"" port)
-        (newline port)
         (display "export PATH=\"$PATH:$MIYKA_WORK_PATH/bin\"" port)
         (newline port)
         (newline port)
@@ -452,9 +448,6 @@ done
       run-sync-script-path
     (lambda (port)
       (display "#! /bin/sh" port)
-      (newline port)
-      (newline port)
-      (display "export MIYKA_PID_SYNC=$$" port)
       (newline port)
       (newline port)
 
