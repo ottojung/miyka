@@ -143,7 +143,7 @@ if ! \"$2\" shell \\
     --pure \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
-    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" /bin/sh -- \"$1\"/setup.sh
+    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" /bin/sh -- \"$1\"/setup.sh
 then
     echo 'Setup script failed. Will not proceed further.' 1>&2
     exit 1
@@ -163,7 +163,7 @@ if ! \"$2\" shell \\
     --pure \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
-    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" /bin/sh -- \"$1\"/teardown.sh
+    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" /bin/sh -- \"$1\"/teardown.sh
 then
     echo 'Teardown script failed.' 1>&2
 fi
@@ -189,6 +189,7 @@ trap 'teardown \"$1\" \"$2\" \"$3\"' exit hup int quit abrt kill alrm term
           (~s (string-append "$" name)))
         (or environment '()))
        "\"$1\"/../home"
+       "\"$4\""
        ))))
 
   (unless (null? packages)
@@ -409,7 +410,7 @@ done
 
      (define cleanup-command
        (if cleanup
-           (stringf "test -f \"$1\"/~s && /bin/sh -- \"$1\"/~s" cleanup cleanup)
+           (stringf "cd \"$1\" && test -f ./~s && /bin/sh -- ./~s" cleanup cleanup)
            "true"))
 
      (define env-definitions
@@ -422,7 +423,7 @@ shift" name))
 
      (define command/str
        (if (command:shell? command)
-           (stringf "/bin/sh -- \"$1\"/~s" (command:shell:path command))
+           (stringf "cd \"$2\" && /bin/sh -- \"$1\"/~s" (command:shell:path command))
            ""))
 
      (fprintf

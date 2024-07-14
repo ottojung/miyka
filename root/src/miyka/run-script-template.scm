@@ -28,6 +28,6 @@ get_miyka_root() {
     fi
 }
 
-exec /bin/sh \"${0%/*}\"/run-sync.sh \"${0%/*}\" \"$(get_guix)\" \"$(get_miyka_root)\"
+exec /bin/sh \"${0%/*}\"/run-sync.sh \"${0%/*}\" \"$(get_guix)\" \"$(get_miyka_root)\" \"$PWD\"
 
 ")
