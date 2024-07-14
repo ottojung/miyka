@@ -3,12 +3,9 @@
 
 (define init-script:template "#! /bin/sh
 
-unset MIYKA_GUIX_EXECUTABLE
-unset MIYKA_ORIG_HOME
-unset MIYKA_REPO_HOME
-unset MIYKA_REPO_PATH
-unset MIYKA_ROOT
-unset MIYKA_WORK_PATH
+#
+# Expression \"${0%/*}/../..\" evaluates to miyka's repository HOME.
+#
 
 $SHELL
 ")
