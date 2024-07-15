@@ -6,7 +6,7 @@
    (or (system-environment-get guix-executable-env-variable-name)
        (let ()
          (define-pair (re status)
-           (system-re "INITIAL=\"$(command -v guix 2>/dev/null)\" ; if test -z \"$INITIAL\" ; then exit 1 ; else realpath -- \"$INITIAL\" ; if ! test \"$?\" = 0 ; then printf '%s' \"$INITIAL\" ; fi ; fi"))
+           (system-re "INITIAL=\"$(command -v guix 2>/dev/null)\" ; if test -z \"$INITIAL\" ; then exit 1 ; else realpath -- \"$INITIAL\" 2>/dev/null ; if ! test \"$?\" = 0 ; then printf '%s' \"$INITIAL\" ; fi ; fi"))
 
          (and (= 0 status)
               (string-strip re))))))
