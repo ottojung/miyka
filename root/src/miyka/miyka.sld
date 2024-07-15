@@ -8,7 +8,11 @@
           define-cli:show-help
           with-cli))
   (import
-    (only (euphrates properties) with-properties))
+    (only (euphrates make-unique) make-unique))
+  (import
+    (only (euphrates properties)
+          set-property!
+          with-properties))
   (import
     (only (euphrates with-ignore-errors)
           with-ignore-errors!))
@@ -44,6 +48,8 @@
   (import
     (only (miyka miyka-version) miyka:version))
   (import (only (miyka providers) providers))
+  (import
+    (only (miyka repository-name) repository:name))
   (import (only (miyka root-p) root/p))
   (import
     (only (scheme base)
@@ -55,7 +61,8 @@
           list
           newline
           parameterize
-          quote))
+          quote
+          when))
   (import (only (scheme write) display))
   (cond-expand
     (guile (import (only (srfi srfi-1) remove)))

@@ -30,6 +30,14 @@
    (parameterize ((root/p <root>)
                   (guix-executable/p <guix-executable>)
                   )
+
+     (define repository (make-unique))
+
+     (when <name>
+       (set-property!
+        (repository:name repository)
+        <name>))
+
      (cond
 
       (--help
@@ -41,13 +49,13 @@
        (newline))
 
       (create
-       (CLI:create <name>))
+       (CLI:create repository))
 
       (edit
-       (CLI:edit <name>))
+       (CLI:edit repository))
 
       (run
-       (CLI:run <name>))
+       (CLI:run repository))
 
       (list
        (CLI:list))
@@ -56,19 +64,19 @@
        (CLI:copy <existing-name> <new-name>))
 
       (remove
-       (CLI:remove <name>))
+       (CLI:remove repository))
 
       (import
-       (CLI:import <path> <name>))
+       (CLI:import <path> repository))
 
       ((and get home of)
-       (CLI:get-repository-home <name>))
+       (CLI:get-repository-home repository))
 
       ((and get config-path of)
-       (CLI:get-config-path <name>))
+       (CLI:get-config-path repository))
 
       ((and get root-path of)
-       (CLI:get-root-path <name>))
+       (CLI:get-root-path repository))
 
       ))))
 
