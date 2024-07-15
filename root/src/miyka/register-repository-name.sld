@@ -6,13 +6,13 @@
     (only (euphrates assoc-set-value)
           assoc-set-value))
   (import
+    (only (euphrates properties) set-property!))
+  (import
     (only (miyka get-repositories-id-map)
           get-repositories-id-map))
   (import (only (miyka id-value) id:value))
   (import
     (only (miyka repository-id) repository:id))
-  (import
-    (only (miyka repository-name) repository:name))
   (import
     (only (miyka set-repositories-id-map)
           set-repositories-id-map))

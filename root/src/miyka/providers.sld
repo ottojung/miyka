@@ -7,6 +7,7 @@
           append-posix-path))
   (import
     (only (euphrates properties) define-provider))
+  (import (only (euphrates raisu-fmt) raisu-fmt))
   (import (only (euphrates raisu-star) raisu*))
   (import (only (euphrates tilda-a) ~a))
   (import

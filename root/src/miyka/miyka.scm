@@ -88,11 +88,11 @@
       ((and get root-path of)
        (CLI:get-root-path repository))
 
-      ((and get id of)
-       (CLI:get-id repository))
-
       ((and get name of)
        (CLI:get-name repository))
+
+      ((and get id of)
+       (CLI:get-id repository))
 
       ))))
 

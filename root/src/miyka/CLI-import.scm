@@ -5,49 +5,51 @@
   (define guix (get-guix-executable))
   (define repository (repository:make))
 
+  (with-properties
+   :for-everything
+   (set-property! (repository:name repository) name)
+   (check-if-repository-already-exists repository))
+
+  (with-properties
+   :for-everything
+   (let ()
+     (set-property! (repository:path repository) path-to-repository)
+     (let ()
+       (define id (repository:id repository))
+       (define id-path (id:path id))
+       (define id-value
+         (begin
+           (unless (file-or-directory-exists? id-path)
+             (raisu-fmt
+              'imported-repository-does-not-have-id
+              (stringf "Imported repository at ~s does not have an id file at ~s."
+                       path-to-repository
+                       id-path)))
+
+           (~a (call-with-input-file id-path read))))
+
+       (register-repository-name repository name id-value))))
+
   (set-property! (repository:name repository) name)
 
   (let ()
-    (with-properties
-     :for-everything
-     (let ()
-       (check-if-repository-already-exists repository)
-       (set-property! (repository:path repository) path-to-repository)
-       (let ()
-         (define id (repository:id repository))
-         (define id-path (id:path id))
-         (define id-value
-           (begin
-             (unless (file-or-directory-exists? id-path)
-               (raisu-fmt
-                'imported-repository-does-not-have-id
-                (stringf "Imported repository at ~s does not have an id file at ~s."
-                         path-to-repository
-                         id-path)))
+    (define target-path (repository:path repository))
 
-             (~a (call-with-input-file id-path read))))
+    (unless (= 0 (system*/exit-code
+                  guix "shell" "--pure" "coreutils"
+                  "--" "mv" "-T" "--" path-to-repository target-path
+                  ))
+      (raisu-fmt 'import-command-failed
+                 "Failed to move the imported files into Miyka's root."))
 
-         (set-property! (id:value id) id-value)
-         (register-repository-name repository))))
+    (unless (= 0 (system*/exit-code
+                  guix "shell" "--pure" "coreutils"
+                  "--" "ln" "-sfT" "--" target-path path-to-repository
+                  ))
+      (raisu-fmt 'import-command-failed
+                 "Failed to symlink the imported repository to the original path. The repository has been moved to ~s."
+                 target-path))
 
-    (let ()
-      (define target-path (repository:path repository))
-
-      (unless (= 0 (system*/exit-code
-                    guix "shell" "--pure" "coreutils"
-                    "--" "mv" "-T" "--" path-to-repository target-path
-                    ))
-        (raisu-fmt 'import-command-failed
-                   "Failed to move the imported files into Miyka's root."))
-
-      (unless (= 0 (system*/exit-code
-                    guix "shell" "--pure" "coreutils"
-                    "--" "ln" "-sfT" "--" target-path path-to-repository
-                    ))
-        (raisu-fmt 'import-command-failed
-                   "Failed to symlink the imported repository to the original path. The repository has been moved to ~s."
-                   target-path))
-
-      ))
+    )
 
   (values))

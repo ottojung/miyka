@@ -64,6 +64,35 @@
 
     (car id-values)))
 
+(define-provider p:name
+  :targets (repository:name)
+  :sources (id:value)
+  (lambda (this)
+    (define id-map (get-repositories-id-map))
+    (define id (repository:id this))
+    (define id-value (id:value id))
+    (define names
+      (map
+       cdr
+       (filter
+        (lambda (pp)
+          (equal? id-value (car pp)))
+        id-map)))
+
+    (when (null? names)
+      (raisu-fmt
+       'bad-database-state:no-name-for-id
+       "Bad database state: id ~s has no name."
+       id-value))
+
+    (unless (null? (cdr names))
+      (raisu-fmt
+       'bad-database-state:multiples-names-for-id
+       "Bad database state: id ~s has multiple names: ~s."
+       id-value names))
+
+    (car names)))
+
 (define-provider p:repository:work-directory
   :targets (repository:work-directory)
   :sources (repository:path)
