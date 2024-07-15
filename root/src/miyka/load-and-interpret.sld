@@ -18,6 +18,9 @@
   (import
     (only (miyka language-host) language:host))
   (import
+    (only (miyka language-install-sh)
+          language:install-sh))
+  (import
     (only (miyka language-install) language:install))
   (import
     (only (miyka language-move-home)
