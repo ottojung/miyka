@@ -12,8 +12,8 @@
     (only (miyka get-repositories-directory)
           get-repositories-directory))
   (import
-    (only (miyka get-repositories-name-map)
-          get-repositories-name-map))
+    (only (miyka get-repositories-id-map)
+          get-repositories-id-map))
   (import
     (only (scheme base)
           begin

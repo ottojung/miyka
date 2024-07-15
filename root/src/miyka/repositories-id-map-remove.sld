@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka repositories-name-map-remove)
-  (export repositories-name-map:remove)
+  (miyka repositories-id-map-remove)
+  (export repositories-id-map:remove)
   (import
     (only (scheme base)
           begin
@@ -17,5 +17,5 @@
     (guile (import (only (guile) include-from-path))
            (begin
              (include-from-path
-               "miyka/repositories-name-map-remove.scm")))
-    (else (include "repositories-name-map-remove.scm"))))
+               "miyka/repositories-id-map-remove.scm")))
+    (else (include "repositories-id-map-remove.scm"))))

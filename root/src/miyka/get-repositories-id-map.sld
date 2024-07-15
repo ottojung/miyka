@@ -1,10 +1,10 @@
 
 (define-library
-  (miyka get-repositories-name-map)
-  (export get-repositories-name-map)
+  (miyka get-repositories-id-map)
+  (export get-repositories-id-map)
   (import
-    (only (miyka get-repositories-name-map-path)
-          get-repositories-name-map-path))
+    (only (miyka get-repositories-id-map-path)
+          get-repositories-id-map-path))
   (import (only (scheme base) begin define))
   (import
     (only (scheme file) call-with-input-file))
@@ -13,5 +13,5 @@
     (guile (import (only (guile) include-from-path))
            (begin
              (include-from-path
-               "miyka/get-repositories-name-map.scm")))
-    (else (include "get-repositories-name-map.scm"))))
+               "miyka/get-repositories-id-map.scm")))
+    (else (include "get-repositories-id-map.scm"))))

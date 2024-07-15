@@ -1,18 +1,18 @@
 
 (define-library
-  (miyka set-repositories-name-map)
-  (export set-repositories-name-map)
+  (miyka set-repositories-id-map)
+  (export set-repositories-id-map)
   (import
     (only (miyka call-with-output-file-lazy)
           call-with-output-file/lazy))
   (import
-    (only (miyka get-repositories-name-map-path)
-          get-repositories-name-map-path))
+    (only (miyka get-repositories-id-map-path)
+          get-repositories-id-map-path))
   (import (only (scheme base) begin define lambda))
   (import (only (scheme write) write))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
              (include-from-path
-               "miyka/set-repositories-name-map.scm")))
-    (else (include "set-repositories-name-map.scm"))))
+               "miyka/set-repositories-id-map.scm")))
+    (else (include "set-repositories-id-map.scm"))))

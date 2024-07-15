@@ -7,8 +7,8 @@
           define-property
           define-provider))
   (import
-    (only (miyka get-repositories-name-map)
-          get-repositories-name-map))
+    (only (miyka get-repositories-id-map)
+          get-repositories-id-map))
   (import
     (only (miyka repository-name) repository:name))
   (import

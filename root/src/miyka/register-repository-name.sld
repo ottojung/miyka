@@ -6,13 +6,13 @@
     (only (euphrates assoc-set-value)
           assoc-set-value))
   (import
-    (only (miyka get-repositories-name-map)
-          get-repositories-name-map))
+    (only (miyka get-repositories-id-map)
+          get-repositories-id-map))
   (import
     (only (miyka repository-name) repository:name))
   (import
-    (only (miyka set-repositories-name-map)
-          set-repositories-name-map))
+    (only (miyka set-repositories-id-map)
+          set-repositories-id-map))
   (import (only (scheme base) begin define values))
   (cond-expand
     (guile (import (only (guile) include-from-path))

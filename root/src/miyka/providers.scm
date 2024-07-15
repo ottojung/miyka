@@ -22,15 +22,15 @@
   :targets (id:value)
   :sources (repository:name)
   (lambda (this)
-    (define name-map (get-repositories-name-map))
+    (define id-map (get-repositories-id-map))
     (define name (repository:name this))
     (define id-value
       (assoc-or
-       name name-map
+       name id-map
        (raisu* :from "id:value"
                :type 'bad-name
                :message "Bad name."
-               :args (list name name-map this))))
+               :args (list name id-map this))))
     id-value))
 
 (define-provider p:repository:work-directory

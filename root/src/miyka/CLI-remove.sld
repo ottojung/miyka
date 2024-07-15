@@ -10,11 +10,11 @@
     (only (miyka get-guix-executable)
           get-guix-executable))
   (import
-    (only (miyka get-repositories-name-map)
-          get-repositories-name-map))
+    (only (miyka get-repositories-id-map)
+          get-repositories-id-map))
   (import
-    (only (miyka repositories-name-map-remove)
-          repositories-name-map:remove))
+    (only (miyka repositories-id-map-remove)
+          repositories-id-map:remove))
   (import
     (only (miyka repository-exists-on-disk-huh)
           repository:exists-on-disk?))
@@ -23,8 +23,8 @@
   (import
     (only (miyka repository-path) repository:path))
   (import
-    (only (miyka set-repositories-name-map)
-          set-repositories-name-map))
+    (only (miyka set-repositories-id-map)
+          set-repositories-id-map))
   (import
     (only (scheme base) begin define quote unless))
   (cond-expand

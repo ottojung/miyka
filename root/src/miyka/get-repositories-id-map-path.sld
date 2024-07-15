@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka get-repositories-name-map-path)
-  (export get-repositories-name-map-path)
+  (miyka get-repositories-id-map-path)
+  (export get-repositories-id-map-path)
   (import
     (only (euphrates append-posix-path)
           append-posix-path))
@@ -29,5 +29,5 @@
     (guile (import (only (guile) include-from-path))
            (begin
              (include-from-path
-               "miyka/get-repositories-name-map-path.scm")))
-    (else (include "get-repositories-name-map-path.scm"))))
+               "miyka/get-repositories-id-map-path.scm")))
+    (else (include "get-repositories-id-map-path.scm"))))

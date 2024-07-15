@@ -5,11 +5,11 @@
   (define repos-dir (get-repositories-directory))
   (when (file-or-directory-exists? repos-dir)
     (let ()
-      (define name-map
-        (get-repositories-name-map))
+      (define id-map
+        (get-repositories-id-map))
 
       (define names
-        (map car name-map))
+        (map car id-map))
 
       (define sorted
         (euphrates:list-sort

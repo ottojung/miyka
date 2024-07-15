@@ -7,6 +7,6 @@
   :targets (repository:exists-on-disk?)
   :sources (repository:name)
   (lambda (this)
-    (define name-map (get-repositories-name-map))
+    (define id-map (get-repositories-id-map))
     (define name (repository:name this))
-    (not (not (assoc name name-map)))))
+    (not (not (assoc name id-map)))))
