@@ -6,8 +6,12 @@
     (only (euphrates make-directories)
           make-directories))
   (import
+    (only (euphrates make-unique) make-unique))
+  (import
     (only (euphrates path-get-dirname)
           path-get-dirname))
+  (import
+    (only (euphrates properties) set-property!))
   (import (only (euphrates raisu-fmt) raisu-fmt))
   (import
     (only (euphrates system-star-exit-code)
@@ -30,6 +34,8 @@
   (import
     (only (miyka repository-exists-on-disk-huh)
           repository:exists-on-disk?))
+  (import
+    (only (miyka repository-name) repository:name))
   (import
     (only (scheme base)
           begin

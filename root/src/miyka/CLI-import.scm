@@ -3,9 +3,11 @@
 
 (define (CLI:import path-to-repository name)
   (define guix (get-guix-executable))
-  (define repository name)
+  (define repository (make-unique))
 
-  (check-if-repository-already-exists name)
+  (set-property! (repository:name repository) name)
+
+  (check-if-repository-already-exists repository)
 
   (let ()
     (with-properties

@@ -6,6 +6,8 @@
     (only (euphrates file-or-directory-exists-q)
           file-or-directory-exists?))
   (import
+    (only (euphrates make-unique) make-unique))
+  (import
     (only (euphrates properties)
           set-property!
           with-properties))
@@ -25,6 +27,8 @@
   (import
     (only (miyka register-repository-name)
           register-repository-name))
+  (import
+    (only (miyka repository-name) repository:name))
   (import
     (only (miyka repository-path) repository:path))
   (import

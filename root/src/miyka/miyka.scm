@@ -10,16 +10,18 @@
     /      --help
     /      --version
     COMMAND : create <name>
-    /         edit <name>
-    /         run <name>
+    /         edit ID
+    /         run ID
     /         list
-    /         copy <existing-name> as <new-name>
-    /         remove <name>
+    /         copy ID as <new-name>
+    /         remove ID
     /         import <path> as <name>
     /         get GET_ARGUMENTS
-    GET_ARGUMENTS : home of <name>
-    /               config-path of <name>
-    /               root-path of <name>
+    GET_ARGUMENTS : home of ID
+    /               config-path of ID
+    /               root-path of ID
+    ID       : id <id>
+    /          <name>
     OPT : --root <root>
     /     --guix-executable <guix-executable>
     )
@@ -32,6 +34,11 @@
                   )
 
      (define repository (make-unique))
+
+     (when <id>
+       (set-property!
+        (repository:id repository)
+        <id>))
 
      (when <name>
        (set-property!
@@ -61,13 +68,13 @@
        (CLI:list))
 
       (copy
-       (CLI:copy <existing-name> <new-name>))
+       (CLI:copy repository <new-name>))
 
       (remove
        (CLI:remove repository))
 
       (import
-       (CLI:import <path> repository))
+       (CLI:import <path> <name>))
 
       ((and get home of)
        (CLI:get-repository-home repository))
