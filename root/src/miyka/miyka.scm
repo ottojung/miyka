@@ -20,6 +20,7 @@
     GET_ARGUMENTS : home of ID
     /               config-path of ID
     /               root-path of ID
+    /               id of ID
     ID       : id <id>
     /          <name>
     OPT : --root <root>
@@ -84,6 +85,9 @@
 
       ((and get root-path of)
        (CLI:get-root-path repository))
+
+      ((and get id of)
+       (CLI:get-id repository))
 
       ))))
 
