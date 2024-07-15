@@ -25,6 +25,8 @@
 (install \"man-db\")    ;; Install the \"man\" utility.
 (install \"glibc-locales\") ;; Install internalization packages. Mainly for UTF8 support.
 
+(install-sh)            ;; Ensure that \"sh\" is in the environment by adding /bin/sh to $PATH.
+
 ;; Symlink specific directories and copy files from the host user's home to the workspace home.
 (host \".cache/\")                   ;; Symlink the .cache/ directory.
 (host \".local/share/Trash/\")       ;; Symlink the Trash directory.
