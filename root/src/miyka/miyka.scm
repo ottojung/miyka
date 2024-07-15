@@ -21,6 +21,7 @@
     /               config-path of ID
     /               root-path of ID
     /               id of ID
+    /               name of ID
     ID       : id <id>
     /          <name>
     OPT : --root <root>
@@ -88,6 +89,9 @@
 
       ((and get id of)
        (CLI:get-id repository))
+
+      ((and get name of)
+       (CLI:get-name repository))
 
       ))))
 
