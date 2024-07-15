@@ -2,7 +2,6 @@
 (define-library
   (miyka CLI-remove)
   (export CLI:remove)
-  (import (only (euphrates raisu-fmt) raisu-fmt))
   (import
     (only (euphrates system-star-exit-code)
           system*/exit-code))
@@ -12,21 +11,18 @@
   (import
     (only (miyka get-repositories-id-map)
           get-repositories-id-map))
+  (import (only (miyka id-value) id:value))
   (import
     (only (miyka repositories-id-map-remove)
           repositories-id-map:remove))
   (import
-    (only (miyka repository-exists-on-disk-huh)
-          repository:exists-on-disk?))
-  (import
-    (only (miyka repository-name) repository:name))
+    (only (miyka repository-id) repository:id))
   (import
     (only (miyka repository-path) repository:path))
   (import
     (only (miyka set-repositories-id-map)
           set-repositories-id-map))
-  (import
-    (only (scheme base) begin define quote unless))
+  (import (only (scheme base) begin define))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

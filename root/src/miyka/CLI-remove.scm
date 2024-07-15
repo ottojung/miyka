@@ -4,14 +4,10 @@
 (define (CLI:remove repository)
   (define guix (get-guix-executable))
   (define repository-path (repository:path repository))
-  (define name (repository:name repository))
+  (define id (repository:id repository))
+  (define id-value (id:value id))
   (define id-map (get-repositories-id-map))
-  (define id-map* (repositories-id-map:remove name id-map))
-
-  (unless (repository:exists-on-disk? repository)
-    (raisu-fmt 'repository-does-not-exist
-               "Repository named ~s does not exist."
-               (repository:name repository)))
+  (define id-map* (repositories-id-map:remove id-value id-map))
 
   (set-repositories-id-map id-map*)
   (system*/exit-code
