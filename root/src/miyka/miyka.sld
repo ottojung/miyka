@@ -8,8 +8,6 @@
           define-cli:show-help
           with-cli))
   (import
-    (only (euphrates make-unique) make-unique))
-  (import
     (only (euphrates properties)
           set-property!
           with-properties))
@@ -50,6 +48,8 @@
   (import (only (miyka providers) providers))
   (import
     (only (miyka repository-id) repository:id))
+  (import
+    (only (miyka repository-make) repository:make))
   (import
     (only (miyka repository-name) repository:name))
   (import (only (miyka root-p) root/p))

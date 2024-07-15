@@ -33,7 +33,7 @@
                   (guix-executable/p <guix-executable>)
                   )
 
-     (define repository (make-unique))
+     (define repository (repository:make))
 
      (when <id>
        (set-property!

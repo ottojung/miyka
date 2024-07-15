@@ -3,7 +3,7 @@
 
 (define (CLI:copy repository <new-repository-name>)
   (define <existing-repository-name> (repository:name repository))
-  (define new-repository (make-unique))
+  (define new-repository (repository:make))
 
   (set-property! (repository:name new-repository) <new-repository-name>)
 

@@ -6,8 +6,6 @@
     (only (euphrates make-directories)
           make-directories))
   (import
-    (only (euphrates make-unique) make-unique))
-  (import
     (only (euphrates path-get-dirname)
           path-get-dirname))
   (import
@@ -34,6 +32,8 @@
   (import
     (only (miyka repository-exists-on-disk-huh)
           repository:exists-on-disk?))
+  (import
+    (only (miyka repository-make) repository:make))
   (import
     (only (miyka repository-name) repository:name))
   (import

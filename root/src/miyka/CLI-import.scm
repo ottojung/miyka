@@ -3,7 +3,7 @@
 
 (define (CLI:import path-to-repository name)
   (define guix (get-guix-executable))
-  (define repository (make-unique))
+  (define repository (repository:make))
 
   (set-property! (repository:name repository) name)
 
