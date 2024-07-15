@@ -20,8 +20,8 @@
     GET_ARGUMENTS : home of ID
     /               config-path of ID
     /               root-path of ID
-    /               id of ID
-    /               name of ID
+    /               id of <name>
+    /               name of id <id>
     ID       : id <id>
     /          <name>
     OPT : --root <root>
