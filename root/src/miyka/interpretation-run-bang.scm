@@ -408,7 +408,7 @@ done
    (lambda (port)
 
      (define path-value
-       "\"$1\"/.local/bin:\"$PATH\":\"$1\"/../bin")
+       "export PATH=\"$PATH\":\"$1\"/../bin")
 
      (define cleanup-command
        (if cleanup
