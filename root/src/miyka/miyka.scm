@@ -15,7 +15,7 @@
     /         list
     /         copy ID as <new-name>
     /         remove ID
-    /         import <path> as <name>
+    /         import <path> as <new-name>
     /         get GET_ARGUMENTS
     GET_ARGUMENTS : home of ID
     /               config-path of ID
@@ -77,7 +77,7 @@
        (CLI:remove repository))
 
       (import
-       (CLI:import <path> <name>))
+       (CLI:import <path> <new-name>))
 
       ((and get home of)
        (CLI:get-repository-home repository))
