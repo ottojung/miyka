@@ -9,7 +9,7 @@
         (get-repositories-id-map))
 
       (define names
-        (map car id-map))
+        (map cdr id-map))
 
       (define sorted
         (euphrates:list-sort

@@ -17,7 +17,7 @@
   (import
     (only (scheme base)
           begin
-          car
+          cdr
           define
           for-each
           lambda

@@ -5,7 +5,7 @@
   (import
     (only (scheme base)
           begin
-          cdr
+          car
           define
           equal?
           lambda

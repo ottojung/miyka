@@ -14,6 +14,8 @@
   (import
     (only (euphrates path-get-dirname)
           path-get-dirname))
+  (import
+    (only (euphrates properties) set-property!))
   (import (only (euphrates raisu-fmt) raisu-fmt))
   (import
     (only (euphrates random-variable-name)
@@ -30,6 +32,7 @@
           get-guix-executable))
   (import (only (miyka home-path) home:path))
   (import (only (miyka id-path) id:path))
+  (import (only (miyka id-value) id:value))
   (import
     (only (miyka register-repository-name)
           register-repository-name))

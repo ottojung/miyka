@@ -7,17 +7,10 @@
           define-property
           define-provider))
   (import
-    (only (miyka get-repositories-id-map)
-          get-repositories-id-map))
+    (only (miyka repository-possible-ids)
+          repository:possible-ids))
   (import
-    (only (miyka repository-name) repository:name))
-  (import
-    (only (scheme base)
-          assoc
-          begin
-          define
-          lambda
-          not))
+    (only (scheme base) begin lambda not null?))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

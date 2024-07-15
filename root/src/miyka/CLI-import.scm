@@ -7,15 +7,15 @@
 
   (set-property! (repository:name repository) name)
 
-  (check-if-repository-already-exists repository)
-
   (let ()
     (with-properties
      :for-everything
      (let ()
+       (check-if-repository-already-exists repository)
        (set-property! (repository:path repository) path-to-repository)
        (let ()
-         (define id-path (id:path repository))
+         (define id (repository:id repository))
+         (define id-path (id:path id))
          (define id-value
            (begin
              (unless (file-or-directory-exists? id-path)
@@ -27,7 +27,8 @@
 
              (~a (call-with-input-file id-path read))))
 
-         (register-repository-name repository id-value))))
+         (set-property! (id:value id) id-value)
+         (register-repository-name repository))))
 
     (let ()
       (define target-path (repository:path repository))

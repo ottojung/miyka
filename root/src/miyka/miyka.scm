@@ -39,8 +39,8 @@
 
      (when <id>
        (set-property!
-        (repository:id repository)
-        <id>))
+        (repository:possible-ids repository)
+        (list <id>)))
 
      (when <name>
        (set-property!

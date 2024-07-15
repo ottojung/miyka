@@ -22,9 +22,12 @@
     (only (miyka get-guix-executable)
           get-guix-executable))
   (import (only (miyka id-path) id:path))
+  (import (only (miyka id-value) id:value))
   (import
     (only (miyka register-repository-name)
           register-repository-name))
+  (import
+    (only (miyka repository-id) repository:id))
   (import
     (only (miyka repository-make) repository:make))
   (import

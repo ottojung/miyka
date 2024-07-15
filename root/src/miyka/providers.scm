@@ -18,20 +18,51 @@
     (define path (id:path this))
     (~a (call-with-input-file path read))))
 
-(define-provider p:id:value/2
-  :targets (id:value)
+(define-provider p:possible-ids:1
+  :targets (repository:possible-ids)
+  :sources (id:value)
+  (lambda (this)
+    (list this)))
+
+(define-provider p:possible-ids:2
+  :targets (repository:possible-ids)
   :sources (repository:name)
   (lambda (this)
     (define id-map (get-repositories-id-map))
     (define name (repository:name this))
-    (define id-value
-      (assoc-or
-       name id-map
-       (raisu* :from "id:value"
-               :type 'bad-name
-               :message "Bad name."
-               :args (list name id-map this))))
-    id-value))
+
+    (define id-values
+      (map
+       car
+       (filter
+        (lambda (pp)
+          (equal? name (cdr pp)))
+        id-map)))
+
+    id-values))
+
+(define-provider p:id:value/2
+  :targets (id:value)
+  :sources (repository:possible-ids)
+  (lambda (this)
+    (define name
+      (repository:name this))
+    (define id-values
+      (repository:possible-ids this))
+
+    (when (null? id-values)
+      (raisu* :from "id:value"
+              :type 'bad-name
+              :message "Bad name."
+              :args (list name id-values this)))
+
+    (unless (null? (cdr id-values))
+      (raisu* :from "id:value"
+              :type 'multiple-names
+              :message "Name corresponds to multiple repositories."
+              :args (list name id-values this)))
+
+    (car id-values)))
 
 (define-provider p:repository:work-directory
   :targets (repository:work-directory)

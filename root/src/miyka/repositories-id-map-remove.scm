@@ -5,5 +5,5 @@
   (filter
    (lambda (p)
      (not
-      (equal? id-to-remove (cdr p))))
+      (equal? id-to-remove (car p))))
    id-map))

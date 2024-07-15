@@ -5,7 +5,6 @@
   (import
     (only (euphrates append-posix-path)
           append-posix-path))
-  (import (only (euphrates assoc-or) assoc-or))
   (import
     (only (euphrates properties) define-provider))
   (import (only (euphrates raisu-star) raisu*))
@@ -25,6 +24,9 @@
   (import
     (only (miyka repository-path) repository:path))
   (import
+    (only (miyka repository-possible-ids)
+          repository:possible-ids))
+  (import
     (only (miyka repository-state-directory)
           repository:state-directory))
   (import
@@ -36,13 +38,23 @@
   (import
     (only (scheme base)
           begin
+          car
+          cdr
           define
+          equal?
           lambda
           list
-          quote))
+          map
+          null?
+          quote
+          unless
+          when))
   (import
     (only (scheme file) call-with-input-file))
   (import (only (scheme read) read))
+  (cond-expand
+    (guile (import (only (srfi srfi-1) filter)))
+    (else (import (only (srfi 1) filter))))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin (include-from-path "miyka/providers.scm")))
