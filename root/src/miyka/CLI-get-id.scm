@@ -3,5 +3,6 @@
 
 (define (CLI:get-id repository)
   (define id (repository:id repository))
-  (display id)
+  (define id-value (id:value repository))
+  (display id-value)
   (newline))

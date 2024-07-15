@@ -37,15 +37,16 @@
 
      (define repository (repository:make))
 
-     (when <id>
-       (set-property!
-        (repository:possible-ids repository)
-        (list <id>)))
-
      (when <name>
        (set-property!
         (repository:name repository)
         <name>))
+
+     (when <id>
+       (let ((x (repository:id repository)))
+         (set-property!
+          (id:value x)
+          <id>)))
 
      (cond
 

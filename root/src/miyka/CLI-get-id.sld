@@ -2,6 +2,7 @@
 (define-library
   (miyka CLI-get-id)
   (export CLI:get-id)
+  (import (only (miyka id-value) id:value))
   (import
     (only (miyka repository-id) repository:id))
   (import

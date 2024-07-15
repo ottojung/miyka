@@ -45,16 +45,16 @@
   (import
     (only (miyka guix-executable-p)
           guix-executable/p))
+  (import (only (miyka id-value) id:value))
   (import
     (only (miyka miyka-version) miyka:version))
   (import (only (miyka providers) providers))
   (import
+    (only (miyka repository-id) repository:id))
+  (import
     (only (miyka repository-make) repository:make))
   (import
     (only (miyka repository-name) repository:name))
-  (import
-    (only (miyka repository-possible-ids)
-          repository:possible-ids))
   (import (only (miyka root-p) root/p))
   (import
     (only (scheme base)
@@ -63,6 +63,7 @@
           begin
           cond
           define
+          let
           list
           newline
           parameterize

@@ -5,5 +5,5 @@
 
 (define-provider p
   :targets (repository:id)
-  :sources (repository:work-directory)
+  :sources ()
   (lambda (this) this))
