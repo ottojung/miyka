@@ -4,6 +4,7 @@
   (export get-guix-executable/default)
   (import
     (only (euphrates define-pair) define-pair))
+  (import (only (euphrates memconst) memconst))
   (import
     (only (euphrates string-strip) string-strip))
   (import
