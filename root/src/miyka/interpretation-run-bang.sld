@@ -47,9 +47,6 @@
     (only (miyka get-guix-executable)
           get-guix-executable))
   (import
-    (only (miyka guix-executable-p)
-          guix-executable/p))
-  (import
     (only (miyka interpretation-installist)
           interpretation:installist))
   (import

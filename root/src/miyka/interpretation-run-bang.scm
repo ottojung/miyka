@@ -444,4 +444,4 @@ shift" name))
   (system*/exit-code
    "/bin/sh" "--"
    run-script-path
-   (or (guix-executable/p) "")))
+   (or guix "")))
