@@ -25,7 +25,7 @@ then
     exit 1
 fi
 
-RESULT=$(t_miyka import "$TMP" as "test-project2")
+RESULT=$(t_miyka import directory "$TMP" as "test-project2")
 
 if ! test -d "$HOME_PATH"
 then

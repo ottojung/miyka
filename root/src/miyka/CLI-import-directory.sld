@@ -1,7 +1,7 @@
 
 (define-library
-  (miyka CLI-import)
-  (export CLI:import)
+  (miyka CLI-import-directory)
+  (export CLI:import-directory)
   (import
     (only (euphrates file-or-directory-exists-q)
           file-or-directory-exists?))
@@ -48,5 +48,6 @@
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
-             (include-from-path "miyka/CLI-import.scm")))
-    (else (include "CLI-import.scm"))))
+             (include-from-path
+               "miyka/CLI-import-directory.scm")))
+    (else (include "CLI-import-directory.scm"))))

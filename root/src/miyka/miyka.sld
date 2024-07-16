@@ -34,7 +34,9 @@
   (import
     (only (miyka CLI-get-root-path)
           CLI:get-root-path))
-  (import (only (miyka CLI-import) CLI:import))
+  (import
+    (only (miyka CLI-import-directory)
+          CLI:import-directory))
   (import (only (miyka CLI-list) CLI:list))
   (import (only (miyka CLI-remove) CLI:remove))
   (import (only (miyka CLI-run) CLI:run))
