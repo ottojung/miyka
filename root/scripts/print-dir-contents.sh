@@ -5,19 +5,25 @@ set -e
 DIR="$1"
 shift
 
+ALS="$(command -v ls)"
 CAT="$(command -v cat)"
 SHA="$(command -v sha256sum)"
 
 find -- "$DIR" | sort | while IFS= read PATH
 do
-    if test -f "$PATH"
-    then
-        printf '> '
-        "$SHA" -- "$PATH"
-        "$CAT" -- "$PATH"
-        printf '> '
-        "$SHA" -- "$PATH"
+    printf '> %s' "$PATH"
+    echo
+    "$ALS" -l -a -- "$PATH"
+    echo
+
+    if test -L "$PATH"
+    then true
     else
-        echo "> - $PATH"
+        if test -f "$PATH"
+        then
+            "$SHA" -- "$PATH"
+            "$CAT" -- "$PATH"
+            "$SHA" -- "$PATH"
+        fi
     fi
 done
