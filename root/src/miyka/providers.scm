@@ -22,7 +22,18 @@
   :targets (repository:possible-ids)
   :sources (id:value)
   (lambda (this)
-    (list this)))
+    (define id-map (get-repositories-id-map))
+    (define id-value this)
+
+    (define id-values
+      (map
+       car
+       (filter
+        (lambda (pp)
+          (equal? id-value (car pp)))
+        id-map)))
+
+    id-values))
 
 (define-provider p:possible-ids:2
   :targets (repository:possible-ids)
