@@ -24,7 +24,11 @@
   (import
     (only (euphrates system-star-exit-code)
           system*/exit-code))
+  (import (only (euphrates tilda-a) ~a))
   (import (only (euphrates tilda-s) ~s))
+  (import
+    (only (euphrates with-output-stringified)
+          with-output-stringified))
   (import
     (only (euphrates words-to-string) words->string))
   (import
@@ -47,6 +51,11 @@
     (only (miyka get-guix-executable)
           get-guix-executable))
   (import
+    (only (miyka import-statement)
+          directory-import-statement:new-name
+          directory-import-statement:path
+          directory-import-statement?))
+  (import
     (only (miyka interpretation-installist)
           interpretation:installist))
   (import
@@ -57,6 +66,7 @@
           interpretation:git-stack
           interpretation:home-moved?
           interpretation:host-stack
+          interpretation:import-stack
           interpretation:snapshot?))
   (import
     (only (miyka make-helper-env-script-path)
@@ -143,6 +153,9 @@
           when))
   (import (only (scheme eval) environment))
   (import (only (scheme write) display write))
+  (cond-expand
+    (guile (import (only (srfi srfi-1) filter)))
+    (else (import (only (srfi 1) filter))))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

@@ -61,6 +61,11 @@
      (stack->list
       (interpretation:git-stack interpretation))))
 
+  (define importlist
+    (reverse
+     (stack->list
+      (interpretation:import-stack interpretation))))
+
   (define cleanup
     (box-ref (interpretation:cleanup interpretation)))
 
@@ -148,6 +153,88 @@ fi
 
 ")
 
+  (define import-directories-command:template
+    "
+#######################
+# Import directories. #
+#######################
+
+LOCAL_MIYKA_ROOT=\"$MIYKA_STAT_PATH/roots\"
+LOCAL_ID_MAP=\"$LOCAL_MIYKA_ROOT\"/id-map.lisp
+echo '()' > \"$LOCAL_ID_MAP\"
+
+import_directory() {
+    LOCATION=\"$1\"
+    shift
+    NAME=\"$1\"
+    shift
+
+    ROOT_PATH=\"$MIYKA_REPO_HOME/$LOCATION\"
+    ID_PATH=\"$ROOT_PATH\"/wd/id.txt
+    RUN_SCRIPT_PATH=\"$ROOT_PATH\"/wd/state/run.sh
+
+    if ! test -d \"$ROOT_PATH\"
+    then
+        echo \"Repository directory '$LOCATION' does not exist.\" 1>&2
+        exit 1
+    fi
+
+    if ! test -f \"$ID_PATH\"
+    then
+        echo \"Imported repository at '$LOCATION' does not have an id file at '$LOCATION/wd/id.txt'.\" 1>&2
+        exit 1
+    fi
+
+    if ! test -f \"$RUN_SCRIPT_PATH\"
+    then
+        echo \"Imported repository at '$LOCATION' does not have an run file at '$LOCATION/wd/state/run.sh'.\" 1>&2
+        exit 1
+    fi
+
+    REPO_ID=\"$(cat -- \"$ID_PATH\")\"
+    # FIXME: check if $REPO_ID is in the right format.
+
+    # Copy repository directory.
+    TARGET_ROOT_PATH=\"$LOCAL_MIYKA_ROOT\"/repositories/\"$REPO_ID\"
+    cp -r -T -- \"$ROOT_PATH\" \"$TARGET_ROOT_PATH\"
+
+    # Register id in 'id-map.lisp'.
+    TMPFILE=\"$(mktemp)\"
+    cat -- \"$LOCAL_ID_MAP\" | sed 's/)$/('\"$REPO_ID\"' . '\"$NAME\"'))/' > \"$TMPFILE\"
+    mv -T -- \"$TMPFILE\" \"$LOCAL_ID_MAP\"
+
+    # Create a link.
+    LOCAL_BIN_PATH=\"$TARGET_ROOT_PATH\"/wd/bin
+    EXECUTABLE_PATH=\"$LOCAL_BIN_PATH\"/\"$NAME\"
+    mkdir -p -- \"$LOCAL_BIN_PATH\"
+    printf '#! /bin/sh
+exec /bin/sh -- \"${0%/*}/../state/roots/repositories/%s/wd/state/run.sh\" \"$@\"
+' \"$REPO_ID\" > \"$EXECUTABLE_PATH\"
+    chmod u+x -- \"$EXECUTABLE_PATH\"
+}
+
+~a
+
+")
+
+  (define directories-importlist
+    (filter directory-import-statement? importlist))
+
+  (define import-directories-command
+    (stringf
+     import-directories-command:template
+     (with-output-stringified
+      (for-each
+       (lambda (im)
+         (display "import_directory")
+         (display " ")
+         (write (~a (directory-import-statement:path im)))
+         (display " ")
+         (write (~a (directory-import-statement:new-name im)))
+         (newline)
+         )
+       directories-importlist))))
+
   (define teardown-command
     "
 ########################
@@ -158,7 +245,7 @@ teardown() {
 
 if ! \"$2\" shell \\
     --pure \\
-    coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
+    coreutils tac grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
     /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" /bin/sh -- \"$1\"/teardown.sh
 then
@@ -258,6 +345,9 @@ do
 done
 
 " (words->string (map ~s host-locations)))))
+
+  (unless (null? importlist)
+    (stack-push! setup-command-list import-directories-command))
 
   (unless (null? gitlist)
     (stack-push!

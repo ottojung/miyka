@@ -12,12 +12,23 @@
     interpretation:snapshot?
     interpretation:environment
     interpretation:host-stack
-    interpretation:git-stack)
+    interpretation:git-stack
+    interpretation:import-stack)
   (import (only (euphrates box) make-box))
-  (import
-    (only (euphrates define-type9) define-type9))
   (import (only (euphrates stack) stack-make))
-  (import (only (scheme base) begin define))
+  (import
+    (only (scheme base)
+          =
+          and
+          begin
+          car
+          define
+          equal?
+          length
+          quote
+          vector
+          vector-ref
+          vector?))
   (import (only (scheme eval) environment))
   (cond-expand
     (guile (import (only (guile) include-from-path))
