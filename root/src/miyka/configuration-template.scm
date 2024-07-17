@@ -35,6 +35,9 @@
                                    ;; Note: The trailing \"/\" indicates that a directory is being linked.
                                    ;; Miyka will abort if the actual file type on the host does not match the expected type.
 
+;; Import Miyka repositories into the current repository. This will provide executables named by them in the resulting repository. Paths are relative to this repo's home.
+;; (import directory \"path/to/repository\" as \"my-executable-name\")
+
 ;; Clone and deploy a git repository. Uncomment and customize the URL to use.
 ;; (git \"git://vau.place/dotfiles\")
 
