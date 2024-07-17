@@ -8,7 +8,13 @@
     (only (miyka fetcher-var-name) fetcher-var-name))
   (import (only (miyka get-root) get-root/default))
   (import
-    (only (scheme base) begin define or quote))
+    (only (scheme base)
+          begin
+          define
+          equal?
+          if
+          or
+          quote))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

@@ -9,7 +9,8 @@
   (import (only (miyka fetcher-p) fetcher/p))
   (import
     (only (miyka fetcher-var-name) fetcher-var-name))
-  (import (only (scheme base) begin define or))
+  (import
+    (only (scheme base) begin define or quote))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
