@@ -40,6 +40,10 @@
   (import (only (miyka CLI-list) CLI:list))
   (import (only (miyka CLI-remove) CLI:remove))
   (import (only (miyka CLI-run) CLI:run))
+  (import (only (miyka fetcher-p) fetcher/p))
+  (import
+    (only (miyka get-fetcher-default)
+          get-fetcher/default))
   (import
     (only (miyka get-guix-executable-default)
           get-guix-executable/default))

@@ -26,13 +26,16 @@
     /          <name>
     OPT : --root <root>
     /     --guix-executable <guix-executable>
+    /     --fetcher <fetcher>
     )
 
    :default (<root> (get-root/default))
    :default (<guix-executable> (get-guix-executable/default))
+   :default (<fetcher> (get-fetcher/default))
 
    (parameterize ((root/p <root>)
                   (guix-executable/p <guix-executable>)
+                  (fetcher/p <guix-executable>)
                   )
 
      (define repository (repository:make))
@@ -99,6 +102,7 @@
 (with-user-errors
  :types (list
          'unknown-root
+         'unknown-fetcher
          'repo-already-exists
          'empty-repo-name
          'repository-does-not-exist
