@@ -381,12 +381,6 @@ done
      (display "#! /bin/sh" port)
      (newline port)
      (newline port)
-
-     (when home-moved?
-       (display "HOME=\"$1\"/../home" port)
-       (newline port)
-       (newline port))
-
      (display teardown-command port)
      (unless (stack-empty? setup-command-list)
        (display setup-command port))
@@ -414,6 +408,11 @@ done
            (stringf "cd \"$1\" && test -f ./~s && /bin/sh -- ./~s" cleanup cleanup)
            "true"))
 
+     (define home-command
+       (if home-moved?
+           "HOME=\"$1\""
+           ""))
+
      (define env-definitions
        (lines->string
         (map
@@ -431,6 +430,7 @@ shift" name))
       port
       enter-script:template
       cleanup-command
+      home-command
       path-value
       env-definitions
       command/str)))
