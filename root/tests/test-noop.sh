@@ -10,12 +10,12 @@ export CONTENTS=""
 export EDITOR=scripts/mock-editor.sh
 t_miyka edit "test-project"
 
-RESULT=$(t_miyka run "test-project")
+RESULT=$(echo | t_miyka run "test-project")
 test "$RESULT" = ""
 
 sh scripts/print-dir-contents.sh "$REPO_PATH" >"$MIYKA_ROOT/initial-contents.bin"
 
-RESULT=$(t_miyka run "test-project")
+RESULT=$(echo | t_miyka run "test-project")
 test "$RESULT" = ""
 
 sh scripts/print-dir-contents.sh "$REPO_PATH" >"$MIYKA_ROOT/final-contents.bin"
