@@ -161,6 +161,7 @@ fi
 
 LOCAL_MIYKA_ROOT=\"$MIYKA_STAT_PATH/roots\"
 LOCAL_ID_MAP=\"$LOCAL_MIYKA_ROOT\"/id-map.lisp
+mkdir -p -- \"$LOCAL_MIYKA_ROOT\"/repositories
 echo '()' > \"$LOCAL_ID_MAP\"
 
 import_directory() {
@@ -204,11 +205,11 @@ import_directory() {
     mv -T -- \"$TMPFILE\" \"$LOCAL_ID_MAP\"
 
     # Create a link.
-    LOCAL_BIN_PATH=\"$TARGET_ROOT_PATH\"/wd/bin
+    LOCAL_BIN_PATH=\"$MIYKA_WORK_PATH\"/bin
     EXECUTABLE_PATH=\"$LOCAL_BIN_PATH\"/\"$NAME\"
     mkdir -p -- \"$LOCAL_BIN_PATH\"
     printf '#! /bin/sh
-exec /bin/sh -- \"${0%/*}/../state/roots/repositories/%s/wd/state/run.sh\" \"$@\"
+exec /bin/sh -- \"${0%%/*}/../state/roots/repositories/%s/wd/state/run.sh\" \"$@\"
 ' \"$REPO_ID\" > \"$EXECUTABLE_PATH\"
     chmod u+x -- \"$EXECUTABLE_PATH\"
 }
@@ -245,7 +246,7 @@ teardown() {
 
 if ! \"$2\" shell \\
     --pure \\
-    coreutils tac grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
+    coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
     /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" /bin/sh -- \"$1\"/teardown.sh
 then
