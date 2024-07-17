@@ -17,8 +17,6 @@ export MIYKA_REPO_HOME=\"$MIYKA_STAT_PATH/../home\"
 export MIYKA_WORK_PATH=\"$MIYKA_STAT_PATH/..\"
 export MIYKA_REPO_PATH=\"$MIYKA_WORK_PATH/..\"
 
-export SHELL=/bin/sh
-
 exec \"$@\"
 
 ")
