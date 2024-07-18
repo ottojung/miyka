@@ -35,21 +35,21 @@
   (let ()
     (define target-path (repository:path repository))
 
-    (unless (= 0 (system*/exit-code
-                  guix "shell" "--pure" "coreutils"
-                  "--" "mv" "-T" "--" path-to-repository target-path
-                  ))
-      (raisu-fmt 'import-command-failed
-                 "Failed to move the imported files into Miyka's root."))
+    (unless (equal? target-path path-to-repository)
+      (make-directories (get-repositories-directory))
+      (unless (= 0 (system*/exit-code
+                    guix "shell" "--pure" "coreutils"
+                    "--" "mv" "-T" "--" path-to-repository target-path
+                    ))
+        (raisu-fmt 'import-command-failed
+                   "Failed to move the imported files into Miyka's root."))
 
-    (unless (= 0 (system*/exit-code
-                  guix "shell" "--pure" "coreutils"
-                  "--" "ln" "-sfT" "--" target-path path-to-repository
-                  ))
-      (raisu-fmt 'import-command-failed
-                 "Failed to symlink the imported repository to the original path. The repository has been moved to ~s."
-                 target-path))
-
-    )
+      (unless (= 0 (system*/exit-code
+                    guix "shell" "--pure" "coreutils"
+                    "--" "ln" "-sfT" "--" target-path path-to-repository
+                    ))
+        (raisu-fmt 'import-command-failed
+                   "Failed to symlink the imported repository to the original path. The repository has been moved to ~s."
+                   target-path))))
 
   (values))

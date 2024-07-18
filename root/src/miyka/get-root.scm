@@ -25,5 +25,6 @@
 
 (define (get-root)
   (or (get-root/default)
-      (raisu 'unknown-root
-             (stringf "Root is unknown because $~a env variable is not defined." ROOT_VAR_NAME))))
+      (raisu-fmt
+       'unknown-root
+       (stringf "Root is unknown because $~a env variable is not defined." ROOT_VAR_NAME))))

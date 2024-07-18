@@ -12,7 +12,7 @@
     (only (euphrates get-current-directory)
           get-current-directory))
   (import (only (euphrates memconst) memconst))
-  (import (only (euphrates raisu) raisu))
+  (import (only (euphrates raisu-fmt) raisu-fmt))
   (import (only (euphrates stringf) stringf))
   (import
     (only (euphrates system-environment)

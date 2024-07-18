@@ -37,6 +37,8 @@
   (import
     (only (miyka CLI-import-directory)
           CLI:import-directory))
+  (import
+    (only (miyka CLI-import-id) CLI:import-id))
   (import (only (miyka CLI-list) CLI:list))
   (import (only (miyka CLI-remove) CLI:remove))
   (import (only (miyka CLI-run) CLI:run))
@@ -72,6 +74,7 @@
           let
           list
           newline
+          or
           parameterize
           quote
           when))

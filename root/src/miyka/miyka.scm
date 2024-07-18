@@ -16,6 +16,7 @@
     /         copy ID as <new-name>
     /         remove ID
     /         import directory <path> as <new-name>
+    /         import ID as <new-name>
     /         get GET_ARGUMENTS
     GET_ARGUMENTS : home of ID
     /               config-path of ID
@@ -35,7 +36,7 @@
 
    (parameterize ((root/p <root>)
                   (guix-executable/p <guix-executable>)
-                  (fetcher/p <guix-executable>)
+                  (fetcher/p <fetcher>)
                   )
 
      (define repository (repository:make))
@@ -81,6 +82,10 @@
 
       ((and import directory)
        (CLI:import-directory <path> <new-name>))
+
+      ((or (and import id <id>)
+           (and import <name>))
+       (CLI:import-id <id> <name> <new-name>))
 
       ((and get home of)
        (CLI:get-repository-home repository))

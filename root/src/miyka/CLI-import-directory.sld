@@ -6,6 +6,9 @@
     (only (euphrates file-or-directory-exists-q)
           file-or-directory-exists?))
   (import
+    (only (euphrates make-directories)
+          make-directories))
+  (import
     (only (euphrates properties)
           set-property!
           with-properties))
@@ -21,6 +24,9 @@
   (import
     (only (miyka get-guix-executable)
           get-guix-executable))
+  (import
+    (only (miyka get-repositories-directory)
+          get-repositories-directory))
   (import (only (miyka id-path) id:path))
   (import
     (only (miyka register-repository-name)
@@ -38,6 +44,7 @@
           =
           begin
           define
+          equal?
           let
           quote
           unless

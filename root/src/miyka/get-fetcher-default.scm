@@ -6,4 +6,4 @@
    (system-environment-get fetcher-var-name)))
 
 (define (get-fetcher/default)
-  (or (fetcher/p) (get-fetcher/env) 'none))
+  (or (fetcher/p) (get-fetcher/env) ""))

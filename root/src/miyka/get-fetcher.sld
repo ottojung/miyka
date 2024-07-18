@@ -2,11 +2,13 @@
 (define-library
   (miyka get-fetcher)
   (export get-fetcher)
-  (import (only (euphrates raisu) raisu))
+  (import (only (euphrates raisu-fmt) raisu-fmt))
   (import (only (euphrates stringf) stringf))
   (import
     (only (miyka fetcher-var-name) fetcher-var-name))
-  (import (only (miyka get-root) get-root/default))
+  (import
+    (only (miyka get-fetcher-default)
+          get-fetcher/default))
   (import
     (only (scheme base)
           begin
