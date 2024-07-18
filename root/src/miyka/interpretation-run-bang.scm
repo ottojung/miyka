@@ -206,7 +206,7 @@ import_directory() {
     RUN_SCRIPT_PATH=\"$ROOT_PATH\"/wd/state/run.sh
     if ! test -f \"$RUN_SCRIPT_PATH\"
     then
-        echo \"Imported repository at '$LOCATION' does not have an run file at '$LOCATION/wd/state/run.sh'.\" 1>&2
+        echo \"Imported repository at '$LOCATION' does not have a run file at '$LOCATION/wd/state/run.sh'.\" 1>&2
         exit 1
     fi
 
@@ -261,7 +261,7 @@ import_custom() {
     export MIYKA_FETCHER_ARG_DESTINATION=\"$MIYKA_WORK_PATH/temporary/imports/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10)\"
     echo \"Fetching '$NAME'...\" 1>&2
     \"$MIYKA_FETCHER\"
-    echo \"Fetching of '$NAME' finished.\" 1>&2
+    echo \"Fetching '$NAME' finished.\" 1>&2
     # TODO: check if fetcher succeeded.
     import_directory \"$NAME\" \"$MIYKA_FETCHER_ARG_DESTINATION\"
 }
@@ -454,6 +454,7 @@ done
     (stack-push! setup-command-list import-directories-command))
 
   (unless (null? custom-importlist)
+    (stack-push! setup-command-list import-custom-function)
     (stack-push! setup-command-list import-custom-command))
 
   (unless (null? gitlist)

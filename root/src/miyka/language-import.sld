@@ -5,7 +5,9 @@
   (import (only (euphrates stack) stack-push!))
   (import
     (only (miyka import-statement)
-          directory-import-statement:make))
+          directory-import-statement:make
+          id-import-statement:make
+          name-import-statement:make))
   (import
     (only (miyka interpretation-p) interpretation/p))
   (import
