@@ -9,4 +9,5 @@ mkdir -p -- "$DEST"/"wd/home/.config/miyka"
 echo "testid" > "$DEST"/"wd/id.txt"
 
 echo "echo hello from fetched repository" > "$DEST"/"wd/home/.config/miyka/run.sh"
+echo "echo hello from the run script of fetched repository" > "$DEST"/"wd/state/run.sh"
 echo '(shell ".config/miyka/run.sh")' > "$DEST"/"wd/configuration.lisp"
