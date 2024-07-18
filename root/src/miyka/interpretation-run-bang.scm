@@ -243,6 +243,14 @@ fi
 import_custom() {
     NAME=\"$1\"
     shift
+
+    EXECUTABLE_PATH=\"$LOCAL_BIN_PATH\"/\"$NAME\"
+    if test -f \"$EXECUTABLE_PATH\"
+    then
+        echo \"Repository '$NAME' already imported.\" 1>&2
+        continue
+    fi
+
     export MIYKA_FETCHER_ARG_ID=\"$1\"
     shift
     export MIYKA_FETCHER_ARG_NAME=\"$1\"
