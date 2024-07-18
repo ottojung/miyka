@@ -209,7 +209,7 @@ import_directory() {
     EXECUTABLE_PATH=\"$LOCAL_BIN_PATH\"/\"$NAME\"
     mkdir -p -- \"$LOCAL_BIN_PATH\"
     printf '#! /bin/sh
-exec /bin/sh -- \"${0%%/*}/../state/roots/repositories/%s/wd/state/run.sh\" \"$@\"
+exec /bin/sh -- \"${0%%/*}/../state/roots/repositories/%s/wd/state/run.sh\"
 ' \"$REPO_ID\" > \"$EXECUTABLE_PATH\"
     chmod u+x -- \"$EXECUTABLE_PATH\"
 }
