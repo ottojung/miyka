@@ -159,6 +159,7 @@ fi
 # Import directories. #
 #######################
 
+LOCAL_BIN_PATH=\"$MIYKA_WORK_PATH\"/bin
 LOCAL_MIYKA_ROOT=\"$MIYKA_STAT_PATH/roots\"
 LOCAL_ID_MAP=\"$LOCAL_MIYKA_ROOT\"/id-map.lisp
 mkdir -p -- \"$LOCAL_MIYKA_ROOT\"/repositories
@@ -205,7 +206,6 @@ import_directory() {
     mv -T -- \"$TMPFILE\" \"$LOCAL_ID_MAP\"
 
     # Create a link.
-    LOCAL_BIN_PATH=\"$MIYKA_WORK_PATH\"/bin
     EXECUTABLE_PATH=\"$LOCAL_BIN_PATH\"/\"$NAME\"
     mkdir -p -- \"$LOCAL_BIN_PATH\"
     printf '#! /bin/sh
