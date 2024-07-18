@@ -20,7 +20,7 @@
 export MIYKA_FETCHER_ARG_ID=~s
 export MIYKA_FETCHER_ARG_NAME=~s
 export MIYKA_FETCHER_ARG_DESTINATION=~s
-exec /bin/sh -- ~s
+exec ~s
 "
              (~a (or <id> ""))
              (~a (or <name> ""))
