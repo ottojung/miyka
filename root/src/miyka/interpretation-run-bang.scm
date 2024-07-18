@@ -260,6 +260,7 @@ import_custom() {
 
     export MIYKA_FETCHER_ARG_DESTINATION=\"$MIYKA_WORK_PATH/temporary/imports/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10)\"
     \"$MIYKA_FETCHER\"
+    # TODO: check if fetcher succeeded.
     import_directory \"$NAME\" \"$MIYKA_FETCHER_ARG_DESTINATION\"
 }
 ")
