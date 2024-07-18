@@ -22,9 +22,8 @@
           define
           lambda
           let
-          quote
           unless))
-  (import (only (scheme write) write))
+  (import (only (scheme write) display))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

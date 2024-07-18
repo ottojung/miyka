@@ -218,9 +218,11 @@ import_directory() {
     cp -r -T -- \"$ROOT_PATH\" \"$TARGET_ROOT_PATH\"
 
     # Register id in 'id-map.toml'.
-    TMPFILE=\"$(mktemp)\"
-    cat -- \"$LOCAL_ID_MAP\" | sed 's/)$/(\"'\"$REPO_ID\"'\" . \"'\"$NAME\"'\"))/' > \"$TMPFILE\"
-    mv -T -- \"$TMPFILE\" \"$LOCAL_ID_MAP\"
+    echo \"[[repository]]
+name = \\\"$NAME\\\"
+id = \\\"$REPO_ID\\\"
+
+\" >> \"$LOCAL_ID_MAP\"
 
     # Create a link.
     mkdir -p -- \"$LOCAL_BIN_PATH\"

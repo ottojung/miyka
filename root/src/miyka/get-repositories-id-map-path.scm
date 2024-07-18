@@ -12,6 +12,6 @@
        (call-with-output-file/lazy
            result
          (lambda (port)
-           (write '() port))))
+           (display "" port))))
 
      result)))

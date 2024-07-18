@@ -3,4 +3,32 @@
 
 (define (get-repositories-id-map)
   (define path (get-repositories-id-map-path))
-  (call-with-input-file path read))
+
+  (unless (file-or-directory-exists? path)
+    (raisu-fmt
+     'missing-repositories-id-map
+     "Repositories id map at ~a does not exist."
+     (~a path)))
+
+  (let ()
+    (define toml (parse-toml-file path))
+    (define table-array
+      (assoc-or 'repositories toml (vector)))
+    (define associative-list
+      (map
+       (lambda (table)
+         (cons
+          (assoc-or 'id table
+                    (raisu* :from "get-repositories-id-map"
+                            :type 'missing-id
+                            :message (stringf "Table entry ~s does not have the ~s field." table (~a 'id))
+                            :args (list table table-array path)))
+
+          (assoc-or 'name table
+                    (raisu* :from "get-repositories-id-map"
+                            :type 'missing-name
+                            :message (stringf "Table entry ~s does not have the ~s field." table (~a 'name))
+                            :args (list table table-array path)))))
+       (vector->list table-array)))
+
+    associative-list))

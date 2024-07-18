@@ -123,6 +123,7 @@
          'imported-repository-does-not-have-id
          'fetcher-path-must-be-absolute
          'guix-path-must-be-absolute
+         'missing-repositories-id-map
          )
 
  (with-properties
