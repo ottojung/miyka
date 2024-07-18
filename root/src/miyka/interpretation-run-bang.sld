@@ -11,9 +11,11 @@
   (import
     (only (euphrates make-directories)
           make-directories))
+  (import (only (euphrates negate) negate))
   (import
     (only (euphrates path-get-dirname)
           path-get-dirname))
+  (import (only (euphrates raisu-star) raisu*))
   (import
     (only (euphrates stack)
           stack->list
@@ -48,13 +50,22 @@
     (only (miyka enter-script-template)
           enter-script:template))
   (import
+    (only (miyka get-fetcher-default)
+          get-fetcher/default))
+  (import
     (only (miyka get-guix-executable)
           get-guix-executable))
   (import
     (only (miyka import-statement)
           directory-import-statement:new-name
           directory-import-statement:path
-          directory-import-statement?))
+          directory-import-statement?
+          id-import-statement:new-name
+          id-import-statement:value
+          id-import-statement?
+          name-import-statement:new-name
+          name-import-statement:value
+          name-import-statement?))
   (import
     (only (miyka interpretation-installist)
           interpretation:installist))
@@ -133,7 +144,9 @@
   (import
     (only (scheme base)
           begin
+          cond
           define
+          else
           for-each
           if
           lambda

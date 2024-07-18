@@ -4,6 +4,8 @@
 (define (interpretation:run! repository interpretation)
   (define guix
     (get-guix-executable))
+  (define fetcher
+    (get-fetcher/default))
   (define manifest
     (repository:manifest repository))
   (define manifest-path
@@ -145,7 +147,7 @@ if ! \"$2\" shell \\
     --pure \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
-    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" /bin/sh -- \"$1\"/setup.sh
+    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" \"$5\" /bin/sh -- \"$1\"/setup.sh
 then
     echo 'Setup script failed. Will not proceed further.' 1>&2
     exit 1
@@ -153,7 +155,7 @@ fi
 
 ")
 
-  (define import-directories-command:template
+  (define import-directory-function
     "
 #######################
 # Import directories. #
@@ -166,14 +168,27 @@ mkdir -p -- \"$LOCAL_MIYKA_ROOT\"/repositories
 echo '()' > \"$LOCAL_ID_MAP\"
 
 import_directory() {
-    LOCATION=\"$1\"
-    shift
     NAME=\"$1\"
     shift
 
-    ROOT_PATH=\"$MIYKA_REPO_HOME/$LOCATION\"
-    ID_PATH=\"$ROOT_PATH\"/wd/id.txt
-    RUN_SCRIPT_PATH=\"$ROOT_PATH\"/wd/state/run.sh
+    EXECUTABLE_PATH=\"$LOCAL_BIN_PATH\"/\"$NAME\"
+    if test -f \"$EXECUTABLE_PATH\"
+    then
+        echo \"Repository '$NAME' already imported.\" 1>&2
+        continue
+    fi
+
+    LOCATION=\"$1\"
+    shift
+
+    case \"$LOCATION\" in
+        /*)
+            ROOT_PATH=\"$LOCATION\"
+            ;;
+        *)
+            ROOT_PATH=\"$MIYKA_REPO_HOME/$LOCATION\"
+            ;;
+    esac
 
     if ! test -d \"$ROOT_PATH\"
     then
@@ -181,12 +196,14 @@ import_directory() {
         exit 1
     fi
 
+    ID_PATH=\"$ROOT_PATH\"/wd/id.txt
     if ! test -f \"$ID_PATH\"
     then
         echo \"Imported repository at '$LOCATION' does not have an id file at '$LOCATION/wd/id.txt'.\" 1>&2
         exit 1
     fi
 
+    RUN_SCRIPT_PATH=\"$ROOT_PATH\"/wd/state/run.sh
     if ! test -f \"$RUN_SCRIPT_PATH\"
     then
         echo \"Imported repository at '$LOCATION' does not have an run file at '$LOCATION/wd/state/run.sh'.\" 1>&2
@@ -206,35 +223,97 @@ import_directory() {
     mv -T -- \"$TMPFILE\" \"$LOCAL_ID_MAP\"
 
     # Create a link.
-    EXECUTABLE_PATH=\"$LOCAL_BIN_PATH\"/\"$NAME\"
     mkdir -p -- \"$LOCAL_BIN_PATH\"
     printf '#! /bin/sh
 exec /bin/sh -- \"${0%%/*}/../state/imported/repositories/%s/wd/state/run.sh\"
 ' \"$REPO_ID\" > \"$EXECUTABLE_PATH\"
     chmod u+x -- \"$EXECUTABLE_PATH\"
 }
+")
 
-~a
+  (define import-custom-function
+    "
+##################
+# Import custom. #
+##################
 
+if test -z \"$MIYKA_FETCHER\"
+then
+    echo 'Fetcher is required for importing anything but directories.' 1>&2
+    false
+fi
+
+import_custom() {
+    NAME=\"$1\"
+    shift
+    export MIYKA_FETCHER_ARG_ID=\"$1\"
+    shift
+    export MIYKA_FETCHER_ARG_NAME=\"$1\"
+    shift
+
+    EXECUTABLE_PATH=\"$LOCAL_BIN_PATH\"/\"$NAME\"
+    if test -f \"$EXECUTABLE_PATH\"
+    then
+        echo \"Repository '$NAME' already imported.\" 1>&2
+        continue
+    fi
+
+    export MIYKA_FETCHER_ARG_DESTINATION=\"$MIYKA_WORK_PATH/temporary/imports/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10)\"
+    \"$MIYKA_FETCHER\"
+    import_directory \"$NAME\" \"$MIYKA_FETCHER_ARG_DESTINATION\"
+}
 ")
 
   (define directories-importlist
     (filter directory-import-statement? importlist))
 
   (define import-directories-command
-    (stringf
-     import-directories-command:template
-     (with-output-stringified
-      (for-each
-       (lambda (im)
-         (display "import_directory")
-         (display " ")
-         (write (~a (directory-import-statement:path im)))
-         (display " ")
-         (write (~a (directory-import-statement:new-name im)))
-         (newline)
-         )
-       directories-importlist))))
+    (with-output-stringified
+     (for-each
+      (lambda (im)
+        (display "import_directory")
+        (display " ")
+        (write (~a (directory-import-statement:new-name im)))
+        (display " ")
+        (write (~a (directory-import-statement:path im)))
+        (newline)
+        )
+      directories-importlist)))
+
+  (define custom-importlist
+    (filter (negate directory-import-statement?) importlist))
+
+  (define import-custom-command
+    (with-output-stringified
+     (for-each
+      (lambda (im)
+        (cond
+         ((id-import-statement? im)
+          (display "import_custom")
+          (display " ")
+          (write (~a (id-import-statement:new-name im)))
+          (display " ")
+          (write (~a (id-import-statement:value im)))
+          (display " ")
+          (write "")
+          (newline))
+
+         ((name-import-statement? im)
+          (display "import_custom")
+          (display " ")
+          (write (~a (name-import-statement:new-name im)))
+          (display " ")
+          (write "")
+          (display " ")
+          (write (~a (name-import-statement:value im)))
+          (newline))
+
+         (else
+          (raisu* :from "interpretation-run!"
+                  :type 'bad-type-of-import
+                  :message "Import has bad type."
+                  :args (list im)))))
+      custom-importlist)))
 
   (define teardown-command
     "
@@ -248,7 +327,7 @@ if ! \"$2\" shell \\
     --pure \\
     coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
     -- \\
-    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" /bin/sh -- \"$1\"/teardown.sh
+    /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" \"$5\" /bin/sh -- \"$1\"/teardown.sh
 then
     echo 'Teardown script failed.' 1>&2
 fi
@@ -348,7 +427,13 @@ done
 " (words->string (map ~s host-locations)))))
 
   (unless (null? importlist)
+    (stack-push! setup-command-list import-directory-function))
+
+  (unless (null? directories-importlist)
     (stack-push! setup-command-list import-directories-command))
+
+  (unless (null? custom-importlist)
+    (stack-push! setup-command-list import-custom-command))
 
   (unless (null? gitlist)
     (stack-push!
@@ -534,4 +619,5 @@ shift" name))
   (system*/exit-code
    "/bin/sh" "--"
    run-script-path
-   (or guix "")))
+   (or guix "")
+   (or fetcher "")))
