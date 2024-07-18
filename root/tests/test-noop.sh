@@ -20,4 +20,4 @@ test "$RESULT" = ""
 
 sh scripts/print-dir-contents.sh "$REPO_PATH" >"$MIYKA_ROOT/final-contents.bin"
 
-diff -q -- "$MIYKA_ROOT/initial-contents.bin" "$MIYKA_ROOT/final-contents.bin"
+diff -- "$MIYKA_ROOT/initial-contents.bin" "$MIYKA_ROOT/final-contents.bin"
