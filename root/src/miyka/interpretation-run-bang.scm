@@ -213,7 +213,7 @@ import_directory() {
     cp -r -T -- \"$ROOT_PATH\" \"$TARGET_ROOT_PATH\"
 
     # Register id in 'id-map.toml'.
-    echo \"[[repository]]
+    echo \"[[repositories]]
 name = \\\"$NAME\\\"
 id = \\\"$REPO_ID\\\"
 
