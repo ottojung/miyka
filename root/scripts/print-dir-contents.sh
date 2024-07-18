@@ -13,7 +13,7 @@ find -- "$DIR" | sort | while IFS= read PATH
 do
     printf '> %s' "$PATH"
     echo
-    "$ALS" -l -a -- "$PATH"
+    "$ALS" -a -- "$PATH" 2>/dev/null || continue
     echo
 
     if test -L "$PATH"
