@@ -170,7 +170,7 @@ import_directory() {
     if test -f \"$EXECUTABLE_PATH\"
     then
         echo \"Repository '$NAME' already imported.\" 1>&2
-        continue
+        return 0
     fi
 
     LOCATION=\"$1\"
@@ -248,7 +248,7 @@ import_custom() {
     if test -f \"$EXECUTABLE_PATH\"
     then
         echo \"Repository '$NAME' already imported.\" 1>&2
-        continue
+        return 0
     fi
 
     export MIYKA_FETCHER_ARG_ID=\"$1\"
