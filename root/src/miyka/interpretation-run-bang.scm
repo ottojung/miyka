@@ -163,7 +163,7 @@ fi
 
 LOCAL_BIN_PATH=\"$MIYKA_WORK_PATH\"/bin
 LOCAL_MIYKA_ROOT=\"$MIYKA_STAT_PATH/imported\"
-LOCAL_ID_MAP=\"$LOCAL_MIYKA_ROOT\"/id-map.lisp
+LOCAL_ID_MAP=\"$LOCAL_MIYKA_ROOT\"/id-map.toml
 mkdir -p -- \"$LOCAL_MIYKA_ROOT\"/repositories
 echo '()' > \"$LOCAL_ID_MAP\"
 
@@ -217,7 +217,7 @@ import_directory() {
     TARGET_ROOT_PATH=\"$LOCAL_MIYKA_ROOT\"/repositories/\"$REPO_ID\"
     cp -r -T -- \"$ROOT_PATH\" \"$TARGET_ROOT_PATH\"
 
-    # Register id in 'id-map.lisp'.
+    # Register id in 'id-map.toml'.
     TMPFILE=\"$(mktemp)\"
     cat -- \"$LOCAL_ID_MAP\" | sed 's/)$/(\"'\"$REPO_ID\"'\" . \"'\"$NAME\"'\"))/' > \"$TMPFILE\"
     mv -T -- \"$TMPFILE\" \"$LOCAL_ID_MAP\"

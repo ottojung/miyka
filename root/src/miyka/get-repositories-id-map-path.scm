@@ -5,7 +5,7 @@
   (memconst
    (let ()
      (define root (get-root))
-     (define result (append-posix-path root "id-map.lisp"))
+     (define result (append-posix-path root "id-map.toml"))
 
      (unless (file-or-directory-exists? result)
        (make-directories root)
