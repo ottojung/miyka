@@ -14,7 +14,6 @@
   (import
     (only (miyka language-environment)
           language:environment))
-  (import (only (miyka language-git) language:git))
   (import
     (only (miyka language-host) language:host))
   (import

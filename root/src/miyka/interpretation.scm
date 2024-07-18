@@ -13,7 +13,6 @@
          snapshot?        ;; whether to snapshot before open or not.
          environment      ;; restrict environment to listed variables, or inherit all if not set.
          host-stack       ;; files that are linked from host.
-         git-stack        ;; repositories to-be deployed.
          import-stack     ;; repositories to-be imported.
          )
 
@@ -27,7 +26,6 @@
    snapshot?
    environment
    host-stack
-   git-stack
    import-stack
    ))
 
@@ -60,11 +58,8 @@
 (define (interpretation:host-stack interpretation)
   (vector-ref interpretation 8))
 
-(define (interpretation:git-stack interpretation)
-  (vector-ref interpretation 9))
-
 (define (interpretation:import-stack interpretation)
-  (vector-ref interpretation 10))
+  (vector-ref interpretation 9))
 
 (define (make-interpretation)
   (define installist (stack-make))
@@ -75,7 +70,6 @@
   (define snapshot? (make-box #f))
   (define environment (make-box #f))
   (define host-stack (stack-make))
-  (define git-stack (stack-make))
   (define import-stack (stack-make))
 
   (interpretation:constructor
@@ -87,6 +81,5 @@
    snapshot?
    environment
    host-stack
-   git-stack
    import-stack
    ))

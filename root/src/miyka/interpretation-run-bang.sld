@@ -83,7 +83,6 @@
           interpretation:cleanup
           interpretation:command
           interpretation:environment
-          interpretation:git-stack
           interpretation:home-moved?
           interpretation:host-stack
           interpretation:import-stack

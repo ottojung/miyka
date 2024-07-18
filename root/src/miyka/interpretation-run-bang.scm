@@ -58,11 +58,6 @@
      (stack->list
       (interpretation:host-stack interpretation))))
 
-  (define gitlist
-    (reverse
-     (stack->list
-      (interpretation:git-stack interpretation))))
-
   (define importlist
     (reverse
      (stack->list
@@ -145,7 +140,7 @@ cd - 1>/dev/null 2>/dev/null
 
 if ! \"$2\" shell \\
     --pure \\
-    coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
+    coreutils grep findutils procps sed gawk nss-certs restic make openssh gnupg \\
     -- \\
     /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" \"$5\" /bin/sh -- \"$1\"/setup.sh
 then
@@ -330,7 +325,7 @@ teardown() {
 
 if ! \"$2\" shell \\
     --pure \\
-    coreutils grep findutils procps sed gawk nss-certs restic git make openssh gnupg \\
+    coreutils grep findutils procps sed gawk nss-certs restic make openssh gnupg \\
     -- \\
     /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" \"$5\" /bin/sh -- \"$1\"/teardown.sh
 then
@@ -458,58 +453,6 @@ done
   (unless (null? custom-importlist)
     (stack-push! setup-command-list import-custom-function)
     (stack-push! setup-command-list import-custom-command))
-
-  (unless (null? gitlist)
-    (stack-push!
-     setup-command-list
-     (stringf
-      "
-##############################
-# Deploy git configurations. #
-##############################
-
-mkdir -p -- \"$MIYKA_WORK_PATH/state/git\"
-mkdir -p -- \"$MIYKA_WORK_PATH/state/git-lock\"
-
-for REPO in ~a
-do
-    NAME=\"$(basename -- \"$REPO\")\"
-
-    if test -e \"$MIYKA_WORK_PATH/state/git-lock/$NAME\"
-    then continue
-    fi
-
-    if test -e \"$MIYKA_WORK_PATH/state/git/$NAME\"
-    then
-        cd -- \"$MIYKA_WORK_PATH/state/git/$NAME\"
-
-        if grep -q '^miyka-initialize:' 'Makefile'
-        then make miyka-uninitialize PREFIX=\"$MIYKA_REPO_HOME/.local\" || true
-        else make uninstall PREFIX=\"$MIYKA_REPO_HOME/.local\" || true
-        fi
-
-        cd - 1>/dev/null 2>/dev/null
-    fi
-
-    rm -rf -- \"$MIYKA_WORK_PATH/state/git/$NAME\"
-    rm -f -- \"$MIYKA_WORK_PATH/state/git-lock/$NAME\"
-
-    git clone --recursive --depth 1 -- \"$REPO\" \"$MIYKA_WORK_PATH/state/git/$NAME\"
-    cd -- \"$MIYKA_WORK_PATH/state/git/$NAME\"
-
-    if grep -q '^miyka-initialize:' 'Makefile'
-    then make miyka-initialize PREFIX=\"$MIYKA_REPO_HOME/.local\"
-    else make install PREFIX=\"$MIYKA_REPO_HOME/.local\"
-    fi
-
-    cd - 1>/dev/null 2>/dev/null
-    git -C \"$MIYKA_WORK_PATH/state/git/$NAME\" rev-parse HEAD > \"$MIYKA_WORK_PATH/state/git-lock/$NAME\"
-    rm -rf -- \"$MIYKA_WORK_PATH/state/git/$NAME/.git\"
-
-done
-
-"
-      (words->string (map ~s gitlist)))))
 
   (stack-push!
    teardown-command-list

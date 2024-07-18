@@ -38,9 +38,6 @@
 ;; Import Miyka repositories into the current repository. This will provide executables named by them in the resulting repository. Paths are relative to this repo's home.
 ;; (import directory \"path/to/repository\" as \"my-executable-name\")
 
-;; Clone and deploy a git repository. Uncomment and customize the URL to use.
-;; (git \"git://vau.place/dotfiles\")
-
 (move-home)             ;; Set the $HOME environment variable to the location of the workspace.
 
 ;; Run the run.sh script via /bin/sh.
