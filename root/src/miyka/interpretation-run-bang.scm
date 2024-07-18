@@ -201,7 +201,7 @@ import_directory() {
 
     # Register id in 'id-map.lisp'.
     TMPFILE=\"$(mktemp)\"
-    cat -- \"$LOCAL_ID_MAP\" | sed 's/)$/('\"$REPO_ID\"' . '\"$NAME\"'))/' > \"$TMPFILE\"
+    cat -- \"$LOCAL_ID_MAP\" | sed 's/)$/(\"'\"$REPO_ID\"'\" . \"'\"$NAME\"'\"))/' > \"$TMPFILE\"
     mv -T -- \"$TMPFILE\" \"$LOCAL_ID_MAP\"
 
     # Create a link.
