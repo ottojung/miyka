@@ -427,6 +427,24 @@ done
 
 " (words->string (map ~s host-locations)))))
 
+  (when (and fetcher
+             (not (equal? "" fetcher))
+             (not (absolute-posix-path? fetcher)))
+    (raisu-fmt
+     'fetcher-path-must-be-absolute
+     "Fetcher path ($~a) must be absolute, but isn't: ~s."
+     fetcher-var-name
+     fetcher))
+
+  (when (and guix
+             (not (equal? "" guix))
+             (not (absolute-posix-path? guix)))
+    (raisu-fmt
+     'guix-path-must-be-absolute
+     "Path to guix executable ($~a) must be absolute, but isn't: ~s."
+     guix-executable-env-variable-name
+     guix))
+
   (unless (null? importlist)
     (stack-push! setup-command-list import-directory-function))
 

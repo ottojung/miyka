@@ -24,7 +24,7 @@ case "$RESULT" in
         ;;
 esac
 
-RESULT=$(echo | t_miyka --guix-executable 'echo' run "test-project")
+RESULT=$(echo | t_miyka --guix-executable "$PWD/scripts/guix-echo-mock.sh" run "test-project")
 case "$RESULT" in
     shell*) ;;
     *)
@@ -33,7 +33,7 @@ case "$RESULT" in
         ;;
 esac
 
-export MIYKA_GUIX_EXECUTABLE=echo
+export MIYKA_GUIX_EXECUTABLE="$PWD/scripts/guix-echo-mock.sh"
 RESULT=$(echo | t_miyka run "test-project")
 case "$RESULT" in
     shell*) ;;

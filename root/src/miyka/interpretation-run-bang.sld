@@ -2,6 +2,9 @@
 (define-library
   (miyka interpretation-run-bang)
   (export interpretation:run!)
+  (import
+    (only (euphrates absolute-posix-path-q)
+          absolute-posix-path?))
   (import (only (euphrates box) box-ref))
   (import (only (euphrates fprintf) fprintf))
   (import
@@ -15,6 +18,7 @@
   (import
     (only (euphrates path-get-dirname)
           path-get-dirname))
+  (import (only (euphrates raisu-fmt) raisu-fmt))
   (import (only (euphrates raisu-star) raisu*))
   (import
     (only (euphrates stack)
@@ -50,11 +54,16 @@
     (only (miyka enter-script-template)
           enter-script:template))
   (import
+    (only (miyka fetcher-var-name) fetcher-var-name))
+  (import
     (only (miyka get-fetcher-default)
           get-fetcher/default))
   (import
     (only (miyka get-guix-executable)
           get-guix-executable))
+  (import
+    (only (miyka guix-executable-env-variable-name)
+          guix-executable-env-variable-name))
   (import
     (only (miyka import-statement)
           directory-import-statement:new-name
@@ -143,10 +152,12 @@
     (only (miyka versionfile-path) versionfile:path))
   (import
     (only (scheme base)
+          and
           begin
           cond
           define
           else
+          equal?
           for-each
           if
           lambda
@@ -155,6 +166,7 @@
           list?
           map
           newline
+          not
           null?
           or
           quasiquote

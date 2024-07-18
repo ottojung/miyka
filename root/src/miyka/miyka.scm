@@ -40,6 +40,7 @@
                   )
 
      (define repository (repository:make))
+     (define fetcher (get-fetcher/default))
 
      (when <name>
        (set-property!
@@ -120,6 +121,8 @@
          'link-command-failed
          'cannot-find-guix
          'imported-repository-does-not-have-id
+         'fetcher-path-must-be-absolute
+         'guix-path-must-be-absolute
          )
 
  (with-properties
