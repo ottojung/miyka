@@ -160,7 +160,7 @@ fi
 #######################
 
 LOCAL_BIN_PATH=\"$MIYKA_WORK_PATH\"/bin
-LOCAL_MIYKA_ROOT=\"$MIYKA_STAT_PATH/roots\"
+LOCAL_MIYKA_ROOT=\"$MIYKA_STAT_PATH/imported\"
 LOCAL_ID_MAP=\"$LOCAL_MIYKA_ROOT\"/id-map.lisp
 mkdir -p -- \"$LOCAL_MIYKA_ROOT\"/repositories
 echo '()' > \"$LOCAL_ID_MAP\"
@@ -209,7 +209,7 @@ import_directory() {
     EXECUTABLE_PATH=\"$LOCAL_BIN_PATH\"/\"$NAME\"
     mkdir -p -- \"$LOCAL_BIN_PATH\"
     printf '#! /bin/sh
-exec /bin/sh -- \"${0%%/*}/../state/roots/repositories/%s/wd/state/run.sh\"
+exec /bin/sh -- \"${0%%/*}/../state/imported/repositories/%s/wd/state/run.sh\"
 ' \"$REPO_ID\" > \"$EXECUTABLE_PATH\"
     chmod u+x -- \"$EXECUTABLE_PATH\"
 }
