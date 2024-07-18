@@ -256,13 +256,6 @@ import_custom() {
     export MIYKA_FETCHER_ARG_NAME=\"$1\"
     shift
 
-    EXECUTABLE_PATH=\"$LOCAL_BIN_PATH\"/\"$NAME\"
-    if test -f \"$EXECUTABLE_PATH\"
-    then
-        echo \"Repository '$NAME' already imported.\" 1>&2
-        continue
-    fi
-
     export MIYKA_FETCHER_ARG_DESTINATION=\"$MIYKA_WORK_PATH/temporary/imports/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10)\"
     echo \"Fetching '$NAME'...\" 1>&2
     \"$MIYKA_FETCHER\"
