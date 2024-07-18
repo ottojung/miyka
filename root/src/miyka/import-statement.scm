@@ -7,6 +7,20 @@
   (new-name directory-import-statement:new-name)
   )
 
+(define-type9 <id-import-statement>
+  (id-import-statement:make value new-name) id-import-statement?
+  (value id-import-statement:value)
+  (new-name id-import-statement:new-name)
+  )
+
+(define-type9 <name-import-statement>
+  (name-import-statement:make value new-name) name-import-statement?
+  (value name-import-statement:value)
+  (new-name name-import-statement:new-name)
+  )
+
 (define (import-statement? obj)
   (or (directory-import-statement? obj)
+      (id-import-statement? obj)
+      (name-import-statement? obj)
       #f))

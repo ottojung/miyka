@@ -7,7 +7,24 @@
   (define import-stack (interpretation:import-stack interpretation))
   (stack-push! import-stack statement))
 
+(define (language:import:id <id> <new-name>)
+  (define interpretation (interpretation/p))
+  (define statement (id-import-statement:make <id> <new-name>))
+  (define import-stack (interpretation:import-stack interpretation))
+  (stack-push! import-stack statement))
+
+(define (language:import:name <name> <new-name>)
+  (define interpretation (interpretation/p))
+  (define statement (name-import-statement:make <name> <new-name>))
+  (define import-stack (interpretation:import-stack interpretation))
+  (stack-push! import-stack statement))
+
 (define-syntax language:import
   (syntax-rules (directory as)
     ((_ directory <path> as <new-name>)
-     (language:import:directory <path> <new-name>))))
+     (language:import:directory <path> <new-name>))
+    ((_ id <id> as <new-name>)
+     (language:import:id <id> <new-name>))
+    ((_ <name> as <new-name>)
+     (language:import:name <name> <new-name>))
+    ))

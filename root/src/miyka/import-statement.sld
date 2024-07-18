@@ -6,7 +6,15 @@
     directory-import-statement:make
     directory-import-statement?
     directory-import-statement:path
-    directory-import-statement:new-name)
+    directory-import-statement:new-name
+    id-import-statement:make
+    id-import-statement?
+    id-import-statement:value
+    id-import-statement:new-name
+    name-import-statement:make
+    name-import-statement?
+    name-import-statement:value
+    name-import-statement:new-name)
   (import
     (only (euphrates define-type9) define-type9))
   (import (only (scheme base) begin define or))
