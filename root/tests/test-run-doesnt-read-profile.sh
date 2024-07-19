@@ -9,6 +9,6 @@ HOME_PATH=$(t_miyka get home of "test-project")
 echo "echo hello from miyka project" \
      > "$HOME_PATH/.profile"
 
-RESULT=$(echo | t_miyka run "test-project" | grep '^hello')
+RESULT=$(echo | t_miyka run "test-project" | grep -e '^hello' || true)
 
-test "$RESULT" = "hello from miyka project"
+test "$RESULT" = ""

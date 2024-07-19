@@ -15,10 +15,6 @@ trap 'cleanup \"$1\"' exit hup int quit abrt kill alrm term
 shift
 ~a
 
-if test -f \"$1\"/.profile
-then .  \"$1\"/.profile
-fi
-
 ( cleanup \"$1\" )
 ~a
 
