@@ -564,7 +564,7 @@ done
 
      (define home-command
        (if home-moved?
-           "HOME=\"$1\""
+           "export HOME=\"$1\""
            ""))
 
      (define env-definitions
