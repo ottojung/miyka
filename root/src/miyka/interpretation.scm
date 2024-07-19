@@ -8,7 +8,6 @@
          installstack     ;; programs to install.
          command          ;; shell script that is run after package installation and setup.
          home-moved?      ;; whether $HOME shall be set.
-         install-sh?      ;; whether to add /bin/sh to $PATH.
          cleanup          ;; path to the cleanup script.
          snapshot?        ;; whether to snapshot before open or not.
          environment      ;; restrict environment to listed variables, or inherit all if not set.
@@ -21,7 +20,6 @@
    installstack
    command
    home-moved?
-   install-sh?
    cleanup
    snapshot?
    environment
@@ -43,29 +41,25 @@
 (define (interpretation:home-moved? interpretation)
   (vector-ref interpretation 3))
 
-(define (interpretation:install-sh? interpretation)
+(define (interpretation:cleanup interpretation)
   (vector-ref interpretation 4))
 
-(define (interpretation:cleanup interpretation)
+(define (interpretation:snapshot? interpretation)
   (vector-ref interpretation 5))
 
-(define (interpretation:snapshot? interpretation)
+(define (interpretation:environment interpretation)
   (vector-ref interpretation 6))
 
-(define (interpretation:environment interpretation)
+(define (interpretation:host-stack interpretation)
   (vector-ref interpretation 7))
 
-(define (interpretation:host-stack interpretation)
-  (vector-ref interpretation 8))
-
 (define (interpretation:import-stack interpretation)
-  (vector-ref interpretation 9))
+  (vector-ref interpretation 8))
 
 (define (make-interpretation)
   (define installist (stack-make))
   (define command (make-box #f))
   (define home-moved? (make-box #f))
-  (define install-sh? (make-box #f))
   (define cleanup (make-box #f))
   (define snapshot? (make-box #f))
   (define environment (make-box #f))
@@ -76,7 +70,6 @@
    installist
    command
    home-moved?
-   install-sh?
    cleanup
    snapshot?
    environment
