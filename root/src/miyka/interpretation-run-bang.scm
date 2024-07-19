@@ -553,7 +553,9 @@ done
    (lambda (port)
 
      (define path-value
-       "export PATH=\"$PATH\":\"$1\"/../bin")
+       (if (null? importlist)
+           ""
+           "export PATH=\"$PATH\":\"$1\"/../bin"))
 
      (define cleanup-command
        (if cleanup
