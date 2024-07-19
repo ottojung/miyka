@@ -38,6 +38,10 @@
     (repository:make-helper-env-script repository))
   (define make-helper-env-script-path
     (make-helper-env-script:path make-helper-env-script))
+  (define id-map-add-repository-awkscript
+    (repository:id-map-add-repository-awkscript repository))
+  (define id-map-add-repository-awkscript-path
+    (id-map-add-repository-awkscript:path id-map-add-repository-awkscript))
   (define run-sync-script
     (repository:run-sync-script repository))
   (define run-sync-script-path
@@ -160,7 +164,7 @@ LOCAL_BIN_PATH=\"$MIYKA_WORK_PATH\"/bin
 LOCAL_MIYKA_ROOT=\"$MIYKA_STAT_PATH/imported\"
 LOCAL_ID_MAP=\"$LOCAL_MIYKA_ROOT\"/id-map.toml
 mkdir -p -- \"$LOCAL_MIYKA_ROOT\"/repositories
-echo '()' > \"$LOCAL_ID_MAP\"
+echo > \"$LOCAL_ID_MAP\"
 
 import_directory() {
     NAME=\"$1\"
@@ -210,14 +214,13 @@ import_directory() {
 
     # Copy repository directory.
     TARGET_ROOT_PATH=\"$LOCAL_MIYKA_ROOT\"/repositories/\"$REPO_ID\"
+    rm -rf -- \"$TARGET_ROOT_PATH\"
     cp -r -T -- \"$ROOT_PATH\" \"$TARGET_ROOT_PATH\"
 
     # Register id in 'id-map.toml'.
-    echo \"[[repositories]]
-name = \\\"$NAME\\\"
-id = \\\"$REPO_ID\\\"
-
-\" >> \"$LOCAL_ID_MAP\"
+    TMP_ID_MAP=\"$MIYKA_WORK_PATH/temporary/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10).toml\"
+    cat -- \"$LOCAL_ID_MAP\" | awk -v new_id=\"$REPO_ID\" -v new_name=\"$NAME\" -f \"$MIYKA_STAT_PATH\"/id-map-add-repository.awk > \"$TMP_ID_MAP\"
+    mv -T -- \"$TMP_ID_MAP\" \"$LOCAL_ID_MAP\"
 
     # Create a link.
     mkdir -p -- \"$LOCAL_BIN_PATH\"
@@ -483,6 +486,11 @@ done
    make-helper-env-script-path
    (lambda (port)
      (display make-helper-env-script:template port)))
+
+  (call-with-output-file/lazy
+   id-map-add-repository-awkscript-path
+   (lambda (port)
+     (display id-map-add-repository-awkscript:template port)))
 
   (call-with-output-file/lazy
    versionfile-path

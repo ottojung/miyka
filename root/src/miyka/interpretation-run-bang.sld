@@ -65,6 +65,12 @@
     (only (miyka guix-executable-env-variable-name)
           guix-executable-env-variable-name))
   (import
+    (only (miyka id-map-add-repository-awkscript-path)
+          id-map-add-repository-awkscript:path))
+  (import
+    (only (miyka id-map-add-repository-awkscript-template)
+          id-map-add-repository-awkscript:template))
+  (import
     (only (miyka import-statement)
           directory-import-statement:new-name
           directory-import-statement:path
@@ -109,6 +115,9 @@
   (import
     (only (miyka repository-enter-script)
           repository:enter-script))
+  (import
+    (only (miyka repository-id-map-add-repository-awkscript)
+          repository:id-map-add-repository-awkscript))
   (import
     (only (miyka repository-make-helper-env-script)
           repository:make-helper-env-script))

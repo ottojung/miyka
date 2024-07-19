@@ -18,4 +18,5 @@ do
     ID=$(t_miyka get id of "$PROJ")
     NAME=$(t_miyka get name of id "$ID")
     test "$NAME" = "$PROJ"
+    echo | t_miyka run "$PROJ"
 done
