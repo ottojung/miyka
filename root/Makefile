@@ -34,6 +34,7 @@ $(BINARY_PATH): dist/miyka $(PREFIX_BIN)
 	mkdir -p "$(CODE_INSTALL_ROOT)"
 	rm -rf "$(CODE_INSTALL_ROOT)"
 	cp -p -T -L -r "src" "$(CODE_INSTALL_ROOT)"
+	sh scripts/update-version.sh "$(CODE_INSTALL_ROOT)"
 	guile -s scripts/make-binary.scm "$(CODE_INSTALL_ROOT)" > "$@"
 	chmod +x "$@"
 	$(BINARY_PATH) --version 1>/dev/null
