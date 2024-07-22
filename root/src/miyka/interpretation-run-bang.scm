@@ -496,15 +496,6 @@ done
 
 " (words->string (map ~s host-locations)))))
 
-  (when (and fetcher
-             (not (equal? "" fetcher))
-             (not (absolute-posix-path? fetcher)))
-    (raisu-fmt
-     'fetcher-path-must-be-absolute
-     "Fetcher path ($~a) must be absolute, but isn't: ~s."
-     fetcher-var-name
-     fetcher))
-
   (when (and guix
              (not (equal? "" guix))
              (not (absolute-posix-path? guix)))

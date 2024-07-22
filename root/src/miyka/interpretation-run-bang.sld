@@ -54,8 +54,6 @@
     (only (miyka enter-script-template)
           enter-script:template))
   (import
-    (only (miyka fetcher-var-name) fetcher-var-name))
-  (import
     (only (miyka get-fetcher-default)
           get-fetcher/default))
   (import

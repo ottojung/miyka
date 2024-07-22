@@ -28,6 +28,33 @@ get_miyka_root() {
     fi
 }
 
-exec /bin/sh \"${0%/*}\"/run-sync.sh \"${0%/*}\" \"$(get_guix \"$1\")\" \"$(get_miyka_root)\" \"$HOME\" \"$2\"
+get_fetcher() {
+    if test -z \"$1\"
+    then
+        if test -z \"$MIYKA_FETCHER\"
+        then true
+        else
+            case \"$MIYKA_FETCHER\" in
+                /*)
+                    printf '%s' \"$MIYKA_FETCHER\"
+                    ;;
+                *)
+                    command -v \"$MIYKA_FETCHER\"
+                    ;;
+            esac
+        fi
+    else
+        case \"$1\" in
+            /*)
+                printf '%s' \"$1\"
+                ;;
+            *)
+                command -v \"$1\"
+                ;;
+        esac
+    fi
+}
+
+exec /bin/sh \"${0%/*}\"/run-sync.sh \"${0%/*}\" \"$(get_guix \"$1\")\" \"$(get_miyka_root)\" \"$HOME\" \"$(get_fetcher \"$2\")\"
 
 ")
