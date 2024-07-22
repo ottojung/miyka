@@ -3,31 +3,18 @@
   (miyka initialize-repository)
   (export initialize-repository)
   (import
-    (only (euphrates append-posix-path)
-          append-posix-path))
-  (import
-    (only (euphrates file-or-directory-exists-q)
-          file-or-directory-exists?))
-  (import
     (only (euphrates make-directories)
           make-directories))
   (import
     (only (euphrates path-get-dirname)
           path-get-dirname))
-  (import (only (euphrates raisu-fmt) raisu-fmt))
   (import
     (only (euphrates random-variable-name)
           random-variable-name))
-  (import
-    (only (euphrates system-star-exit-code)
-          system*/exit-code))
   (import (only (miyka bin-path) bin:path))
   (import
     (only (miyka call-with-output-file-lazy)
           call-with-output-file/lazy))
-  (import
-    (only (miyka get-guix-executable)
-          get-guix-executable))
   (import (only (miyka home-path) home:path))
   (import (only (miyka id-path) id:path))
   (import
@@ -51,13 +38,10 @@
           state-directory:path))
   (import
     (only (scheme base)
-          =
           begin
           define
           lambda
           let
-          quote
-          unless
           values))
   (import (only (scheme write) display))
   (cond-expand

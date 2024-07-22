@@ -30,16 +30,6 @@
   (let ()
     (define bin (repository:bin repository))
     (define bin-path (bin:path bin))
-    (define guix (get-guix-executable))
-    (define target (append-posix-path bin-path "sh"))
-    (make-directories bin-path)
-
-    (unless (file-or-directory-exists? target)
-      (unless (= 0 (system*/exit-code
-                    guix "shell" "--pure" "coreutils"
-                    "--" "ln" "-s" "-T" "--" "/bin/sh" target
-                    ))
-        (raisu-fmt 'link-command-failed
-                   "Failed to link /bin/sh to miyka's repository root. The \"sh\" executable will not be available because of this."))))
+    (make-directories bin-path))
 
   (values))
