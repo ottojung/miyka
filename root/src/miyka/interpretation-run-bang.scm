@@ -169,7 +169,10 @@ rm -rf -- \"$IMPORTED_REPOSITORIES_NAMES\"
 mkdir -p -- \"$IMPORTED_REPOSITORIES_NAMES\"
 
 mkdir -p -- \"$LOCAL_MIYKA_ROOT\"/repositories
-echo \"id,name\" > \"$LOCAL_ID_MAP\"
+if ! test -f \"$LOCAL_ID_MAP\"
+then
+    echo \"id,name\" > \"$LOCAL_ID_MAP\"
+fi
 
 import_directory() {
     NAME=\"$1\"
@@ -281,6 +284,7 @@ do
     REGISTERED_NAME=\"$IMPORTED_REPOSITORIES_NAMES\"/\"$NAME\"
     if ! test -f \"$REGISTERED_NAME\"
     then
+        echo \"Repository directory with id '$REPO_ID' and name \"$NAME\" is not imported.\" 1>&2
         remove_repository_directory \"$REPO_ID\" \"$TARGET_ROOT_PATH\"
     fi
 done
@@ -295,6 +299,7 @@ do
     REGISTERED_NAME=\"$IMPORTED_REPOSITORIES_NAMES\"/\"$NAME\"
     if ! test -f \"$REGISTERED_NAME\"
     then
+        echo \"Repository directory named '$NAME' is not imported.\" 1>&2
         remove_repository_binary \"$BINARY_PATH\"
     fi
 done
