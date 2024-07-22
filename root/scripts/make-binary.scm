@@ -6,7 +6,7 @@
 
 (display "#! ")
 (flush-all-ports)
-(system* "sh" "-c" "command -v sh")
+(system* "sh" "-c" "command -v sh 2>/dev/null || echo /bin/sh")
 (flush-all-ports)
 
 (display "exec guile --r7rs -L ")
