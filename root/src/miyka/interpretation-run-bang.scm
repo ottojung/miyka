@@ -306,6 +306,9 @@ then
     false
 fi
 
+LOCAL_TEMPORARY_IMPORTS=\"$MIYKA_WORK_PATH\"/temporary/imports
+mkdir -p -- \"$LOCAL_TEMPORARY_IMPORTS\"
+
 import_custom() {
     NAME=\"$1\"
     shift
@@ -322,7 +325,7 @@ import_custom() {
     export MIYKA_FETCHER_ARG_NAME=\"$1\"
     shift
 
-    export MIYKA_FETCHER_ARG_DESTINATION=\"$MIYKA_WORK_PATH/temporary/imports/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10)\"
+    export MIYKA_FETCHER_ARG_DESTINATION=\"$LOCAL_TEMPORARY_IMPORTS/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10)\"
     echo \"Fetching '$NAME'...\" 1>&2
     \"$MIYKA_FETCHER\"
     echo \"Fetching '$NAME' finished.\" 1>&2
