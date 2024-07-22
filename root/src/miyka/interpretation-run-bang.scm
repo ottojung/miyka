@@ -300,12 +300,6 @@ done
 # Import custom. #
 ##################
 
-if test -z \"$MIYKA_FETCHER\"
-then
-    echo 'Fetcher is required for importing anything but directories.' 1>&2
-    false
-fi
-
 LOCAL_TEMPORARY_IMPORTS=\"$MIYKA_WORK_PATH\"/temporary/imports
 mkdir -p -- \"$LOCAL_TEMPORARY_IMPORTS\"
 
@@ -324,6 +318,12 @@ import_custom() {
     shift
     export MIYKA_FETCHER_ARG_NAME=\"$1\"
     shift
+
+    if test -z \"$MIYKA_FETCHER\"
+    then
+        echo 'Fetcher is required for importing anything but directories.' 1>&2
+        return 1
+    fi
 
     export MIYKA_FETCHER_ARG_DESTINATION=\"$LOCAL_TEMPORARY_IMPORTS/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10)\"
     echo \"Fetching '$NAME'...\" 1>&2
