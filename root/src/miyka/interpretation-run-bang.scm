@@ -470,7 +470,7 @@ do
             LOCATION=\"${LOCATION%/}\"    # remove trailing slash.
 
             if ! test -e \"$MIYKA_HOME_LINK/$LOCATION\"
-            then mkdir -v -p -- \"$MIYKA_HOME_LINK/$LOCATION\"
+            then mkdir -v -p -- \"$MIYKA_HOME_LINK/$LOCATION\" 1>&2
             fi
             ;;
     esac
