@@ -162,9 +162,9 @@ fi
 
 LOCAL_BIN_PATH=\"$MIYKA_WORK_PATH\"/bin
 LOCAL_MIYKA_ROOT=\"$MIYKA_STAT_PATH/imported\"
-LOCAL_ID_MAP=\"$LOCAL_MIYKA_ROOT\"/id-map.toml
+LOCAL_ID_MAP=\"$LOCAL_MIYKA_ROOT\"/id-map.csv
 mkdir -p -- \"$LOCAL_MIYKA_ROOT\"/repositories
-echo > \"$LOCAL_ID_MAP\"
+echo \"id,name\" > \"$LOCAL_ID_MAP\"
 
 import_directory() {
     NAME=\"$1\"
@@ -217,8 +217,8 @@ import_directory() {
     rm -rf -- \"$TARGET_ROOT_PATH\"
     cp -r -T -- \"$ROOT_PATH\" \"$TARGET_ROOT_PATH\"
 
-    # Register id in 'id-map.toml'.
-    TMP_ID_MAP=\"$MIYKA_WORK_PATH/temporary/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10).toml\"
+    # Register id in 'id-map.csv'.
+    TMP_ID_MAP=\"$MIYKA_WORK_PATH/temporary/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10).csv\"
     cat -- \"$LOCAL_ID_MAP\" | awk -v new_id=\"$REPO_ID\" -v new_name=\"$NAME\" -f \"$MIYKA_STAT_PATH\"/id-map-add-repository.awk > \"$TMP_ID_MAP\"
     mv -T -- \"$TMP_ID_MAP\" \"$LOCAL_ID_MAP\"
 

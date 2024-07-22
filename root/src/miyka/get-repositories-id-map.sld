@@ -14,7 +14,7 @@
     (only (miyka get-repositories-id-map-path)
           get-repositories-id-map-path))
   (import
-    (only (miyka parse-toml-file) parse-toml-file))
+    (only (miyka parse-csv-file) parse-csv-file))
   (import
     (only (scheme base)
           begin
@@ -25,9 +25,7 @@
           list
           map
           quote
-          unless
-          vector
-          vector->list))
+          unless))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

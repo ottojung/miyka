@@ -4,26 +4,22 @@
 (define id-map-add-repository-awkscript:template "
 
 function print_new() {
-    print(\"\")
-    print(\"[[repositories]]\")
-    print(\"id = \" new_id)
-    print(\"name = \" new_name)
+    print(new_id \",\" new_name)
 }
 
 BEGIN {
-    FS=\"\\n\";
-    RS=\"\";
+    FS=\",\";
     search_found = 0;
 }
-{
-    match($0, /\\[\\[repositories\\]\\]/);
-    block = $0
 
-    if (RSTART != 0 && index(block, \"id = \\\"\" new_id \"\\\"\") != 0) {
+{
+    id = $1
+    name = $2
+
+    if (id == new_id) {
         print_new()
         search_found = 1;
     } else {
-        print(\"\")
         print($0)
     }
 }

@@ -22,6 +22,7 @@
           define
           lambda
           let
+          newline
           unless))
   (import (only (scheme write) display))
   (cond-expand

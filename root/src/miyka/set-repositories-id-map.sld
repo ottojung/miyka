@@ -17,7 +17,7 @@
           for-each
           lambda
           newline))
-  (import (only (scheme write) display write))
+  (import (only (scheme write) display))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

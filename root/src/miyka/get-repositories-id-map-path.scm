@@ -5,13 +5,14 @@
   (memconst
    (let ()
      (define root (get-root))
-     (define result (append-posix-path root "id-map.toml"))
+     (define result (append-posix-path root "id-map.csv"))
 
      (unless (file-or-directory-exists? result)
        (make-directories root)
        (call-with-output-file/lazy
            result
          (lambda (port)
-           (display "" port))))
+           (display "id,name" port)
+           (newline port))))
 
      result)))

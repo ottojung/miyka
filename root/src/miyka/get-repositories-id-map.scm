@@ -11,9 +11,8 @@
      (~a path)))
 
   (let ()
-    (define toml (parse-toml-file path))
-    (define table-array
-      (assoc-or 'repositories toml (vector)))
+    (define csv (parse-csv-file path))
+
     (define associative-list
       (map
        (lambda (table)
@@ -22,13 +21,13 @@
                     (raisu* :from "get-repositories-id-map"
                             :type 'missing-id
                             :message (stringf "Table entry ~s does not have the ~s field." table (~a 'id))
-                            :args (list table table-array path)))
+                            :args (list table csv path)))
 
           (assoc-or 'name table
                     (raisu* :from "get-repositories-id-map"
                             :type 'missing-name
                             :message (stringf "Table entry ~s does not have the ~s field." table (~a 'name))
-                            :args (list table table-array path)))))
-       (vector->list table-array)))
+                            :args (list table csv path)))))
+       csv))
 
     associative-list))

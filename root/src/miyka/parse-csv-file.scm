@@ -1,13 +1,19 @@
 ;;;; Copyright (C) 2024  Otto Jung
 ;;;; This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details. You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-(define toml-key/alphabet:has?
-  (let ()
-    (define toml-key/alphabet/hashmap
-      (alist->hashmap
-       (map
-        (lambda (x) (cons x #t))
-        (vector->list base64/alphabet/minusunderscore))))
+(define (parse-csv-file path)
+  (define lines (read/lines path))
 
-    (lambda (c)
-      (hashmap-ref toml-key/alphabet/hashmap c #f))))
+  (define (split-line line)
+    (string-split/simple line #\,))
+
+  (define header
+    (map string->symbol
+         (split-line (car lines))))
+
+  (map
+   (lambda (line)
+     (define values (split-line line))
+     (map cons header values))
+
+   (cdr lines)))

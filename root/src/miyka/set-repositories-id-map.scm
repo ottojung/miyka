@@ -6,16 +6,14 @@
   (call-with-output-file/lazy
    path
    (lambda (port)
+     (display "id,name" port)
+     (newline port)
+
      (for-each
       (lambda (p)
         (define-pair (id name) p)
-        (display "[[repositories]]" port)
-        (newline port)
-        (display "name = " port)
-        (write name port)
-        (newline port)
-        (display "id = " port)
-        (write id port)
-        (newline port)
+        (display id port)
+        (display "," port)
+        (display name port)
         (newline port))
       id-map))))
