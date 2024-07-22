@@ -163,6 +163,15 @@ fi
 LOCAL_BIN_PATH=\"$MIYKA_WORK_PATH\"/bin
 LOCAL_MIYKA_ROOT=\"$MIYKA_STAT_PATH/imported\"
 LOCAL_ID_MAP=\"$LOCAL_MIYKA_ROOT\"/id-map.csv
+
+IMPORTED_REPOSITORIES_IDS=\"$MIYKA_WORK_PATH\"/temporary/imported_ids
+rm -rf -- \"$IMPORTED_REPOSITORIES_IDS\"
+mkdir -p -- \"$IMPORTED_REPOSITORIES_IDS\"
+
+IMPORTED_REPOSITORIES_NAMES=\"$MIYKA_WORK_PATH\"/temporary/imported_names
+rm -rf -- \"$IMPORTED_REPOSITORIES_NAMES\"
+mkdir -p -- \"$IMPORTED_REPOSITORIES_NAMES\"
+
 mkdir -p -- \"$LOCAL_MIYKA_ROOT\"/repositories
 echo \"id,name\" > \"$LOCAL_ID_MAP\"
 
@@ -228,7 +237,61 @@ import_directory() {
 exec /bin/sh -- \"${0%%/*}/../state/imported/repositories/%s/wd/state/run.sh\"
 ' \"$REPO_ID\" > \"$EXECUTABLE_PATH\"
     chmod u+x -- \"$EXECUTABLE_PATH\"
+
+    # Record import.
+    echo > \"$IMPORTED_REPOSITORIES_IDS\"/\"$REPO_ID\"
+    echo > \"$IMPORTED_REPOSITORIES_NAMES\"/\"$NAME\"
 }
+")
+
+  (define unimport-directories
+    "
+##########################
+# Unimport repositories. #
+##########################
+
+LOCAL_BIN_PATH=\"$MIYKA_WORK_PATH\"/bin
+LOCAL_MIYKA_ROOT=\"$MIYKA_STAT_PATH/imported\"
+LOCAL_ID_MAP=\"$LOCAL_MIYKA_ROOT\"/id-map.csv
+
+remove_repository_directory() {
+    TARGET_ROOT_PATH=\"$1\"
+    shift
+
+    REPO_ID=\"$(basename -- \"$TARGET_ROOT_PATH\")\"
+    TMP_ID_MAP=\"$MIYKA_WORK_PATH/temporary/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10).csv\"
+    cat -- \"$LOCAL_ID_MAP\" | awk -v new_id=\"$REPO_ID\" -F ',' '{ id = $1 ; if (id == new_id) { } else { print $0 } }' > \"$TMP_ID_MAP\"
+    mv -T -- \"$TMP_ID_MAP\" \"$LOCAL_ID_MAP\"
+
+    rm -v -rf -- \"$TARGET_ROOT_PATH\" 1>&2
+}
+
+remove_repository_binary() {
+    BINARY_PATH=\"$1\"
+    shift
+
+    rm -v -rf -- \"$BINARY_PATH\" 1>&2
+}
+
+for TARGET_ROOT_PATH in \"$LOCAL_MIYKA_ROOT\"/repositories/*
+do
+    REGISTERED_ID=\"$IMPORTED_REPOSITORIES_IDS\"/\"$REPO_ID\"
+    if ! test -e \"$REGISTERED_ID\"
+    then
+        remove_repository_directory \"$TARGET_ROOT_PATH\"
+    fi
+done
+
+for BINARY_PATH in \"$LOCAL_BIN_PATH\"/*
+do
+    NAME=\"$(basename -- \"$BINARY_PATH\")\"
+    REGISTERED_NAME=\"$IMPORTED_REPOSITORIES_NAMES\"/\"$NAME\"
+    if ! test -e \"$REGISTERED_NAME\"
+    then
+        remove_repository_binary \"$BINARY_PATH\"
+    fi
+done
+
 ")
 
   (define import-custom-function
@@ -457,6 +520,8 @@ done
   (unless (null? custom-importlist)
     (stack-push! setup-command-list import-custom-function)
     (stack-push! setup-command-list import-custom-command))
+
+  (stack-push! setup-command-list unimport-directories)
 
   (stack-push!
    teardown-command-list
