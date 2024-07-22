@@ -164,10 +164,6 @@ LOCAL_BIN_PATH=\"$MIYKA_WORK_PATH\"/bin
 LOCAL_MIYKA_ROOT=\"$MIYKA_STAT_PATH/imported\"
 LOCAL_ID_MAP=\"$LOCAL_MIYKA_ROOT\"/id-map.csv
 
-IMPORTED_REPOSITORIES_IDS=\"$MIYKA_WORK_PATH\"/temporary/imported_ids
-rm -rf -- \"$IMPORTED_REPOSITORIES_IDS\"
-mkdir -p -- \"$IMPORTED_REPOSITORIES_IDS\"
-
 IMPORTED_REPOSITORIES_NAMES=\"$MIYKA_WORK_PATH\"/temporary/imported_names
 rm -rf -- \"$IMPORTED_REPOSITORIES_NAMES\"
 mkdir -p -- \"$IMPORTED_REPOSITORIES_NAMES\"
@@ -183,6 +179,7 @@ import_directory() {
     if test -f \"$EXECUTABLE_PATH\"
     then
         echo \"Repository '$NAME' already imported.\" 1>&2
+        echo > \"$IMPORTED_REPOSITORIES_NAMES\"/\"$NAME\"
         return 0
     fi
 
@@ -239,7 +236,6 @@ exec /bin/sh -- \"${0%%/*}/../state/imported/repositories/%s/wd/state/run.sh\"
     chmod u+x -- \"$EXECUTABLE_PATH\"
 
     # Record import.
-    echo > \"$IMPORTED_REPOSITORIES_IDS\"/\"$REPO_ID\"
     echo > \"$IMPORTED_REPOSITORIES_NAMES\"/\"$NAME\"
 }
 ")
@@ -255,10 +251,11 @@ LOCAL_MIYKA_ROOT=\"$MIYKA_STAT_PATH/imported\"
 LOCAL_ID_MAP=\"$LOCAL_MIYKA_ROOT\"/id-map.csv
 
 remove_repository_directory() {
+    REPO_ID=\"$1\"
+    shift
     TARGET_ROOT_PATH=\"$1\"
     shift
 
-    REPO_ID=\"$(basename -- \"$TARGET_ROOT_PATH\")\"
     TMP_ID_MAP=\"$MIYKA_WORK_PATH/temporary/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10).csv\"
     cat -- \"$LOCAL_ID_MAP\" | awk -v new_id=\"$REPO_ID\" -F ',' '{ id = $1 ; if (id == new_id) { } else { print $0 } }' > \"$TMP_ID_MAP\"
     mv -T -- \"$TMP_ID_MAP\" \"$LOCAL_ID_MAP\"
@@ -275,18 +272,28 @@ remove_repository_binary() {
 
 for TARGET_ROOT_PATH in \"$LOCAL_MIYKA_ROOT\"/repositories/*
 do
-    REGISTERED_ID=\"$IMPORTED_REPOSITORIES_IDS\"/\"$REPO_ID\"
-    if ! test -e \"$REGISTERED_ID\"
+    REPO_ID=\"$(basename -- \"$TARGET_ROOT_PATH\")\"
+    if test \"$REPO_ID\" = '*'
+    then continue
+    fi
+
+    NAME=\"$(cat -- \"$LOCAL_ID_MAP\" | awk -v new_id=\"$REPO_ID\" -F ',' '{ id = $1 ; name = $2 ; if (id == new_id) { print name } }')\"
+    REGISTERED_NAME=\"$IMPORTED_REPOSITORIES_NAMES\"/\"$NAME\"
+    if ! test -f \"$REGISTERED_NAME\"
     then
-        remove_repository_directory \"$TARGET_ROOT_PATH\"
+        remove_repository_directory \"$REPO_ID\" \"$TARGET_ROOT_PATH\"
     fi
 done
 
 for BINARY_PATH in \"$LOCAL_BIN_PATH\"/*
 do
     NAME=\"$(basename -- \"$BINARY_PATH\")\"
+    if test \"$NAME\" = '*'
+    then continue
+    fi
+
     REGISTERED_NAME=\"$IMPORTED_REPOSITORIES_NAMES\"/\"$NAME\"
-    if ! test -e \"$REGISTERED_NAME\"
+    if ! test -f \"$REGISTERED_NAME\"
     then
         remove_repository_binary \"$BINARY_PATH\"
     fi
@@ -311,6 +318,7 @@ import_custom() {
     if test -f \"$EXECUTABLE_PATH\"
     then
         echo \"Repository '$NAME' already imported.\" 1>&2
+        echo > \"$IMPORTED_REPOSITORIES_NAMES\"/\"$NAME\"
         return 0
     fi
 
