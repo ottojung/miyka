@@ -144,7 +144,7 @@ cd - 1>/dev/null 2>/dev/null
 
 if ! \"$2\" shell \\
     --pure \\
-    coreutils grep findutils procps sed gawk nss-certs restic make openssh gnupg \\
+    coreutils grep findutils procps sed gawk nss-certs restic make openssh gnupg guix \\
     -- \\
     /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" \"$5\" /bin/sh -- \"$1\"/setup.sh
 then
@@ -392,7 +392,7 @@ teardown() {
 
 if ! \"$2\" shell \\
     --pure \\
-    coreutils grep findutils procps sed gawk nss-certs restic make openssh gnupg \\
+    coreutils grep findutils procps sed gawk nss-certs restic make openssh gnupg guix \\
     -- \\
     /bin/sh -- \"$1\"/make-helper-env.sh \"$1\" \"$2\" \"$3\" \"$4\" \"$5\" /bin/sh -- \"$1\"/teardown.sh
 then
