@@ -101,12 +101,6 @@
   (import
     (only (miyka miyka-version) miyka:version))
   (import
-    (only (miyka relative-path-script-path)
-          relative-path-script:path))
-  (import
-    (only (miyka relative-path-script-template)
-          relative-path-script:template))
-  (import
     (only (miyka repository-cleanup-wrapper)
           repository:cleanup-wrapper))
   (import
@@ -121,9 +115,6 @@
   (import
     (only (miyka repository-manifest)
           repository:manifest))
-  (import
-    (only (miyka repository-relative-path-script)
-          repository:relative-path-script))
   (import
     (only (miyka repository-run-script)
           repository:run-script))

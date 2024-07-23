@@ -18,10 +18,6 @@
     (repository:enter-script repository))
   (define enter-script-path
     (enter-script:path enter-script))
-  (define relative-path-script
-    (repository:relative-path-script repository))
-  (define relative-path-script-path
-    (relative-path-script:path relative-path-script))
   (define setup-script
     (repository:setup-script repository))
   (define setup-script-path
@@ -478,11 +474,6 @@ trap 'teardown \"$1\" \"$2\" \"$3\" \"$4\"' exit hup int quit abrt kill alrm ter
       (path-get-dirname path))
 
     (make-directories dirpath))
-
-  (call-with-output-file/lazy
-   relative-path-script-path
-   (lambda (port)
-     (display relative-path-script:template port)))
 
   (call-with-output-file/lazy
    make-helper-env-script-path
