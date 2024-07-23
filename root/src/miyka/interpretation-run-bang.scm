@@ -457,7 +457,8 @@ trap 'teardown \"$1\" \"$2\" \"$3\" \"$4\"' exit hup int quit abrt kill alrm ter
     (stack-push! setup-command-list import-custom-function)
     (stack-push! setup-command-list import-custom-command))
 
-  (stack-push! setup-command-list unimport-directories)
+  (unless (null? importlist)
+    (stack-push! setup-command-list unimport-directories))
 
   (when need-temporary?
     (stack-push!
