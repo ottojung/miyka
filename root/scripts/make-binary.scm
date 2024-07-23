@@ -4,9 +4,8 @@
 
 (define code_root (car args))
 
-(display "#! ")
-(flush-all-ports)
-(system* "sh" "-c" "command -v sh 2>/dev/null || echo /bin/sh")
+(display "#! /bin/sh")
+(newline)
 (flush-all-ports)
 
 (display "exec guile --r7rs -L ")
