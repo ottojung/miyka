@@ -13,7 +13,6 @@
      '(rename (miyka language-move-home) (language:move-home move-home))
      '(rename (miyka language-cleanup) (language:cleanup cleanup))
      '(rename (miyka language-environment) (language:environment environment))
-     '(rename (miyka language-host) (language:host host))
      '(rename (miyka language-import) (language:import import))
      ))
 

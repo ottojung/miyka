@@ -88,7 +88,6 @@
           interpretation:command
           interpretation:environment
           interpretation:home-moved?
-          interpretation:host-stack
           interpretation:import-stack
           interpretation:snapshot?))
   (import

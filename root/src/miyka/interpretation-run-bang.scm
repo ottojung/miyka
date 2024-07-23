@@ -57,11 +57,6 @@
     (box-ref
      (interpretation:command interpretation)))
 
-  (define host-locations
-    (reverse
-     (stack->list
-      (interpretation:host-stack interpretation))))
-
   (define importlist
     (reverse
      (stack->list
@@ -443,71 +438,6 @@ trap 'teardown \"$1\" \"$2\" \"$3\" \"$4\"' exit hup int quit abrt kill alrm ter
 
   (unless (null? packages)
     (stack-push! setup-command-list guix-describe-command))
-
-  (unless (null? host-locations)
-    (stack-push!
-     setup-command-list
-     (stringf "
-####################
-# Link host files. #
-####################
-
-MIYKA_HOME_LINK=\"$MIYKA_WORK_PATH/temporary/miyka-orig-home\"
-ln -sT -- \"$MIYKA_ORIG_HOME\" \"$MIYKA_HOME_LINK\"
-
-for LOCATION in ~a
-do
-    if test -e \"$MIYKA_REPO_HOME/$LOCATION\"
-    then continue
-    fi
-
-    if test -L \"$MIYKA_REPO_HOME/$LOCATION\"
-    then continue
-    fi
-
-    if test -e \"$MIYKA_HOME_LINK/$LOCATION\"
-    then
-        case \"$LOCATION\" in
-            */)
-                if ! test -d \"$MIYKA_HOME_LINK/$LOCATION\"
-                then echo \"Host path \\\"$LOCATION\\\" expected to be a directory.\" 1>&2 ; exit 1
-                fi
-                ;;
-            *)
-                if ! test -f \"$MIYKA_HOME_LINK/$LOCATION\"
-                then echo \"Host path \\\"$LOCATION\\\" expected to be a regular file.\" 1>&2 ; exit 1
-                fi
-                ;;
-        esac
-    fi
-
-    case \"$LOCATION\" in
-       */)
-            LOCATION=\"${LOCATION%/}\"    # remove trailing slash.
-
-            if ! test -e \"$MIYKA_HOME_LINK/$LOCATION\"
-            then mkdir -v -p -- \"$MIYKA_HOME_LINK/$LOCATION\" 1>&2
-            fi
-            ;;
-    esac
-
-    mkdir -p -- \"$(dirname -- \"$MIYKA_REPO_HOME/$LOCATION\")\"
-
-    if test -d \"$MIYKA_HOME_LINK/$LOCATION\"
-    then
-        LINK_VALUE=\"$(echo | awk -v first_path=\"home/$LOCATION/..\" -v second_path=\"temporary/miyka-orig-home/$LOCATION\" -f \"$MIYKA_WORK_PATH/state/relative-path.awk\")\"
-        ln -sT -- \"$LINK_VALUE\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
-    else
-        if test -f \"$MIYKA_ORIG_HOME/$LOCATION\"
-        then cp -T  -- \"$MIYKA_ORIG_HOME/$LOCATION\" \"$MIYKA_REPO_HOME/$LOCATION\"   1>&2
-        else continue
-        fi
-    fi
-
-    echo \"HOST $LOCATION\" 1>&2
-done
-
-" (words->string (map ~s host-locations)))))
 
   (when (and guix
              (not (equal? "" guix))

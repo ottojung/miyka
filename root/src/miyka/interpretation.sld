@@ -10,7 +10,6 @@
     interpretation:cleanup
     interpretation:snapshot?
     interpretation:environment
-    interpretation:host-stack
     interpretation:import-stack)
   (import (only (euphrates box) make-box))
   (import (only (euphrates stack) stack-make))

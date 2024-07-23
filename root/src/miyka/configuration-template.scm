@@ -25,14 +25,6 @@
 (install \"man-db\")    ;; Install the \"man\" utility.
 (install \"glibc-locales\") ;; Install internalization packages. Mainly for UTF8 support.
 
-;; Symlink specific directories and copy files from the host user's home to the workspace home.
-(host \".cache/\")                   ;; Symlink the .cache/ directory.
-(host \".local/share/Trash/\")       ;; Symlink the Trash directory.
-(host \".Xresources\")               ;; Copy the .Xresources file for X color scheme.
-(host \".Xdefaults\")                ;; Copy the .Xdefaults file for X color scheme.
-                                   ;; Note: The trailing \"/\" indicates that a directory is being linked.
-                                   ;; Miyka will abort if the actual file type on the host does not match the expected type.
-
 ;; Import Miyka repositories into the current repository. This will provide executables named by them in the resulting repository. Paths are relative to this repo's home.
 ;; (import directory \"path/to/repository\" as \"my-executable-name\")
 

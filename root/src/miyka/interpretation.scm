@@ -11,7 +11,6 @@
          cleanup          ;; path to the cleanup script.
          snapshot?        ;; whether to snapshot before open or not.
          environment      ;; restrict environment to listed variables, or inherit all if not set.
-         host-stack       ;; files that are linked from host.
          import-stack     ;; repositories to-be imported.
          )
 
@@ -23,7 +22,6 @@
    cleanup
    snapshot?
    environment
-   host-stack
    import-stack
    ))
 
@@ -50,11 +48,8 @@
 (define (interpretation:environment interpretation)
   (vector-ref interpretation 6))
 
-(define (interpretation:host-stack interpretation)
-  (vector-ref interpretation 7))
-
 (define (interpretation:import-stack interpretation)
-  (vector-ref interpretation 8))
+  (vector-ref interpretation 7))
 
 (define (make-interpretation)
   (define installist (stack-make))
@@ -63,7 +58,6 @@
   (define cleanup (make-box #f))
   (define snapshot? (make-box #f))
   (define environment (make-box #f))
-  (define host-stack (stack-make))
   (define import-stack (stack-make))
 
   (interpretation:constructor
@@ -73,6 +67,5 @@
    cleanup
    snapshot?
    environment
-   host-stack
    import-stack
    ))
