@@ -357,6 +357,9 @@ import_custom() {
   (define custom-importlist
     (filter (negate directory-import-statement?) importlist))
 
+  (define need-temporary?
+    (not (null? importlist)))
+
   (define import-custom-command
     (with-output-stringified
      (for-each
@@ -429,7 +432,7 @@ trap 'teardown \"$1\" \"$2\" \"$3\" \"$4\"' exit hup int quit abrt kill alrm ter
        "\"$1\"/../home"
        ))))
 
-  (unless (null? packages)
+  (when need-temporary?
     (stack-push! setup-command-list make-temporary-command))
 
   (unless (null? packages)
@@ -456,9 +459,10 @@ trap 'teardown \"$1\" \"$2\" \"$3\" \"$4\"' exit hup int quit abrt kill alrm ter
 
   (stack-push! setup-command-list unimport-directories)
 
-  (stack-push!
-   teardown-command-list
-   make-temporary-command)
+  (when need-temporary?
+    (stack-push!
+     teardown-command-list
+     make-temporary-command))
 
   (when snapshot?
     (stack-push!
