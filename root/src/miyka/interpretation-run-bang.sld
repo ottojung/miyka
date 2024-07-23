@@ -5,7 +5,13 @@
   (import
     (only (euphrates absolute-posix-path-q)
           absolute-posix-path?))
+  (import
+    (only (euphrates append-posix-path)
+          append-posix-path))
   (import (only (euphrates box) box-ref))
+  (import
+    (only (euphrates file-or-directory-exists-q)
+          file-or-directory-exists?))
   (import (only (euphrates fprintf) fprintf))
   (import
     (only (euphrates lines-to-string) lines->string))
@@ -37,6 +43,7 @@
           with-output-stringified))
   (import
     (only (euphrates words-to-string) words->string))
+  (import (only (miyka bin-path) bin:path))
   (import
     (only (miyka call-with-output-file-lazy)
           call-with-output-file/lazy))
@@ -101,6 +108,8 @@
   (import
     (only (miyka miyka-version) miyka:version))
   (import
+    (only (miyka repository-bin) repository:bin))
+  (import
     (only (miyka repository-cleanup-wrapper)
           repository:cleanup-wrapper))
   (import
@@ -125,6 +134,9 @@
     (only (miyka repository-setup-script)
           repository:setup-script))
   (import
+    (only (miyka repository-state-directory)
+          repository:state-directory))
+  (import
     (only (miyka repository-teardown-script)
           repository:teardown-script))
   (import
@@ -141,6 +153,9 @@
   (import
     (only (miyka setup-script-path)
           setup-script:path))
+  (import
+    (only (miyka state-directory-path)
+          state-directory:path))
   (import
     (only (miyka teardown-script-path)
           teardown-script:path))

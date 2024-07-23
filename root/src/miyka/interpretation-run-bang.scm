@@ -10,6 +10,12 @@
     (repository:manifest repository))
   (define manifest-path
     (manifest:path manifest))
+  (define bin (repository:bin repository))
+  (define bin-path (bin:path bin))
+  (define state-dir (repository:state-directory repository))
+  (define state-dir-path (state-directory:path state-dir))
+  (define local-miyka-root-path
+    (append-posix-path state-dir-path "imported"))
   (define versionfile
     (repository:versionfile repository))
   (define versionfile-path
@@ -592,6 +598,13 @@ shift" name))
    run-script-path
    (lambda (port)
      (display run-script:template port)))
+
+  (when (null? importlist)
+    (when (file-or-directory-exists? bin-path)
+      (system*/exit-code "rm" "-rf" "--" bin-path)
+      (make-directories bin-path))
+    (when (file-or-directory-exists? local-miyka-root-path)
+      (system*/exit-code "rm" "-rf" "--" local-miyka-root-path)))
 
   (system*/exit-code
    "/bin/sh" "--"
