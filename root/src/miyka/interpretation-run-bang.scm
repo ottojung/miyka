@@ -421,22 +421,30 @@ trap 'teardown \"$1\" \"$2\" \"$3\" \"$4\"' exit hup int quit abrt kill alrm ter
 
 ")
 
+  (define guix-part-of-enter-command
+    (if (null? packages) '()
+        (list
+         "\"$2\""
+         "shell"
+         maybe-pure
+         "--manifest=\"$1\"/manifest.scm"
+         "--")))
+
+  (define script-part-of-enter-command
+    (list-collapse
+     (list
+      "/bin/sh" "--" "\"$1\"/enter.sh" "\"$1\"/../home"
+      (map
+       (lambda (name)
+         (~s (string-append "$" name)))
+       (or environment '()))
+      "\"$1\"/../home")))
+
   (define enter-command
     (words->string
-     (list-collapse
-      (list
-       "\"$2\""
-       "shell"
-       maybe-pure
-       "--manifest=\"$1\"/manifest.scm"
-       "--"
-       "/bin/sh" "--" "\"$1\"/enter.sh" "\"$1\"/../home"
-       (map
-        (lambda (name)
-          (~s (string-append "$" name)))
-        (or environment '()))
-       "\"$1\"/../home"
-       ))))
+     (append
+      guix-part-of-enter-command
+      script-part-of-enter-command)))
 
   (when need-temporary?
     (stack-push! setup-command-list make-temporary-command))

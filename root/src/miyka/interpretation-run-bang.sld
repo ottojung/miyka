@@ -164,6 +164,7 @@
   (import
     (only (scheme base)
           and
+          append
           begin
           cond
           define
