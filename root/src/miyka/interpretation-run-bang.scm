@@ -422,7 +422,7 @@ trap 'teardown \"$1\" \"$2\" \"$3\" \"$4\"' exit hup int quit abrt kill alrm ter
 ")
 
   (define guix-part-of-enter-command
-    (if (null? packages) '()
+    (if (and (null? packages) (not pure?)) '()
         (list
          "\"$2\""
          "shell"
