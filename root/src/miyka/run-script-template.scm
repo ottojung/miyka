@@ -55,6 +55,6 @@ get_fetcher() {
     fi
 }
 
-exec /bin/sh \"${0%/*}\"/run-sync.sh \"${0%/*}\" \"$(get_guix \"$1\")\" \"$(get_miyka_root)\" \"$HOME\" \"$(get_fetcher \"$2\")\"
+exec /bin/sh -- \"${0%/*}\"/run-sync.sh \"${0%/*}\" \"$(get_guix \"$1\")\" \"$(get_miyka_root)\" \"$HOME\" \"$(get_fetcher \"$2\")\"
 
 ")
