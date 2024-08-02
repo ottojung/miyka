@@ -7,7 +7,7 @@ t_miyka create test-project
 HOME_PATH=$(t_miyka get home of "test-project")
 CONFIG_PATH=$(t_miyka get config-path of "test-project")
 
-echo '(install "gawk") (shell ".config/miyka/run.sh") (move-home)' \
+echo '(install "gawk") (shell ".config/miyka/run.sh")' \
      > "$CONFIG_PATH"
 
 echo 'echo | awk "{ print 2 + 3 }"' \

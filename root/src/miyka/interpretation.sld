@@ -6,7 +6,6 @@
     interpretation?
     interpretation:installstack
     interpretation:command
-    interpretation:home-moved?
     interpretation:cleanup
     interpretation:snapshot?
     interpretation:environment

@@ -7,7 +7,7 @@
 
 (snapshot)              ;; Save a snapshot of the entire workspace efficiently.
 
-;; Restrict environment to listed variables. Comment out to inherit every environment variable from host. If (move-home) is not used, then $HOME will also be inherited.
+;; Restrict environment to listed variables. Comment out to inherit every environment variable from host. Exception is $HOME, which is inherited in any case.
 (environment \"DISPLAY\" \"XDG_RUNTIME_DIR\")
 
 ;; Specify packages to be installed within the workspace environment.
@@ -27,8 +27,6 @@
 
 ;; Import Miyka repositories into the current repository. This will provide executables named by them in the resulting repository. Paths are relative to this repo's home.
 ;; (import directory \"path/to/repository\" as \"my-executable-name\")
-
-(move-home)             ;; Set the $HOME environment variable to the location of the workspace.
 
 ;; Run the run.sh script via /bin/sh.
 (shell \".config/miyka/run.sh\")

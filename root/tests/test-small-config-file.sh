@@ -10,7 +10,6 @@ echo '
 (environment "SHELL" "PATH")
 (cleanup ".config/miyka/cleanup.sh")
 (shell ".config/miyka/run.sh")
-(move-home)
 ' > "$CONFIG_PATH"
 
 HOME_PATH=$(t_miyka get home of "test-project")

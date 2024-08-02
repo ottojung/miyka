@@ -11,7 +11,6 @@ cleanup() {
 trap 'cleanup \"$1\"' exit hup int quit abrt kill alrm term
 
 ~a
-~a
 shift
 ~a
 

@@ -94,7 +94,6 @@
           interpretation:cleanup
           interpretation:command
           interpretation:environment
-          interpretation:home-moved?
           interpretation:import-stack
           interpretation:snapshot?))
   (import

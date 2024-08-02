@@ -10,7 +10,6 @@
      '(rename (miyka language-install) (language:install install))
      '(rename (miyka language-snapshot) (language:snapshot snapshot))
      '(rename (miyka language-shell) (language:shell shell))
-     '(rename (miyka language-move-home) (language:move-home move-home))
      '(rename (miyka language-cleanup) (language:cleanup cleanup))
      '(rename (miyka language-environment) (language:environment environment))
      '(rename (miyka language-import) (language:import import))

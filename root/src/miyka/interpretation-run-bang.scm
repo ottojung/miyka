@@ -67,10 +67,6 @@
   (define cleanup
     (box-ref (interpretation:cleanup interpretation)))
 
-  (define home-moved?
-    (box-ref
-     (interpretation:home-moved? interpretation)))
-
   (define snapshot?
     (box-ref
      (interpretation:snapshot? interpretation)))
@@ -575,11 +571,6 @@ trap 'teardown \"$1\" \"$2\" \"$3\" \"$4\"' exit hup int quit abrt kill alrm ter
            (stringf "cd \"$1\" && test -f ./~s && /bin/sh -- ./~s" cleanup cleanup)
            "true"))
 
-     (define home-command
-       (if home-moved?
-           "export HOME=\"$1\""
-           ""))
-
      (define env-definitions
        (lines->string
         (map
@@ -597,7 +588,6 @@ shift" name))
       port
       enter-script:template
       cleanup-command
-      home-command
       path-value
       env-definitions
       command/str)))
