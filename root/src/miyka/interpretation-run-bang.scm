@@ -362,6 +362,14 @@ import_custom() {
   (define need-temporary?
     (not (null? importlist)))
 
+  (define need-guix-executable?
+    need-temporary?)
+
+  (define guix-executable-save-command
+    "
+printf '%s' \"$2\" > \"$MIYKA_WORK_PATH/temporary/guix-executable\"
+")
+
   (define import-custom-command
     (with-output-stringified
      (for-each
@@ -443,7 +451,9 @@ trap 'teardown \"$1\" \"$2\" \"$3\" \"$4\"' exit hup int quit abrt kill alrm ter
       script-part-of-enter-command)))
 
   (when need-temporary?
-    (stack-push! setup-command-list make-temporary-command))
+    (stack-push! setup-command-list make-temporary-command)
+    (when need-guix-executable?
+      (stack-push! setup-command-list guix-executable-save-command)))
 
   (unless (null? packages)
     (stack-push! setup-command-list guix-describe-command))
