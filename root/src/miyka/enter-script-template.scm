@@ -10,8 +10,8 @@ cleanup() {
 
 trap 'cleanup \"$1\"' exit hup int quit abrt kill alrm term
 
-~a
 shift
+~a
 ~a
 
 ( cleanup \"$1\" )

@@ -588,8 +588,8 @@ shift" name))
       port
       enter-script:template
       cleanup-command
-      path-value
       env-definitions
+      path-value
       command/str)))
 
   (call-with-output-file/lazy
