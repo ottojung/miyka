@@ -564,7 +564,7 @@ trap 'teardown \"$1\" \"$2\" \"$3\" \"$4\"' exit hup int quit abrt kill alrm ter
      (define path-value
        (if (null? importlist)
            ""
-           "export PATH=\"$PATH\":\"$1\"/../bin"))
+           "export PATH=\"$1\"/../bin:\"$PATH\""))
 
      (define cleanup-command
        (if cleanup
