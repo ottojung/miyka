@@ -367,7 +367,7 @@ import_custom() {
 
   (define guix-executable-save-command
     "
-printf '%s' \"$2\" > \"$MIYKA_WORK_PATH/temporary/guix-executable\"
+printf '%s' \"$MIYKA_GUIX_EXECUTABLE\" > \"$MIYKA_WORK_PATH/temporary/guix-executable\"
 ")
 
   (define import-custom-command
