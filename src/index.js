@@ -1,3 +1,4 @@
+'use strict'
 
 import { Command } from 'commander';
 
@@ -19,6 +20,14 @@ export function add(a, b) {
  * @returns {number}
  */
 function main(argv) {
+    /**
+     * @type {string}
+     */
+    const HOME = process.env.HOME;
+    if (HOME === undefined || HOME === '') {
+        throw Error("$HOME environment variable must be set, but isnt.");
+    }
+
     const program = new Command();
 
     program
@@ -27,6 +36,7 @@ function main(argv) {
         .version('0.1.0');
 
     program
+        .option('--root <root>', "Path to the miyka private storage.", `${HOME}/.local/share/miyka/root`)
         .command('run <project_name>')
         .description('Run a project')
         .action((projectName) => {
