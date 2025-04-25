@@ -1,6 +1,7 @@
 'use strict'
 
 import { Command } from 'commander';
+import { run as runCommand } from './run.js';
 
 
 /**
@@ -40,7 +41,7 @@ function main(argv) {
         .command('run <project_name>')
         .description('Run a project')
         .action((projectName) => {
-            console.log(`Running project ${projectName}`);
+            runCommand(projectName);
         });
 
     program.parse(argv);
