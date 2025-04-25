@@ -1,6 +1,7 @@
 
 import { Command } from 'commander';
 
+
 /**
  * Adds two numbers.
  * @param {number} a
@@ -13,17 +14,16 @@ export function add(a, b) {
 
 
 /**
- * @type {string[]}
+ * The main entrypoint.
+ * @param {string[]} argv
+ * @returns {number}
  */
-let args = process.argv;
-
-
-if (typeof require !== 'undefined' && require.main === module) {
+function main(argv) {
     const program = new Command();
 
     program
         .name('miyka')
-        .description('Command-line tool for managing isolated, reproducible workspaces.')
+        .description('Command-line tool for managing lightweight, reproducible workspaces.')
         .version('0.1.0');
 
     program
@@ -33,5 +33,11 @@ if (typeof require !== 'undefined' && require.main === module) {
             console.log(`Running project ${projectName}`);
         });
 
-    program.parse();
+    program.parse(argv);
+    return 0;
+}
+
+
+if (typeof require !== 'undefined' && require.main === module) {
+    main(process.argv);
 }
