@@ -8,6 +8,7 @@
     "dist"
   ],
   "scripts": {
+    "typecheck": "tsc",
     "build": "rollup -c && tsc",
     "test": "jest",
     "lint": "eslint src --fix"
