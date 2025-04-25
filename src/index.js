@@ -10,6 +10,14 @@ import { Command } from 'commander';
 export function add(a, b) {
     return a + b;
 }
+
+
+/**
+ * @type {string[]}
+ */
+let args = process.argv;
+
+
 if (typeof require !== 'undefined' && require.main === module) {
     const program = new Command();
 
