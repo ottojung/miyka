@@ -39,11 +39,9 @@
     "jest": "^29.7.0",
     "rollup": "^3.29.5",
     "ts-jest": "^29.3.2",
-    "typescript": "^5.8.3"
-  },
-  "homepage": "https://github.com/ottojung/miyka#readme",
-  "dependencies": {
+    "typescript": "^5.8.3",
     "@rollup/plugin-typescript": "^12.1.2",
     "tslib": "^2.8.1"
-  }
+  },
+  "homepage": "https://github.com/ottojung/miyka#readme"
 }
