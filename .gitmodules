@@ -1,3 +1,0 @@
-[submodule "root/dependencies/euphrates"]
-	path = root/dependencies/euphrates
-	url = https://github.com/ottojung/euphrates.git

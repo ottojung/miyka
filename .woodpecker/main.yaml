@@ -1,0 +1,12 @@
+
+steps:
+  build:
+    image: alpine
+    commands:
+      - echo hello
+    when:
+      event:
+        - push
+        - pull_request
+      branch:
+        - master
