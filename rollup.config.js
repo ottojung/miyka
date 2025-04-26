@@ -4,7 +4,8 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 export default [
   {
     input: 'src/index.js',
-    external: ['commander'],
+    // Treat CLI dependencies as external to avoid bundling issues
+    external: ['commander', 'pino'],
     output: [
       { file: 'dist/index.esm.js', format: 'esm' },
       {
