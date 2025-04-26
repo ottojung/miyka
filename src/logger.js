@@ -11,8 +11,8 @@ let logger;
 if (env === 'test') {
   // Disable logging in test environment
   logger = pino({ level: 'silent' });
-} else if (env !== 'production') {
-  // Pretty-print logs in development (non-production)
+} else {
+  // Pretty-print logs otherwise
   const transport = pino.transport({
     target: 'pino-pretty',
     options: {
@@ -22,9 +22,6 @@ if (env === 'test') {
     }
   });
   logger = pino({ level: process.env.LOG_LEVEL || 'info' }, transport);
-} else {
-  // JSON logs in production
-  logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 }
 
 export default logger;
