@@ -61,9 +61,9 @@ export function entry() {
         main(process.argv);
     } catch (err) {
         if (err instanceof CliError) {
-            logger.error({ err }, 'Unexpected error occurred');
             process.exit(1);
+        } else {
+            throw err;
         }
-        throw err;
     }
 }
