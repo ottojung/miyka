@@ -27,10 +27,17 @@ export function main(argv) {
         .version('0.1.0');
 
     program
-        .option('--root <root>', "Path to the miyka private storage.", `${HOME}/.local/share/miyka/root`)
-        .command('run <project_name>')
-        .argument('[...projectArguments]')
+        .option(
+            '--root <root>',
+            'Path to the miyka private storage.',
+            `${process.env.HOME}/.local/share/miyka/root`
+        );
+
+    program
+        .command('run')
         .description('Run a project')
+        .argument('<projectName>', 'name of the project')
+        .argument('[projectArguments...]', 'all arguments to forward to the project')
         .action((projectName, projectArguments) => {
             const { root } = program.opts();
             logger.debug({ root, projectName, projectArguments }, 'Run command invoked');
