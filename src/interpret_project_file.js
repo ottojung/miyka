@@ -23,7 +23,7 @@ export function interpretProjectFile(projectFilePath, args) {
     }
     const status = run.status;
     if (status !== 0) {
-        logger.warn({ status }, 'Project script exited with non-zero status code');
+        logger.debug({ status }, 'Project script exited with non-zero status code');
     } else {
         logger.debug({ status }, 'Project script exited successfully');
     }

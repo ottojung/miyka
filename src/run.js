@@ -18,7 +18,7 @@ export function run(root, projectName, args) {
     logger.debug({ projectFilePath, args }, 'Invoking project script');
     const status = interpretProjectFile(projectFilePath, args);
     if (status !== 0) {
-        logger.error({ status }, 'Project script exited with error');
+        logger.warn({ status }, 'Project script exited with error');
         process.exit(status);
     } else {
         logger.debug({ status }, 'Project script completed successfully');
