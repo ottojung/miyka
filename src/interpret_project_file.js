@@ -3,8 +3,8 @@
  * @param {string} projectFilePath
  * @returns {void}
  */
-import path from 'path';
-import fs from 'fs';
+import * as path from 'path';
+import * as fs from 'fs';
 import { spawnSync } from 'child_process';
 
 /**

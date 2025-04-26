@@ -10,7 +10,7 @@
   "scripts": {
     "typecheck": "tsc",
     "build": "rollup -c && tsc",
-    "test": "jest",
+    "test": "jest && tsc",
     "lint": "eslint src --fix",
     "start": "node dist/index.cjs.js"
   },
@@ -46,7 +46,7 @@
   },
   "homepage": "https://github.com/ottojung/miyka#readme",
   "bin": {
-    "miyka": "dist/index.cjs.js"
+    "miyka": "./dist/index.cjs.js"
   },
   "dependencies": {
     "commander": "^13.1.0"
