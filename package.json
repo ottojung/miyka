@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "commander": "^13.1.0",
-    "csv-parse": "^5.6.0"
+    "csv-parse": "^5.6.0",
+    "pino": "^9.6.0"
   }
 }
