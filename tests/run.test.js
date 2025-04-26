@@ -11,8 +11,17 @@ jest.mock('../src/interpret_project_file.js', () => ({
 }));
 
 describe('run module', () => {
+  // Stub process.exit so tests can assert calls without exiting
+  beforeAll(() => {
+    jest.spyOn(process, 'exit').mockImplementation(() => {});
+  });
+  afterAll(() => {
+    process.exit.mockRestore();
+  });
+
+  // Clear mock history before each test
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should resolve project path and interpret the file', () => {
@@ -23,5 +32,7 @@ describe('run module', () => {
     run(root, projectName, args);
     expect(resolveProjectPath).toHaveBeenCalledWith(root, projectName);
     expect(interpretProjectFile).toHaveBeenCalledWith('/fake/path/project.js', args);
+    // Ensure run invoked process.exit
+    expect(process.exit).toHaveBeenCalled();
   });
 });

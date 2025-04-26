@@ -19,7 +19,9 @@ export function run(root, projectName, args) {
     const status = interpretProjectFile(projectFilePath, args);
     if (status !== 0) {
         logger.error({ status }, 'Project script exited with error');
+        process.exit(status);
     } else {
         logger.debug({ status }, 'Project script completed successfully');
+        process.exit(status);
     }
 }
