@@ -3,16 +3,16 @@
  */
 import pino from 'pino';
 
-// Determine if we are in development (non-production) mode
-const isDevelopment = process.env.NODE_ENV !== 'production';
+const env = process.env.NODE_ENV || 'development';
 
-/**
- * Pino logger instance.
- * @type {pino.Logger}
- */
+/** Pino logger instance. @type {pino.Logger} */
 let logger;
-if (isDevelopment) {
-  // Use pino-pretty for pretty-printing JSON logs in development
+
+if (env === 'test') {
+  // Disable logging in test environment
+  logger = pino({ level: 'silent' });
+} else if (env !== 'production') {
+  // Pretty-print logs in development (non-production)
   const transport = pino.transport({
     target: 'pino-pretty',
     options: {
@@ -21,12 +21,9 @@ if (isDevelopment) {
       ignore: 'pid,hostname'
     }
   });
-  logger = pino(
-    { level: process.env.LOG_LEVEL || 'info' },
-    transport
-  );
+  logger = pino({ level: process.env.LOG_LEVEL || 'info' }, transport);
 } else {
-  // Use JSON output in production
+  // JSON logs in production
   logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 }
 
