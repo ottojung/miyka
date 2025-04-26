@@ -47,5 +47,11 @@ export function main(argv) {
  * @returns {void}
  */
 export function entry() {
-    main(process.argv);
+    logger.info('Starting CLI');
+    try {
+        main(process.argv);
+    } catch (err) {
+        logger.error({ err }, 'Unexpected error occurred');
+        process.exit(1);
+    }
 }
