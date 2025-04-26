@@ -6,17 +6,12 @@ import logger from './logger.js';
 
 /**
  * Resolves a project name to the file path of its project file.
- * @param {string} projectName
+ * @param {string} root - The path to miyka's private files.
+ * @param {string} projectName - Name of the project to resolve.
  * @returns {string}
  */
-/**
- * Resolves a project name to the file path of its project file.
- * @param {string} projectName
- * @returns {string}
- */
-export function resolveProjectPath(projectName) {
-    logger.info({ projectName }, 'Resolving project path');
-    const root = process.cwd();
+export function resolveProjectPath(root, projectName) {
+    logger.debug({ projectName }, 'Resolving project path');
     const idMapPath = path.join(root, 'id-map.csv');
     logger.debug({ idMapPath }, 'Computed id-map.csv path');
     let content;
@@ -55,6 +50,6 @@ export function resolveProjectPath(projectName) {
     const foundId = record.id;
     logger.debug({ foundId }, 'Found project ID');
     const projectFilePath = path.join(root, 'repositories', foundId, 'wd', 'run');
-    logger.info({ projectName, projectFilePath }, 'Resolved project file path');
+    logger.debug({ projectName, projectFilePath }, 'Resolved project file path');
     return projectFilePath;
 }

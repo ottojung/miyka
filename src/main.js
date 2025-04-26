@@ -32,8 +32,9 @@ export function main(argv) {
         .argument('[...projectArguments]')
         .description('Run a project')
         .action((projectName, projectArguments) => {
-            logger.info({ projectName, projectArguments }, 'Run command invoked');
-            runCommand(projectName, projectArguments);
+            const { root } = program.opts();
+            logger.debug({ root, projectName, projectArguments }, 'Run command invoked');
+            runCommand(root, projectName, projectArguments);
         });
 
     logger.debug('Parsing command-line arguments with Commander');

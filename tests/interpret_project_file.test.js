@@ -45,6 +45,6 @@ describe('interpretProjectFile', () => {
     spawnSync.mockReturnValue({ error, status: null });
     const filePath = '/path/to/script.sh';
 
-    expect(() => interpretProjectFile(filePath, [])).toThrow(error);
+    expect(() => interpretProjectFile(filePath, [])).toThrow('spawn failed');
   });
 });

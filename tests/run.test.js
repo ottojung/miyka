@@ -16,9 +16,12 @@ describe('run module', () => {
   });
 
   it('should resolve project path and interpret the file', () => {
+    const root = 'rootDir';
+    const projectName = 'myProject';
+    const args = [];
     resolveProjectPath.mockReturnValue('/fake/path/project.js');
-    run('myProject', []);
-    expect(resolveProjectPath).toHaveBeenCalledWith('myProject');
-    expect(interpretProjectFile).toHaveBeenCalledWith('/fake/path/project.js', []);
+    run(root, projectName, args);
+    expect(resolveProjectPath).toHaveBeenCalledWith(root, projectName);
+    expect(interpretProjectFile).toHaveBeenCalledWith('/fake/path/project.js', args);
   });
 });

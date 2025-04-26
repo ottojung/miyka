@@ -17,12 +17,12 @@ describe('resolveProjectPath', () => {
   });
 
   it('throws error if id-map.csv is not found', () => {
-    expect(() => resolveProjectPath('projectA')).toThrow(/id-map\.csv/);
+    expect(() => resolveProjectPath(tempDir, 'projectA')).toThrow(/id-map\.csv/);
   });
 
   it('throws error if id-map.csv is empty', () => {
     fs.writeFileSync(path.join(tempDir, 'id-map.csv'), '');
-    expect(() => resolveProjectPath('anything')).toThrow(/empty/);
+    expect(() => resolveProjectPath(tempDir, 'anything')).toThrow(/empty/);
   });
 
   it('returns correct path for existing project', () => {
@@ -33,23 +33,23 @@ describe('resolveProjectPath', () => {
     fs.mkdirSync(path.dirname(runPath), { recursive: true });
     fs.writeFileSync(runPath, '');
 
-    const result = resolveProjectPath('projectA');
+    const result = resolveProjectPath(tempDir, 'projectA');
     expect(result).toBe(runPath);
   });
 
   it('throws error if project name not found', () => {
     fs.writeFileSync(path.join(tempDir, 'id-map.csv'), 'id,name\n123,projectA\n');
-    expect(() => resolveProjectPath('projectB')).toThrow(/project 'projectB' not found/);
+    expect(() => resolveProjectPath(tempDir, 'projectB')).toThrow(/project 'projectB' not found/);
   });
 
   it('throws error if id column is missing', () => {
     fs.writeFileSync(path.join(tempDir, 'id-map.csv'), 'name\nprojectA\n');
-    expect(() => resolveProjectPath('projectA')).toThrow(/id column/);
+    expect(() => resolveProjectPath(tempDir, 'projectA')).toThrow(/id column/);
   });
 
   it('throws error if name column is missing', () => {
     fs.writeFileSync(path.join(tempDir, 'id-map.csv'), 'id\n123\n');
-    expect(() => resolveProjectPath('projectA')).toThrow(/name column/);
+    expect(() => resolveProjectPath(tempDir, 'projectA')).toThrow(/name column/);
   });
 
   it('ignores extra columns and spaces', () => {
@@ -60,7 +60,7 @@ describe('resolveProjectPath', () => {
     fs.mkdirSync(path.dirname(runPath), { recursive: true });
     fs.writeFileSync(runPath, '');
 
-    const result = resolveProjectPath('projectC');
+    const result = resolveProjectPath(tempDir, 'projectC');
     expect(result).toBe(runPath);
   });
 });
