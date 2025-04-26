@@ -1,100 +1,50 @@
-// tests/interpret_project_file.test.js
 // Unit tests for interpretProjectFile
-/* eslint-env jest */
-// Mock child_process.spawnSync to avoid running real commands
-jest.mock('child_process', () => ({ spawnSync: jest.fn() }));
-
-import fs from 'fs';
-import os from 'os';
-import path from 'path';
 import { spawnSync } from 'child_process';
 import { interpretProjectFile } from '../src/interpret_project_file.js';
 
+jest.mock('child_process', () => ({
+  spawnSync: jest.fn(),
+}));
+
 describe('interpretProjectFile', () => {
-  let tmpDir;
   beforeEach(() => {
-    // Create a temporary project directory
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pkg-'));
-    // Default mock for spawnSync: success
+    jest.clearAllMocks();
+  });
+
+  it('calls spawnSync with file path and provided args, returns status', () => {
+    spawnSync.mockReturnValue({ error: null, status: 42 });
+    const filePath = '/path/to/script.sh';
+    const args = ['arg1', 'arg2'];
+
+    const status = interpretProjectFile(filePath, args);
+
+    expect(spawnSync).toHaveBeenCalledWith(
+      '/bin/sh',
+      [filePath, ...args],
+      { stdio: 'inherit' }
+    );
+    expect(status).toBe(42);
+  });
+
+  it('uses empty args when none provided', () => {
     spawnSync.mockReturnValue({ error: null, status: 0 });
-  });
-  afterEach(() => {
-    // Cleanup
-    fs.rmSync(tmpDir, { recursive: true, force: true });
-    jest.resetAllMocks();
-  });
+    const filePath = '/path/to/script.sh';
 
-  it('installs dependencies and runs CLI when bin is string', () => {
-    // Prepare a package.json with string bin
-    const pkg = { name: 'mypkg', bin: 'cli.js' };
-    fs.writeFileSync(path.join(tmpDir, 'package.json'), JSON.stringify(pkg));
-    // Dummy project file
-    const filePath = path.join(tmpDir, 'file.txt');
-    fs.writeFileSync(filePath, '');
+    const status = interpretProjectFile(filePath);
 
-    interpretProjectFile(filePath);
-
-    // spawnSync should be called twice: npm install, then CLI
-    expect(spawnSync).toHaveBeenCalledTimes(2);
-    expect(spawnSync).toHaveBeenNthCalledWith(
-      1,
-      'npm',
-      ['install'],
-      { cwd: tmpDir, stdio: 'inherit' }
+    expect(spawnSync).toHaveBeenCalledWith(
+      '/bin/sh',
+      [filePath],
+      { stdio: 'inherit' }
     );
-    const expectedScript = path.join(tmpDir, 'cli.js');
-    expect(spawnSync).toHaveBeenNthCalledWith(
-      2,
-      'node',
-      [expectedScript, filePath],
-      { cwd: tmpDir, stdio: 'inherit' }
-    );
+    expect(status).toBe(0);
   });
 
-  it('handles object bin field', () => {
-    // Prepare a package.json with object bin
-    const pkg = { name: 'mypkg', bin: { mycmd: 'cli.js', other: 'other.js' } };
-    fs.writeFileSync(path.join(tmpDir, 'package.json'), JSON.stringify(pkg));
-    const filePath = path.join(tmpDir, 'file.js');
-    fs.writeFileSync(filePath, '');
+  it('throws error when spawnSync returns an error', () => {
+    const error = new Error('spawn failed');
+    spawnSync.mockReturnValue({ error, status: null });
+    const filePath = '/path/to/script.sh';
 
-    interpretProjectFile(filePath);
-
-    expect(spawnSync).toHaveBeenCalledTimes(2);
-    expect(spawnSync).toHaveBeenNthCalledWith(
-      1,
-      'npm',
-      ['install'],
-      { cwd: tmpDir, stdio: 'inherit' }
-    );
-    const expectedScript = path.join(tmpDir, 'cli.js');
-    expect(spawnSync).toHaveBeenNthCalledWith(
-      2,
-      'node',
-      [expectedScript, filePath],
-      { cwd: tmpDir, stdio: 'inherit' }
-    );
-  });
-
-  it('throws if no bin field', () => {
-    const pkg = { name: 'mypkg' };
-    fs.writeFileSync(path.join(tmpDir, 'package.json'), JSON.stringify(pkg));
-    const filePath = path.join(tmpDir, 'file.txt');
-    fs.writeFileSync(filePath, '');
-    expect(() => interpretProjectFile(filePath)).toThrow(/No "bin" field/);
-  });
-
-  it('throws if bin is invalid type', () => {
-    const pkg = { name: 'mypkg', bin: 123 };
-    fs.writeFileSync(path.join(tmpDir, 'package.json'), JSON.stringify(pkg));
-    const filePath = path.join(tmpDir, 'file.txt');
-    fs.writeFileSync(filePath, '');
-    expect(() => interpretProjectFile(filePath)).toThrow(/Invalid "bin" field/);
-  });
-
-  it('throws if package.json cannot be read', () => {
-    const filePath = path.join(tmpDir, 'file.txt');
-    fs.writeFileSync(filePath, '');
-    expect(() => interpretProjectFile(filePath)).toThrow(/Unable to read or parse package\.json/);
+    expect(() => interpretProjectFile(filePath, [])).toThrow(error);
   });
 });

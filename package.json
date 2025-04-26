@@ -10,7 +10,7 @@
   "scripts": {
     "typecheck": "tsc",
     "build": "rollup -c && tsc",
-    "test": "jest && tsc",
+    "test": "tsc && jest",
     "lint": "eslint src --fix",
     "start": "node dist/index.cjs.js"
   },
