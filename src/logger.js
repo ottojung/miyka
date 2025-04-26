@@ -8,7 +8,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 /**
  * Pino logger instance.
- * @type {import('pino').Logger}
+ * @type {pino.Logger}
  */
 let logger;
 if (isDevelopment) {
