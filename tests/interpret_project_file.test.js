@@ -30,7 +30,7 @@ describe('interpretProjectFile', () => {
     spawnSync.mockReturnValue({ error: null, status: 0 });
     const filePath = '/path/to/script.sh';
 
-    const status = interpretProjectFile(filePath);
+    const status = interpretProjectFile(filePath, []);
 
     expect(spawnSync).toHaveBeenCalledWith(
       '/bin/sh',

@@ -17,8 +17,8 @@ describe('run module', () => {
 
   it('should resolve project path and interpret the file', () => {
     resolveProjectPath.mockReturnValue('/fake/path/project.js');
-    run('myProject');
+    run('myProject', []);
     expect(resolveProjectPath).toHaveBeenCalledWith('myProject');
-    expect(interpretProjectFile).toHaveBeenCalledWith('/fake/path/project.js');
+    expect(interpretProjectFile).toHaveBeenCalledWith('/fake/path/project.js', []);
   });
 });

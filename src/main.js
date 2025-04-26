@@ -25,9 +25,10 @@ export function main(argv) {
     program
         .option('--root <root>', "Path to the miyka private storage.", `${HOME}/.local/share/miyka/root`)
         .command('run <project_name>')
+        .argument('[...projectArguments]')
         .description('Run a project')
-        .action((projectName) => {
-            runCommand(projectName);
+        .action((projectName, projectArguments) => {
+            runCommand(projectName, projectArguments);
         });
 
     program.parse(argv);
