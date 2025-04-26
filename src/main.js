@@ -17,7 +17,7 @@ export function main(argv) {
     logger.debug({ HOME }, 'Retrieved HOME environment variable');
     if (HOME === undefined || HOME === '') {
         logger.error('$HOME environment variable must be set but is undefined or empty');
-        throw Error("$HOME environment variable must be set, but isnt.");
+        throw new CliError("$HOME environment variable must be set, but isnt.");
     }
 
     const program = new Command();
