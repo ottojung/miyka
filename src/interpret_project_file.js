@@ -4,6 +4,7 @@
  * @returns {void}
  */
 import { spawnSync } from 'child_process';
+import logger from './logger.js';
 
 
 /**
@@ -13,11 +14,18 @@ import { spawnSync } from 'child_process';
  * @returns {number} - The exit status of the process.
  */
 export function interpretProjectFile(projectFilePath, args) {
+    logger.debug({ projectFilePath, args }, 'Spawning shell for project file');
     const cmdArgs = [projectFilePath, ...args];
     const run = spawnSync('/bin/sh', cmdArgs, { stdio: 'inherit' });
     if (run.error) {
+        logger.error({ err: run.error }, 'Failed to spawn shell for project file');
         throw run.error;
     }
-
-    return run.status;
+    const status = run.status;
+    if (status !== 0) {
+        logger.warn({ status }, 'Project script exited with non-zero status code');
+    } else {
+        logger.debug({ status }, 'Project script exited successfully');
+    }
+    return status;
 }

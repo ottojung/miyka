@@ -1,5 +1,6 @@
 import { Command } from 'commander';
 import { run as runCommand } from './run.js';
+import logger from './logger.js';
 
 /**
  * Virtual entrypoint.
@@ -7,11 +8,14 @@ import { run as runCommand } from './run.js';
  * @returns {number}
  */
 export function main(argv) {
+    logger.debug({ argv: argv.slice(2) }, 'Entered main function');
     /**
      * @type {string}
      */
     const HOME = process.env.HOME;
+    logger.debug({ HOME }, 'Retrieved HOME environment variable');
     if (HOME === undefined || HOME === '') {
+        logger.error('$HOME environment variable must be set but is undefined or empty');
         throw Error("$HOME environment variable must be set, but isnt.");
     }
 
@@ -28,9 +32,11 @@ export function main(argv) {
         .argument('[...projectArguments]')
         .description('Run a project')
         .action((projectName, projectArguments) => {
+            logger.info({ projectName, projectArguments }, 'Run command invoked');
             runCommand(projectName, projectArguments);
         });
 
+    logger.debug('Parsing command-line arguments with Commander');
     program.parse(argv);
     return 0;
 }
