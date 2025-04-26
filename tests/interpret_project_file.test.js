@@ -42,11 +42,11 @@ describe('interpretProjectFile', () => {
       ['install'],
       { cwd: tmpDir, stdio: 'inherit' }
     );
-    const expectedBin = path.join(tmpDir, 'node_modules', '.bin', 'mypkg');
+    const expectedScript = path.join(tmpDir, 'cli.js');
     expect(spawnSync).toHaveBeenNthCalledWith(
       2,
-      expectedBin,
-      [filePath],
+      'node',
+      [expectedScript, filePath],
       { cwd: tmpDir, stdio: 'inherit' }
     );
   });
@@ -67,11 +67,11 @@ describe('interpretProjectFile', () => {
       ['install'],
       { cwd: tmpDir, stdio: 'inherit' }
     );
-    const expectedBin = path.join(tmpDir, 'node_modules', '.bin', 'mycmd');
+    const expectedScript = path.join(tmpDir, 'cli.js');
     expect(spawnSync).toHaveBeenNthCalledWith(
       2,
-      expectedBin,
-      [filePath],
+      'node',
+      [expectedScript, filePath],
       { cwd: tmpDir, stdio: 'inherit' }
     );
   });
