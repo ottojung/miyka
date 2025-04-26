@@ -47,7 +47,7 @@ export function main(argv) {
  * @returns {void}
  */
 export function entry() {
-    logger.info('Starting CLI');
+    logger.debug('Starting CLI');
     try {
         main(process.argv);
     } catch (err) {
