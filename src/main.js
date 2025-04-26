@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 import { run as runCommand } from './run.js';
 import logger from './logger.js';
+import { CliError } from './errors.js';
 
 /**
  * Virtual entrypoint.
@@ -59,7 +60,10 @@ export function entry() {
     try {
         main(process.argv);
     } catch (err) {
-        logger.error({ err }, 'Unexpected error occurred');
-        process.exit(1);
+        if (err instanceof CliError) {
+            logger.error({ err }, 'Unexpected error occurred');
+            process.exit(1);
+        }
+        throw err;
     }
 }
