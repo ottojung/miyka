@@ -1,0 +1,18 @@
+const globals = require('globals');
+
+module.exports = {
+  parserOptions: {
+    sourceType: 'module',
+    ecmaVersion: 2022,
+  },
+  env: {
+    browser: true,
+    es2022: true,
+  },
+  overrides: [
+    {
+      files: ['**/*.{js,mjs,cjs}'],
+      globals: globals.browser,
+    },
+  ],
+};
