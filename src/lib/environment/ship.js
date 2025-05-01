@@ -6,7 +6,7 @@
  * @returns {void}
  */
 export function setEnvironmentVariable(name, value) {
-  process.env[name] = value;
+    process.env[name] = value;
 }
 
 /**
@@ -15,5 +15,10 @@ export function setEnvironmentVariable(name, value) {
  * @returns {string} - The value.
  */
 export function getEnvironmentVariable(name) {
-  return process.env[name];
+    return process.env[name];
+}
+
+export default {
+    setEnv: setEnvironmentVariable,
+    getEnv: getEnvironmentVariable,
 }
