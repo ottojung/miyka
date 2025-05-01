@@ -11,7 +11,7 @@ import { CliError } from './errors.js';
 export function main(argv) {
     logger.debug({ argv: argv.slice(2) }, 'Entered main function');
     /**
-     * @type {string}
+     * @type {string | undefined}
      */
     const HOME = process.env.HOME;
     logger.debug({ HOME }, 'Retrieved HOME environment variable');

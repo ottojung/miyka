@@ -11,7 +11,7 @@ import logger from './logger.js';
  * Interprets the given project file by launching a shell.
  * @param {string} projectFilePath - Path to the script to execute.
  * @param {string[]} args - Optional arguments to pass to the script.
- * @returns {number} - The exit status of the process.
+ * @returns {number?} - The exit status of the process.
  */
 export function interpretProjectFile(projectFilePath, args) {
     logger.debug({ projectFilePath, args }, 'Spawning shell for project file');
