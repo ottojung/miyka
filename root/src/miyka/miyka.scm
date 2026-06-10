@@ -28,6 +28,7 @@
     OPT : --root <root>
     /     --guix-executable <guix-executable>
     /     --fetcher <fetcher>
+    /     --continuation <continuation>
     )
 
    :default (<root> (get-root/default))
@@ -37,6 +38,7 @@
    (parameterize ((root/p <root>)
                   (guix-executable/p <guix-executable>)
                   (fetcher/p <fetcher>)
+                  (continuation/p <continuation>)
                   )
 
      (define repository (repository:make))
@@ -102,8 +104,13 @@
 
       ((and get id of)
        (CLI:get-id repository))
+      )
 
-      ))))
+     (unless run
+       (when <continuation>
+         (call-with-output-file <continuation>
+           (lambda (port)
+             (display "" port))))))))
 
 (with-user-errors
  :types (list

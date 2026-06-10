@@ -42,6 +42,7 @@
   (import (only (miyka CLI-list) CLI:list))
   (import (only (miyka CLI-remove) CLI:remove))
   (import (only (miyka CLI-run) CLI:run))
+  (import (only (miyka continuation-p) continuation/p))
   (import (only (miyka fetcher-p) fetcher/p))
   (import
     (only (miyka get-fetcher-default)
@@ -71,13 +72,16 @@
           begin
           cond
           define
+          lambda
           let
           list
           newline
           or
           parameterize
           quote
+          unless
           when))
+  (import (only (scheme file) call-with-output-file))
   (import (only (scheme write) display))
   (cond-expand
     (guile (import (only (srfi srfi-1) remove)))

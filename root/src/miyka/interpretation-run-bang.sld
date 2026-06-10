@@ -47,6 +47,7 @@
   (import
     (only (miyka call-with-output-file-lazy)
           call-with-output-file/lazy))
+  (import (only (miyka continuation-p) continuation/p))
   (import
     (only (miyka cleanup-wrapper-path)
           cleanup-wrapper:path))
@@ -188,6 +189,7 @@
           unquote
           when))
   (import (only (scheme eval) environment))
+  (import (only (scheme file) call-with-output-file))
   (import (only (scheme write) display write))
   (cond-expand
     (guile (import (only (srfi srfi-1) filter)))

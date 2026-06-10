@@ -614,8 +614,15 @@ shift" name))
     (when (file-or-directory-exists? local-miyka-root-path)
       (system*/exit-code "rm" "-rf" "--" local-miyka-root-path)))
 
-  (system*/exit-code
-   "/bin/sh" "--"
-   run-script-path
-   (or guix "")
-   (or fetcher "")))
+  (let ((continuation-path (continuation/p)))
+    (when continuation-path
+      (call-with-output-file
+          continuation-path
+        (lambda (port)
+          (display "/bin/sh -- " port)
+          (write (~a run-script-path) port)
+          (display " " port)
+          (write (~a (or guix "")) port)
+          (display " " port)
+          (write (~a (or fetcher "")) port)
+          (newline port))))))
