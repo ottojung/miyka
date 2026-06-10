@@ -2,12 +2,7 @@
 name: Makefile CI
 
 on:
-  push:
-    branches: [ "master", "development" ]
-  pull_request:
-    branches: [ "master", "development" ]
-  schedule:
-    - cron: '0 12 * * *'
+    push:
 
 jobs:
   build:
