@@ -18,6 +18,9 @@
     (only (euphrates with-randomizer-seed)
           with-randomizer-seed))
   (import
+    (only (euphrates system-environment)
+          system-environment-get))
+  (import
     (only (euphrates with-user-errors)
           with-user-errors))
   (import (only (miyka CLI-copy) CLI:copy))
@@ -87,6 +90,6 @@
     (guile (import (only (srfi srfi-1) remove)))
     (else (import (only (srfi 1) remove))))
   (cond-expand
-    (guile (import (only (guile) getenv include-from-path))
+    (guile (import (only (guile) include-from-path))
            (begin (include-from-path "miyka/miyka.scm")))
     (else (include "miyka.scm"))))

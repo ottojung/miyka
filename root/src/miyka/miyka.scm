@@ -34,7 +34,7 @@
    :default (<guix-executable> (get-guix-executable/default))
    :default (<fetcher> (get-fetcher/default))
 
-   (continuation/p (getenv "MIYKA_TEMPORARY_CONTINUATION"))
+   (continuation/p (system-environment-get "MIYKA_TEMPORARY_CONTINUATION"))
 
    (parameterize ((root/p <root>)
                   (guix-executable/p <guix-executable>)
