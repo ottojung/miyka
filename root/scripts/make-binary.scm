@@ -11,22 +11,16 @@
 (display "CONTINUATION_SCRIPT=$(mktemp)")
 (newline)
 
+(display "export MIYKA_TEMPORARY_CONTINUATION=\"$CONTINUATION_SCRIPT\"")
+(newline)
+
+(display "trap 'rm -f \"$CONTINUATION_SCRIPT\"' EXIT HUP INT QUIT ABRT KILL ALRM TERM")
+(newline)
+
 (display "guile --r7rs -L ")
 (write code_root)
 (display " -s ")
 (write (string-append code_root "/miyka/miyka.sld"))
-(display " --continuation \"$CONTINUATION_SCRIPT\" \"$@\"")
-(newline)
-
-(display ". \"$CONTINUATION_SCRIPT\"")
-(newline)
-
-(display "exit_code=$?")
-(newline)
-
-(display "rm -f \"$CONTINUATION_SCRIPT\"")
-(newline)
-
-(display "exit $exit_code")
+(display " \"$@\" && sh -- \"$CONTINUATION_SCRIPT\"")
 (newline)
 (flush-all-ports)

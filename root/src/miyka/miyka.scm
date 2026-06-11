@@ -28,17 +28,17 @@
     OPT : --root <root>
     /     --guix-executable <guix-executable>
     /     --fetcher <fetcher>
-    /     --continuation <continuation>
     )
 
    :default (<root> (get-root/default))
    :default (<guix-executable> (get-guix-executable/default))
    :default (<fetcher> (get-fetcher/default))
 
+   (continuation/p (getenv "MIYKA_TEMPORARY_CONTINUATION"))
+
    (parameterize ((root/p <root>)
                   (guix-executable/p <guix-executable>)
                   (fetcher/p <fetcher>)
-                  (continuation/p <continuation>)
                   )
 
      (define repository (repository:make))
@@ -107,10 +107,11 @@
       )
 
      (unless run
-       (when <continuation>
-         (call-with-output-file <continuation>
-           (lambda (port)
-             (display "" port))))))))
+       (let ((cp (continuation/p)))
+         (when cp
+           (call-with-output-file cp
+             (lambda (port)
+               (display "" port)))))))))
 
 (with-user-errors
  :types (list

@@ -87,6 +87,6 @@
     (guile (import (only (srfi srfi-1) remove)))
     (else (import (only (srfi 1) remove))))
   (cond-expand
-    (guile (import (only (guile) include-from-path))
+    (guile (import (only (guile) getenv include-from-path))
            (begin (include-from-path "miyka/miyka.scm")))
     (else (include "miyka.scm"))))
