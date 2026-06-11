@@ -34,6 +34,8 @@
    :default (<guix-executable> (get-guix-executable/default))
    :default (<fetcher> (get-fetcher/default))
 
+   (continuation/p (system-environment-get "MIYKA_TEMPORARY_CONTINUATION"))
+
    (parameterize ((root/p <root>)
                   (guix-executable/p <guix-executable>)
                   (fetcher/p <fetcher>)
@@ -102,8 +104,14 @@
 
       ((and get id of)
        (CLI:get-id repository))
+      )
 
-      ))))
+     (unless run
+       (let ((cp (continuation/p)))
+         (when cp
+           (call-with-output-file cp
+             (lambda (port)
+               (display "" port)))))))))
 
 (with-user-errors
  :types (list

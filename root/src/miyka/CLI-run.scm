@@ -14,8 +14,7 @@
     (define path
       (configuration:path config))
 
-    (exit
-     (interpretation:run!
-      repository
-      (load-and-interpret
-       repository path)))))
+    (interpretation:run!
+     repository
+     (load-and-interpret
+      repository path))))
